@@ -1,7 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const RssFeedEmitter = require('rss-feed-emitter');
+const feeder = new RssFeedEmitter();
 const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, EmbedBuilder, Discord } = require('discord.js');
-const { token } = require('./config.json');  // Needs to be added for bot use
+const { token } = require('./config.json');
+const fetch = require("node-fetch");  // Needs to be added for bot use
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 // const youtube = require('discord-bot-youtube-notifications');
@@ -9,6 +12,9 @@ const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 
 //Logging channel
 const loggingChannelId = '1087810388936114316';
+const rssChannelId = '1087783783207534604';
+
+var lastCheck = new Date(Date.now() - 5 * 60 * 1000);
 
 
 // Create a new client instance
@@ -332,6 +338,77 @@ client.on('guildBanRemove', async (guild, user) => {
 		errMsg(err);
 	}	
 });
+
+//RSS Feed
+feeder.add({
+	url: 'https://api.gamebanana.com/Rss/New?gameid=16522&include_updated=1',
+	refresh: 150000
+})
+
+feeder.on('new-item', async function (item) {
+	console.log(item);
+	const feedChannel = await client.channels.fetch(rssChannelId);
+
+
+	const modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${mod._idRow}/ProfilePage`).then(res => res.json());
+	var embed = new EmbedBuilder()
+		.setTitle(`${modInfo._sName}`)
+		.setURL(`${modInfo._sProfileUrl}`)
+		.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
+		.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
+		.addFields(
+			{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
+			{
+				name: 'Likes',
+				value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
+				inline: true
+			},
+			{
+				name: 'Views',
+				value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
+				inline: true
+			},
+		)
+		.setFooter({text: `${mikuBotVer}`})
+	if (modInfo._sDescription !== undefined) {
+		embed.setDescription(`${modInfo._sDescription}`);
+	}
+	if (modInfo._aAdditionalInfo._sversion !== undefined) {
+		embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
+	}
+	var contentWarnings;
+
+	if (modInfo._aContentRatings !== undefined) {
+		for (var rating in modInfo._aContentRatings) {
+
+			if (modInfo._aContentRatings[rating] !== undefined) {
+				console.log(modInfo._aContentRatings[rating]);
+				if (contentWarnings === undefined) {
+					contentWarnings = `${modInfo._aContentRatings[rating]}`;
+				} else {
+					contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
+				}
+			}
+		}
+		console.log(contentWarnings);
+		console.log(modInfo._aContentRatings);
+
+		embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
+	}
+
+	if (item.pubdate < lastChecked) {
+		embed.setAuthor({ name: "New Post", iconURL: "https://i.imgur.com/eJyrdy7.png"})
+			.setColor(0x86cecb)
+	} else {
+
+		embed.setAuthor({ name: "Post Update", iconURL: "https://i.imgur.com/iJDHCx2.png"})
+			.setColor(0x6bed78)
+	}
+
+
+	// Current time
+	lastChecked = new Date()
+})
 
 // Log in to Discord with your client's token
 client.login(token);
