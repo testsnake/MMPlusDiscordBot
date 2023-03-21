@@ -20,7 +20,7 @@ module.exports = {
 		const helpEmbed = new EmbedBuilder()
 			.setColor(0x86cecb)
 			.setAuthor({ name: 'Command List', iconURL: 'https://images.gamebanana.com/img/ico/games/6296031c71087.png'})
-			.setDescription("Miku Bot is currently under construction, as a result some commands may not be avalible yet.")
+			.setDescription("Miku Bot is currently under construction, as a result some commands may not be avalible yet.\nThis bot has been ported from the eden project server, so im still adjusting things. Some commands on this list may not be available. - Testsnake")
 			.addFields(
 				{ name: 'Utility', value: textUtility},
 				{ name: 'Troubleshooting', value: textTroubleshooting},
