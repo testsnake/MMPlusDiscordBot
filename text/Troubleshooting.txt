@@ -1,0 +1,5 @@
+/it - asks for basic info for troublshooting
+/wrongfolder - folder structure for when .zip unpacked incorrectly
+/dlc - need dlc
+/mfx - How to upgrade when you still have a projectmfx mod folder
+/link - Shows which link to download
