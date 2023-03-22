@@ -104,10 +104,9 @@ module.exports = {
 
             embeds.push(embed);
 
-            //Updates every 2nd loop to preserve bandwidth
-            if (i % 2 === 0) {
-                await interaction.editReply({ embeds: embeds });
-            }
+
+            await interaction.editReply({ content: `Found ${i} results...`});
+
 
 
 
@@ -122,7 +121,7 @@ module.exports = {
             )
         }
 
-        await interaction.editReply({ embeds: embeds });
+        await interaction.editReply({ embeds: embeds, content: `` });
 
         // if (results.length === 0) {
         //     resultEmbed.setDescription('No results found.');
