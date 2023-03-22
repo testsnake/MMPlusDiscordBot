@@ -14,8 +14,6 @@ const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 const loggingChannelId = '1087810388936114316';
 const rssChannelId = '1087783783207534604';
 
-var lastChecked;
-
 
 // Create a new client instance
 const client = new Client({
@@ -114,7 +112,6 @@ client.once("ready", async client => {
 		description: `おはよう！ ${mikuBotVer} is Ready!`,
 		timestamp: new Date()
 	};
-	lastChecked = new Date(Date.now() - 5 * 60 * 1000);
 	loggingChannel.send({ embeds: [embed] });
 });
 
@@ -463,7 +460,6 @@ feeder.on('new-item', async function (item) {
 
 	feedChannel.send({ embeds: [embed] });
 	// Current time
-	lastChecked = new Date()
 })
 
 // Log in to Discord with your client's token
