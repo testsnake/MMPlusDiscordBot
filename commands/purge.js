@@ -37,7 +37,7 @@ module.exports = {
       }, 5000); // Delete the reply message after 5 seconds.
 
       // Send an embed message to the logging channel indicating the number of messages deleted.
-      const loggingChannel = interaction.client.channels.cache.get('1008978799989362808');
+      const loggingChannel = interaction.client.channels.cache.get('1087810388936114316');
       if (loggingChannel) {
         const loggingEmbed = {
           ...purgeEmbed,
