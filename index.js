@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const RssFeedEmitter = require('rss-feed-emitter');
-const feeder = new RssFeedEmitter();
+const feeder = new RssFeedEmitter({ skipFirstLoad: true });
 const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, EmbedBuilder, Discord } = require('discord.js');
 const { token } = require('./config.json');
 const fetch = require("node-fetch");  // Needs to be added for bot use
@@ -14,7 +14,7 @@ const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 const loggingChannelId = '1087810388936114316';
 const rssChannelId = '1087783783207534604';
 
-var lastCheck = new Date(Date.now() - 5 * 60 * 1000);
+var lastChecked;
 
 
 // Create a new client instance
@@ -27,7 +27,7 @@ const client = new Client({
 		GatewayIntentBits.GuildMessageReactions,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.MessageContent,
-		]
+	]
 });
 
 
@@ -74,30 +74,30 @@ function rxt(message, regExPattern) {
 // No Ping Reply
 function nPR(message, text) {
 	message.reply({content: text, allowedMentions: { repliedUser: false }})
-	.catch(console.error);
+		.catch(console.error);
 }
 
 
 function errMsg(err) {
-	
+
 	console.log("unhandled error");
 	console.log(err);
 
 	const embed = {
-			color: parseInt('ff0000', 16),
-			author: {
-				name: user.tag,
-				iconURL: user.avatarURL()
-			},
-			description: `MikuBot has Encountered an Error\n${err}`,
-			timestamp: new Date(),
-			footer: {
-				text: mikuBotVer,
-				iconURL: botAvatarURL
-			}
-		};
+		color: parseInt('ff0000', 16),
+		author: {
+			name: user.tag,
+			iconURL: user.avatarURL()
+		},
+		description: `MikuBot has Encountered an Error\n${err}`,
+		timestamp: new Date(),
+		footer: {
+			text: mikuBotVer,
+			iconURL: botAvatarURL
+		}
+	};
 
-		client.channels.fetch(loggingChannelId).send({ embeds: [embed] });
+	client.channels.fetch(loggingChannelId).send({ embeds: [embed] });
 
 }
 
@@ -114,6 +114,7 @@ client.once("ready", async client => {
 		description: `おはよう！ ${mikuBotVer} is Ready!`,
 		timestamp: new Date()
 	};
+	lastChecked = new Date(Date.now() - 5 * 60 * 1000);
 	loggingChannel.send({ embeds: [embed] });
 });
 
@@ -180,18 +181,18 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 				iconURL: oldMessage.author.avatarURL()
 			},
 			fields: [
-			{
-				name: 'Original Message',
-				value: oldMessage.content
-			},
-			{
-				name: 'Edited Message',
-				value: newMessage.content
-			},
-			{
-				name: 'Channel',
-				value: oldMessage.channel.toString()
-			}
+				{
+					name: 'Original Message',
+					value: oldMessage.content
+				},
+				{
+					name: 'Edited Message',
+					value: newMessage.content
+				},
+				{
+					name: 'Channel',
+					value: oldMessage.channel.toString()
+				}
 			],
 			timestamp: new Date(),
 			footer: {
@@ -336,7 +337,7 @@ client.on('guildBanRemove', async (guild, user) => {
 		console.log(err);
 		console.log("---- ERROR GUILDMEMBERREBANREMOVE ----");
 		errMsg(err);
-	}	
+	}
 });
 
 //RSS Feed
@@ -347,10 +348,19 @@ feeder.add({
 
 feeder.on('new-item', async function (item) {
 	console.log(item);
-	const feedChannel = await client.channels.fetch(rssChannelId);
+	const feedChannel = await client.channels.fetch(`1087783783207534604`);
+	if (!feedChannel) {
+		console.log("Feed channel not found");
+		return
+	}
+
+	const pathname = new URL(item.link).pathname;
+	const modsSection = pathname.split("/")[1];
+	const modId = pathname.split("/")[2];
+	if (modsSection !== 'mods') return;
 
 
-	const modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${mod._idRow}/ProfilePage`).then(res => res.json());
+	const modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${modId}/ProfilePage`).then(res => res.json());
 	var embed = new EmbedBuilder()
 		.setTitle(`${modInfo._sName}`)
 		.setURL(`${modInfo._sProfileUrl}`)
@@ -396,7 +406,7 @@ feeder.on('new-item', async function (item) {
 		embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
 	}
 
-	if (item.pubdate < lastChecked) {
+	if (item.pubdate > lastChecked) {
 		embed.setAuthor({ name: "New Post", iconURL: "https://i.imgur.com/eJyrdy7.png"})
 			.setColor(0x86cecb)
 	} else {
@@ -405,7 +415,7 @@ feeder.on('new-item', async function (item) {
 			.setColor(0x6bed78)
 	}
 
-
+	feedChannel.send({ embeds: [embed] });
 	// Current time
 	lastChecked = new Date()
 })
