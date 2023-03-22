@@ -147,7 +147,7 @@ client.on('messageCreate', (message) => {
 					break;
 				}
 			}
-
+	
 			// Check if the message has a Tenor GIF link
 			if (message.content.includes('tenor.com/view/')) {
 				hasMedia = true;
