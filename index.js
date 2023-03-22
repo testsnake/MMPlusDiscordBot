@@ -1,7 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const RssFeedEmitter = require('rss-feed-emitter');
+const feeder = new RssFeedEmitter({ skipFirstLoad: true });
 const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, EmbedBuilder, Discord } = require('discord.js');
-const { token } = require('./config.json');  // Needs to be added for bot use
+const { token } = require('./config.json');
+const fetch = require("node-fetch");  // Needs to be added for bot use
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 // const youtube = require('discord-bot-youtube-notifications');
@@ -9,6 +12,9 @@ const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 
 //Logging channel
 const loggingChannelId = '1087810388936114316';
+const rssChannelId = '1087783783207534604';
+
+var lastChecked;
 
 
 // Create a new client instance
@@ -21,7 +27,7 @@ const client = new Client({
 		GatewayIntentBits.GuildMessageReactions,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.MessageContent,
-		]
+	]
 });
 
 
@@ -68,30 +74,30 @@ function rxt(message, regExPattern) {
 // No Ping Reply
 function nPR(message, text) {
 	message.reply({content: text, allowedMentions: { repliedUser: false }})
-	.catch(console.error);
+		.catch(console.error);
 }
 
 
 function errMsg(err) {
-	
+
 	console.log("unhandled error");
 	console.log(err);
 
 	const embed = {
-			color: parseInt('ff0000', 16),
-			author: {
-				name: user.tag,
-				iconURL: user.avatarURL()
-			},
-			description: `MikuBot has Encountered an Error\n${err}`,
-			timestamp: new Date(),
-			footer: {
-				text: mikuBotVer,
-				iconURL: botAvatarURL
-			}
-		};
+		color: parseInt('ff0000', 16),
+		author: {
+			name: user.tag,
+			iconURL: user.avatarURL()
+		},
+		description: `MikuBot has Encountered an Error\n${err}`,
+		timestamp: new Date(),
+		footer: {
+			text: mikuBotVer,
+			iconURL: botAvatarURL
+		}
+	};
 
-		client.channels.fetch(loggingChannelId).send({ embeds: [embed] });
+	client.channels.fetch(loggingChannelId).send({ embeds: [embed] });
 
 }
 
@@ -108,14 +114,60 @@ client.once("ready", async client => {
 		description: `おはよう！ ${mikuBotVer} is Ready!`,
 		timestamp: new Date()
 	};
+	lastChecked = new Date(Date.now() - 5 * 60 * 1000);
 	loggingChannel.send({ embeds: [embed] });
 });
 
 client.on('messageCreate', (message) => {
 	try {
-		if(message.author.bot) return;
-		console.log("Received a message: " + message.content);
+		if (message.author.bot) return;
+		console.log(`[${message.author.username}]: ${message.content}`);
 
+		if (message.channel.id === '1087921223251542088') {
+			let hasMedia = false;
+
+			// Check if the message has any attachments
+			if (message.attachments.size > 0) {
+				hasMedia = true;
+			}
+
+			// Check if the message has any embeds with media
+			message.embeds.forEach((embed) => {
+				if (embed.type === 'image' || embed.type === 'video' || embed.type === 'gifv') {
+					hasMedia = true;
+				}
+			});
+
+			// Check if the message has any links to media files
+			const mediaExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.mp4', '.avi', '.mov', '.wmv'];
+			const messageContent = message.content.toLowerCase();
+			for (const extension of mediaExtensions) {
+				if (messageContent.includes(extension)) {
+					hasMedia = true;
+					break;
+				}
+			}
+	
+			// Check if the message has a Tenor GIF link
+			if (message.content.includes('tenor.com/view/')) {
+				hasMedia = true;
+			}
+
+
+			if (hasMedia) {
+				console.log(`${message.author.username} sent a message with media in channel ${message.channel.name}.`);
+
+				// Add the role to the user
+				const roleToAdd = message.guild.roles.cache.get('1087921322832699412');
+				if (roleToAdd) {
+					message.member.roles.add(roleToAdd)
+						.then(() => console.log(`Added role ${roleToAdd.name} to ${message.author.username}.`))
+						.catch(console.error);
+				} else {
+					console.error('Role not found.');
+				}
+			}
+		}
 
 
 		// if (rxt(message, /\bass\b/i)) {
@@ -174,18 +226,18 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 				iconURL: oldMessage.author.avatarURL()
 			},
 			fields: [
-			{
-				name: 'Original Message',
-				value: oldMessage.content
-			},
-			{
-				name: 'Edited Message',
-				value: newMessage.content
-			},
-			{
-				name: 'Channel',
-				value: oldMessage.channel.toString()
-			}
+				{
+					name: 'Original Message',
+					value: oldMessage.content
+				},
+				{
+					name: 'Edited Message',
+					value: newMessage.content
+				},
+				{
+					name: 'Channel',
+					value: oldMessage.channel.toString()
+				}
 			],
 			timestamp: new Date(),
 			footer: {
@@ -330,8 +382,88 @@ client.on('guildBanRemove', async (guild, user) => {
 		console.log(err);
 		console.log("---- ERROR GUILDMEMBERREBANREMOVE ----");
 		errMsg(err);
-	}	
+	}
 });
+
+//RSS Feed
+feeder.add({
+	url: 'https://api.gamebanana.com/Rss/New?gameid=16522&include_updated=1',
+	refresh: 150000
+})
+
+feeder.on('new-item', async function (item) {
+	console.log(item);
+	const feedChannel = await client.channels.fetch(`1087783783207534604`);
+	if (!feedChannel) {
+		console.log("Feed channel not found");
+		return
+	}
+
+	const pathname = new URL(item.link).pathname;
+	const modsSection = pathname.split("/")[1];
+	const modId = pathname.split("/")[2];
+	if (modsSection !== 'mods') return;
+
+
+	const modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${modId}/ProfilePage`).then(res => res.json());
+	var embed = new EmbedBuilder()
+		.setTitle(`${modInfo._sName}`)
+		.setURL(`${modInfo._sProfileUrl}`)
+		.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
+		.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
+		.addFields(
+			{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
+			{
+				name: 'Likes',
+				value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
+				inline: true
+			},
+			{
+				name: 'Views',
+				value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
+				inline: true
+			},
+		)
+		.setFooter({text: `${mikuBotVer}`})
+	if (modInfo._sDescription !== undefined) {
+		embed.setDescription(`${modInfo._sDescription}`);
+	}
+	if (modInfo._aAdditionalInfo._sversion !== undefined) {
+		embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
+	}
+	var contentWarnings;
+
+	if (modInfo._aContentRatings !== undefined) {
+		for (var rating in modInfo._aContentRatings) {
+
+			if (modInfo._aContentRatings[rating] !== undefined) {
+				console.log(modInfo._aContentRatings[rating]);
+				if (contentWarnings === undefined) {
+					contentWarnings = `${modInfo._aContentRatings[rating]}`;
+				} else {
+					contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
+				}
+			}
+		}
+		console.log(contentWarnings);
+		console.log(modInfo._aContentRatings);
+
+		embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
+	}
+
+	if (item.pubdate > lastChecked) {
+		embed.setAuthor({ name: "New Post", iconURL: "https://i.imgur.com/eJyrdy7.png"})
+			.setColor(0x86cecb)
+	} else {
+
+		embed.setAuthor({ name: "Post Update", iconURL: "https://i.imgur.com/iJDHCx2.png"})
+			.setColor(0x6bed78)
+	}
+
+	feedChannel.send({ embeds: [embed] });
+	// Current time
+	lastChecked = new Date()
+})
 
 // Log in to Discord with your client's token
 client.login(token);
