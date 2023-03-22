@@ -451,13 +451,14 @@ feeder.on('new-item', async function (item) {
 		embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
 	}
 
-	if (item.pubdate > lastChecked) {
+	if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo_.tsDateUpdated > modInfo_.tsDateAdded) {
+		embed.setAuthor({ name: "Post Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
+			.setColor(0x6bed78)
+
+	} else {
 		embed.setAuthor({ name: "New Post", iconURL: "https://i.imgur.com/eJyrdy7.png"})
 			.setColor(0x86cecb)
-	} else {
 
-		embed.setAuthor({ name: "Post Update", iconURL: "https://i.imgur.com/iJDHCx2.png"})
-			.setColor(0x6bed78)
 	}
 
 	feedChannel.send({ embeds: [embed] });
