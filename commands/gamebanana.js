@@ -14,6 +14,7 @@ module.exports = {
         .setRequired(true)),
     async execute(interaction) {
         const query = interaction.options.getString('query');
+        await interaction.deferReply();
         // const apiPassword = fs.readFileSync('api_password.txt', 'utf8').trim();
         // const appID = fs.readFileSync('app_id.txt', 'utf8').trim();
         // const userID = fs.readFileSync('user_id.txt', 'utf8').trim();
