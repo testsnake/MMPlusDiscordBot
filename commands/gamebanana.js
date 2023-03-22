@@ -104,6 +104,12 @@ module.exports = {
 
             embeds.push(embed);
 
+            //Updates every 2nd loop to preserve bandwidth
+            if (i % 2 === 0) {
+                await interaction.editReply({ embeds: embeds });
+            }
+
+
 
         }
 
