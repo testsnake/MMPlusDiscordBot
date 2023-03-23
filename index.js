@@ -78,25 +78,32 @@ function nPR(message, text) {
 
 
 function errMsg(err) {
+	try {
+		console.log("unhandled error");
+		console.log(err);
 
-	console.log("unhandled error");
-	console.log(err);
-
-	const embed = {
-		color: parseInt('ff0000', 16),
-		author: {
-			name: user.tag,
-			iconURL: user.avatarURL()
-		},
-		description: `MikuBot has Encountered an Error\n${err}`,
-		timestamp: new Date(),
-		footer: {
-			text: mikuBotVer,
-			iconURL: botAvatarURL
+		const embed = {
+			color: parseInt('ff0000', 16),
+			author: {
+				name: user.tag,
+				iconURL: user.avatarURL()
+			},
+			description: `MikuBot has Encountered an Error\n${err}`,
+			timestamp: new Date(),
+			footer: {
+				text: mikuBotVer,
+				iconURL: botAvatarURL
+			}
 		}
-	};
 
-	client.channels.fetch(loggingChannelId).send({ embeds: [embed] });
+		client.channels.fetch((loggingChannelId).then(channel => {
+			channel.send({ embeds: [embed] });
+		})).catch(console.error);
+ 	} catch (err) {
+		console.log("Error in Error Handler");
+		console.log(err);
+	}
+
 
 }
 
@@ -386,7 +393,6 @@ client.on('guildBanRemove', async (guild, user) => {
 //RSS Feed
 feeder.add({
 	url: 'https://api.gamebanana.com/Rss/New?gameid=16522&include_updated=1',
-	refresh: 150000
 })
 
 feeder.on('new-item', async function (item) {
@@ -550,6 +556,11 @@ feeder.on('new-item', async function (item) {
 
 	// Current time
 })
+
+feeder.on('error', function (err) {
+	console.error(err);
+	errMsg(err);
+});
 
 // Log in to Discord with your client's token
 client.login(token);
