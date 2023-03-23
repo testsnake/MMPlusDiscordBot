@@ -1,12 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const RssFeedEmitter = require('rss-feed-emitter');
-const feeder = new RssFeedEmitter({ skipFirstLoad: true });
+
 const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, EmbedBuilder, Discord } = require('discord.js');
 const { token } = require('./config.json');
 const fetch = require("node-fetch");  // Needs to be added for bot use
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
+const feeder = new RssFeedEmitter({ skipFirstLoad: true, userAgent: `Mozilla/5.0 (compatible; MikuBot/${mikuBotVer}; +https://discord.gg/hisokeee)` });
 // const youtube = require('discord-bot-youtube-notifications');
 
 
@@ -212,7 +213,7 @@ client.on('messageDelete', async (message) => {
 client.on('messageUpdate', async (oldMessage, newMessage) => {
 	try {
 		if(oldMessage.author.bot) return;
-		if(oldMessage.content == newMessage.content) return;
+		if(oldMessage.content === newMessage.content) return;
 		const loggingChannel = await client.channels.fetch(loggingChannelId);
 		if (!loggingChannel) return;
 
@@ -389,76 +390,164 @@ feeder.add({
 })
 
 feeder.on('new-item', async function (item) {
-	console.log(item);
-	const feedChannel = await client.channels.fetch(`1087783783207534604`);
-	if (!feedChannel) {
-		console.log("Feed channel not found");
-		return
-	}
+	try {
 
-	const pathname = new URL(item.link).pathname;
-	const modsSection = pathname.split("/")[1];
-	const modId = pathname.split("/")[2];
-	if (modsSection !== 'mods') return;
-
-
-	const modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${modId}/ProfilePage`).then(res => res.json());
-	var embed = new EmbedBuilder()
-		.setTitle(`${modInfo._sName}`)
-		.setURL(`${modInfo._sProfileUrl}`)
-		.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
-		.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
-		.addFields(
-			{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
-			{
-				name: 'Likes',
-				value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
-				inline: true
-			},
-			{
-				name: 'Views',
-				value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
-				inline: true
-			},
-		)
-		.setFooter({text: `${mikuBotVer}`})
-	if (modInfo._sDescription !== undefined) {
-		embed.setDescription(`${modInfo._sDescription}`);
-	}
-	if (modInfo._aAdditionalInfo._sversion !== undefined) {
-		embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
-	}
-	var contentWarnings;
-
-	if (modInfo._aContentRatings !== undefined) {
-		for (var rating in modInfo._aContentRatings) {
-
-			if (modInfo._aContentRatings[rating] !== undefined) {
-				console.log(modInfo._aContentRatings[rating]);
-				if (contentWarnings === undefined) {
-					contentWarnings = `${modInfo._aContentRatings[rating]}`;
-				} else {
-					contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
-				}
-			}
+		await new Promise(r => setTimeout(r, 1000));
+		console.log(`New item found: ${item.title}`);
+		while (!client.channels.cache.get(`1087783783207534604`)) {
+			console.log(`Waiting for channel to be ready...\tCurrent item title: ${item.title}`)
+			await new Promise(r => setTimeout(r, 1000));
 		}
-		console.log(contentWarnings);
-		console.log(modInfo._aContentRatings);
+		await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
 
-		embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
+			if (!feedChannel) {
+				console.log(`Feed channel not found while loading item ${item.title}`);
+				return
+			}
+			var embed;
+			const pathname = new URL(item.link).pathname;
+			const modsSection = pathname.split("/")[1];
+			const modId = pathname.split("/")[2];
+			if (modsSection !== 'mods') {
+				console.log(`[${item.title}] Not a mod.`);
+
+				//Sounds
+				if (modsSection === 'sounds') {
+					const modInfo = await fetch(`https://gamebanana.com/apiv10/Sound/${modId}/ProfilePage`).then(res => res.json());
+					console.log(`[${modInfo._sName}] New sound found at: ${pathname}`);
+					embed = new EmbedBuilder()
+						.setTitle(`${modInfo._sName}`)
+						.setURL(`${modInfo._sProfileUrl}`)
+						.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
+						.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
+						.addFields(
+							{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
+							{
+								name: 'Likes',
+								value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`, inline: true
+							},
+							{name: 'Downloads', value: `${modInfo._nDownloadCount}`, inline: true},
+						)
+					if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo._tsDateUpdated > modInfo._tsDateAdded) {
+						embed.setAuthor({name: "Sound Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
+							.setColor(0x86cecb)
+						console.log(`[${modInfo._sName}] Sound Updated: ${modInfo._tsDateUpdated}`);
+
+					} else {
+						embed.setAuthor({name: "New Sound", iconURL: "https://i.imgur.com/eJyrdy7.png"})
+							.setColor(0x6bed78)
+						console.log(`[${modInfo._sName}] New Sound: ${modInfo._tsDateAdded}`);
+
+					}
+				}
+
+				//Tutorials
+				else if (modsSection === 'tuts') {
+					const modInfo = await fetch(`https://gamebanana.com/apiv10/Tutorial/${modId}/ProfilePage`).then(res => res.json());
+					console.log(`[${modInfo._sName}] New tutorial found at: ${pathname}`);
+					embed = new EmbedBuilder()
+						.setTitle(`${modInfo._sName}`)
+						.setURL(`${modInfo._sProfileUrl}`)
+						.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
+						.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
+						.addFields(
+							{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
+							{ name: 'Likes', value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`, inline: true}
+						)
+					if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo._tsDateUpdated > modInfo._tsDateAdded) {
+						embed.setAuthor({name: "Tutorial Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
+							.setColor(0x86cecb)
+						console.log(`[${modInfo._sName}] Tutorial Updated: ${modInfo._tsDateUpdated}`);
+
+					} else {
+						embed.setAuthor({name: "New Tutorial", iconURL: "https://i.imgur.com/eJyrdy7.png"})
+							.setColor(0x6bed78)
+						console.log(`[${modInfo._sName}] New Tutorial: ${modInfo._tsDateAdded}`);
+
+					}
+
+				}
+
+			} else {
+				const modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${modId}/ProfilePage`).then(res => res.json());
+				console.log(`[${modInfo._sName}] New mod found at: ${pathname}`);
+				embed = new EmbedBuilder()
+					.setTitle(`${modInfo._sName}`)
+					.setURL(`${modInfo._sProfileUrl}`)
+					.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
+					.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
+					.addFields(
+						{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
+						{
+							name: 'Likes',
+							value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
+							inline: true
+						},
+						{
+							name: 'Views',
+							value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
+							inline: true
+						},
+					)
+					.setFooter({text: `${mikuBotVer}`})
+				if (modInfo._sDescription !== undefined) {
+					embed.setDescription(`${modInfo._sDescription}`);
+					console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
+				}
+				if (modInfo._aAdditionalInfo._sversion !== undefined) {
+					embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
+					console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sversion}`);
+				}
+				var contentWarnings;
+
+				if (modInfo._aContentRatings !== undefined) {
+					console.log(`Content Warnings: ${modInfo._aContentRatings}`);
+					for (var rating in modInfo._aContentRatings) {
+
+						if (modInfo._aContentRatings[rating] !== undefined) {
+							console.log(`[${modInfo._sName}] Content Ratings: ${modInfo._aContentRatings[rating]}`);
+							if (contentWarnings === undefined) {
+								contentWarnings = `${modInfo._aContentRatings[rating]}`;
+							} else {
+								contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
+							}
+						}
+					}
+					console.log(contentWarnings);
+					console.log(modInfo._aContentRatings);
+
+					embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
+				}
+
+				if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo._tsDateUpdated > modInfo._tsDateAdded) {
+					embed.setAuthor({name: "Post Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
+						.setColor(0x86cecb)
+					console.log(`[${modInfo._sName}] Mod Updated: ${modInfo._tsDateUpdated}`);
+
+				} else {
+					embed.setAuthor({name: "New Post", iconURL: "https://i.imgur.com/eJyrdy7.png"})
+						.setColor(0x6bed78)
+					console.log(`[${modInfo._sName}] New Mod: ${modInfo._tsDateAdded}`);
+
+				}
+
+			}
+
+			if (embed === undefined || embed === null) {
+				console.log(`[${item.title}] Embed not found while loading item ${item.title}, Skipping...`);
+				return;
+			}
+			console.log(`[${item.title}] uploading embed: ${item.title}}`);
+			feedChannel.send({embeds: [embed]});
+
+		})
+	} catch (err) {
+		console.log("---- ERROR FEEDER ----");
+		console.log(err);
+		console.log("---- ERROR FEEDER ----");
+		errMsg(err);
 	}
 
-	if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo_.tsDateUpdated > modInfo_.tsDateAdded) {
-		embed.setAuthor({ name: "Post Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
-			.setColor(0x6bed78)
-
-	} else {
-		embed.setAuthor({ name: "New Post", iconURL: "https://i.imgur.com/eJyrdy7.png"})
-			.setColor(0x86cecb)
-
-	}
-
-	feedChannel.send({ embeds: [embed] });
 	// Current time
 })
 
