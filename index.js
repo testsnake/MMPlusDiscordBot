@@ -100,7 +100,7 @@ function errMsg(err) {
 			channel.send({ embeds: [embed] });
 		})).catch(console.error);
  	} catch (err) {
-		console.log("Error in Error Handler");
+		console.log("error in error handler");
 		console.log(err);
 	}
 
