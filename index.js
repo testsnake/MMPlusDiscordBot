@@ -399,7 +399,7 @@ async function checkGamebananaAPI() {
 	try {
 		console.log("Checking Gamebanana API...");
 		console.log(latestTimestamp + 1)
-		const response = await fetch("https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=default");
+		let response = await fetch("https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=default");
 		const data = await response.json();
 		console.log("Gamebanana API check complete.");
 
