@@ -494,16 +494,18 @@ async function processRecord(modInfo, isNew) {
 						value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
 						inline: true
 					},
+
 				)
 				.setFooter({text: `${mikuBotVer}`})
 			if (modInfo._sDescription !== undefined) {
 				embed.setDescription(`${modInfo._sDescription}`);
 				console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
 			}
-			if (modInfo._aAdditionalInfo._sversion !== undefined) {
+			if (modInfo._aAdditionalInfo._sVersion !== undefined) {
 				embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
 				console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sversion}`);
 			}
+
 			var contentWarnings;
 
 			if (modInfo._aContentRatings !== undefined) {
