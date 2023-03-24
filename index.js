@@ -398,11 +398,11 @@ client.on('guildBanRemove', async (guild, user) => {
 async function checkGamebananaAPI() {
 	try {
 		console.log("Checking Gamebanana API...");
-		console.log(latestTimestamp + 1)
+		console.log(latestTimestamp)
 		let response = await fetch("https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=default");
 		const data = await response.json();
 		console.log("Gamebanana API check complete.");
-
+		latestTimestampTemp = latestTimestamp;
 		if (data._aRecords && data._aRecords.length > 0) {
 			if (firstRun) {
 				console.log("First run, setting latest timestamp.");
@@ -432,12 +432,14 @@ async function checkGamebananaAPI() {
 						console.log(`Skipping record: ${record._sName} (currentTimestamp: ${currentTimestamp}, latestTimestamp: ${latestTimestamp})`)
 					}
 
-					latestTimestamp = Math.max(currentTimestamp, latestTimestamp);
+					latestTimestampTemp = Math.max(currentTimestamp, latestTimestamp, latestTimestampTemp);
 
 				}
 			}
 		}
 		console.log("Done checking Gamebanana API.");
+		latestTimestamp = latestTimestampTemp;
+
 	} catch (err) {
 		console.log("---- ERROR CHECKING API ----");
 		console.log(err);
@@ -448,7 +450,7 @@ async function checkGamebananaAPI() {
 
 async function processRecord(modInfo, isNew) {
 	try {
-
+		modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${mod._idRow}/ProfilePage`).then(res => res.json());
 		await new Promise(r => setTimeout(r, 1000));
 		console.log(`New item found: ${modInfo._sName}`);
 		while (!client.channels.cache.get(`1087783783207534604`)) {
