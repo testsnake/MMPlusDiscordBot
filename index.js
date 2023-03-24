@@ -123,8 +123,8 @@ client.once("ready", async client => {
 		timestamp: new Date()
 	};
 	loggingChannel.send({ embeds: [embed] });
-	checkGamebananaAPI();
-	setInterval(checkGamebananaAPI, 2 * 60 * 1000);
+	checkGamebananaFeed();
+	setInterval(checkGamebananaFeed, 2 * 60 * 1000);
 });
 
 client.on('messageCreate', (message) => {
@@ -394,14 +394,23 @@ client.on('guildBanRemove', async (guild, user) => {
 	}
 });
 
+async function checkGamebananaFeed() {
+	// Check Gamebanana feed for new items
+	// This is probably a terrible way to do this, but it works.
+	await checkGamebananaAPI('new').then(async (newItems) => {
+		await checkGamebananaAPI('updated').then(async (updatedItems) => {
+			latestTimestamp = Math.max(newItems, updatedItems);
+		});
+	});
 
-async function checkGamebananaAPI() {
+}
+
+async function checkGamebananaAPI(sort) {
 	try {
 		console.log("Checking Gamebanana API...");
 		console.log(latestTimestamp)
-		let response = await fetch("https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=default");
+		let response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
 		const data = await response.json();
-		console.log("Gamebanana API check complete.");
 		latestTimestampTemp = latestTimestamp;
 		if (data._aRecords && data._aRecords.length > 0) {
 			if (firstRun) {
@@ -411,25 +420,20 @@ async function checkGamebananaAPI() {
 			}
 			if (true) { // Remove this once done debugging
 				for (const record of data._aRecords) {
-					//console.log(`Checking record: ${record._sName}`)
 					if (isNaN(record._tsDateUpdated)) {
 						record._tsDateUpdated = 0;
 					}
 					const currentTimestamp = Math.max(record._tsDateAdded, record._tsDateUpdated);
 
-					//console.log(`currentTimestamp: ${currentTimestamp}, latestTimestamp: ${latestTimestamp}`)
 					if (currentTimestamp > latestTimestamp) {
-						if (!isNaN(currentTimestamp)) latestTimestamp = currentTimestamp;
 
-						// Determine if it's a new or updated record
-						let isNew = record._tsDateAdded > record._tsDateUpdated;
-						if (!record._tsDateUpdated) {
-							isNew = true;
-						}
+						let isNew = false;
+						if (sort === "new") isNew = true;
+
 						// Process the new or updated record
 						await processRecord(record, isNew);
 					 } else {
-						console.log(`Skipping record: ${record._sName} (currentTimestamp: ${currentTimestamp}, latestTimestamp: ${latestTimestamp})`)
+						console.log(`${currentTimestamp}\tSkipping record: ${record._sName}`)
 					}
 
 					latestTimestampTemp = Math.max(currentTimestamp, latestTimestamp, latestTimestampTemp);
@@ -438,19 +442,22 @@ async function checkGamebananaAPI() {
 			}
 		}
 		console.log("Done checking Gamebanana API.");
-		latestTimestamp = latestTimestampTemp;
+		return latestTimestampTemp;
 
 	} catch (err) {
 		console.log("---- ERROR CHECKING API ----");
 		console.log(err);
 		console.log("---- ERROR CHECKING API ----");
 		errMsg(err);
+		return 0;
 	}
 }
 
 async function processRecord(modInfo, isNew) {
 	try {
-		modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${mod._idRow}/ProfilePage`).then(res => res.json());
+		const subType = modInfo._sSingularTitle;
+
+		modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
 		await new Promise(r => setTimeout(r, 1000));
 		console.log(`New item found: ${modInfo._sName}`);
 		while (!client.channels.cache.get(`1087783783207534604`)) {
@@ -467,130 +474,70 @@ async function processRecord(modInfo, isNew) {
 			const pathname = new URL(modInfo._sProfileUrl).pathname;
 			const modsSection = pathname.split("/")[1];
 			const modId = pathname.split("/")[2];
-			if (modsSection !== 'mods') {
-				console.log(`[${modInfo._sName}] Not a mod.`);
 
-				//Sounds
-				if (modsSection === 'sounds') {
 
-					console.log(`[${modInfo._sName}] New sound found at: ${pathname}`);
-					embed = new EmbedBuilder()
-						.setTitle(`${modInfo._sName}`)
-						.setURL(`${modInfo._sProfileUrl}`)
-						.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
-						.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
-						.addFields(
-							{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
-							{
-								name: 'Likes',
-								value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`, inline: true
-							},
-							{name: 'Downloads', value: `${modInfo._nDownloadCount}`, inline: true},
-						)
-					if (!isNew) {
-						embed.setAuthor({name: "Sound Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
-							.setColor(0x86cecb)
-						console.log(`[${modInfo._sName}] Sound Updated: ${modInfo._tsDateUpdated}`);
+			console.log(`[${modInfo._sName}] New mod found at: ${pathname}`);
+			embed = new EmbedBuilder()
+				.setTitle(`${modInfo._sName}`)
+				.setURL(`${modInfo._sProfileUrl}`)
+				.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
+				.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
+				.addFields(
+					{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
+					{
+						name: 'Likes',
+						value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
+						inline: true
+					},
+					{
+						name: 'Views',
+						value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
+						inline: true
+					},
+				)
+				.setFooter({text: `${mikuBotVer}`})
+			if (modInfo._sDescription !== undefined) {
+				embed.setDescription(`${modInfo._sDescription}`);
+				console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
+			}
+			if (modInfo._aAdditionalInfo._sversion !== undefined) {
+				embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
+				console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sversion}`);
+			}
+			var contentWarnings;
 
-					} else {
-						embed.setAuthor({name: "New Sound", iconURL: "https://i.imgur.com/eJyrdy7.png"})
-							.setColor(0x6bed78)
-						console.log(`[${modInfo._sName}] New Sound: ${modInfo._tsDateAdded}`);
+			if (modInfo._aContentRatings !== undefined) {
+				console.log(`Content Warnings: ${modInfo._aContentRatings}`);
+				for (var rating in modInfo._aContentRatings) {
 
-					}
-				}
-
-				//Tutorials
-				else if (modsSection === 'tuts') {
-
-					console.log(`[${modInfo._sName}] New tutorial found at: ${pathname}`);
-					embed = new EmbedBuilder()
-						.setTitle(`${modInfo._sName}`)
-						.setURL(`${modInfo._sProfileUrl}`)
-						.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
-						.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
-						.addFields(
-							{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
-							{ name: 'Likes', value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`, inline: true}
-						)
-					if (!isNew) {
-						embed.setAuthor({name: "Tutorial Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
-							.setColor(0x86cecb)
-						console.log(`[${modInfo._sName}] Tutorial Updated: ${modInfo._tsDateUpdated}`);
-
-					} else {
-						embed.setAuthor({name: "New Tutorial", iconURL: "https://i.imgur.com/eJyrdy7.png"})
-							.setColor(0x6bed78)
-						console.log(`[${modInfo._sName}] New Tutorial: ${modInfo._tsDateAdded}`);
-
-					}
-
-				}
-
-			} else {
-
-				console.log(`[${modInfo._sName}] New mod found at: ${pathname}`);
-				embed = new EmbedBuilder()
-					.setTitle(`${modInfo._sName}`)
-					.setURL(`${modInfo._sProfileUrl}`)
-					.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
-					.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
-					.addFields(
-						{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
-						{
-							name: 'Likes',
-							value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
-							inline: true
-						},
-						{
-							name: 'Views',
-							value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
-							inline: true
-						},
-					)
-					.setFooter({text: `${mikuBotVer}`})
-				if (modInfo._sDescription !== undefined) {
-					embed.setDescription(`${modInfo._sDescription}`);
-					console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
-				}
-				if (modInfo._aAdditionalInfo._sversion !== undefined) {
-					embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
-					console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sversion}`);
-				}
-				var contentWarnings;
-
-				if (modInfo._aContentRatings !== undefined) {
-					console.log(`Content Warnings: ${modInfo._aContentRatings}`);
-					for (var rating in modInfo._aContentRatings) {
-
-						if (modInfo._aContentRatings[rating] !== undefined) {
-							console.log(`[${modInfo._sName}] Content Ratings: ${modInfo._aContentRatings[rating]}`);
-							if (contentWarnings === undefined) {
-								contentWarnings = `${modInfo._aContentRatings[rating]}`;
-							} else {
-								contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
-							}
+					if (modInfo._aContentRatings[rating] !== undefined) {
+						console.log(`[${modInfo._sName}] Content Ratings: ${modInfo._aContentRatings[rating]}`);
+						if (contentWarnings === undefined) {
+							contentWarnings = `${modInfo._aContentRatings[rating]}`;
+						} else {
+							contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
 						}
 					}
-					console.log(contentWarnings);
-					console.log(modInfo._aContentRatings);
-
-					embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
 				}
+				console.log(contentWarnings);
+				console.log(modInfo._aContentRatings);
 
-				if (!isNew) {
-					embed.setAuthor({name: "Post Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
-						.setColor(0x86cecb)
-					console.log(`[${modInfo._sName}] Mod Updated: ${modInfo._tsDateUpdated}`);
+				embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
+			}
 
-				} else {
-					embed.setAuthor({name: "New Post", iconURL: "https://i.imgur.com/eJyrdy7.png"})
-						.setColor(0x6bed78)
-					console.log(`[${modInfo._sName}] New Mod: ${modInfo._tsDateAdded}`);
+			if (!isNew) {
+				embed.setAuthor({name: `${subType} Updated`, iconURL: "https://i.imgur.com/iJDHCx2.png"})
+					.setColor(0x86cecb)
+				console.log(`[${modInfo._sName}] ${subType} Updated: ${modInfo._tsDateUpdated}`);
 
-				}
+			} else {
+				embed.setAuthor({name: `New ${subType}`, iconURL: "https://i.imgur.com/eJyrdy7.png"})
+					.setColor(0x6bed78)
+				console.log(`[${modInfo._sName}] New ${subType}: ${modInfo._tsDateAdded}`);
 
 			}
+
+
 
 			if (embed === undefined || embed === null) {
 				console.log(`[${modInfo._sName}] Embed not found while loading item ${modInfo._sName}, Skipping...`);
