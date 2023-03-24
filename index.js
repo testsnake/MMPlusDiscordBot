@@ -1,19 +1,21 @@
 const fs = require('fs');
 const path = require('path');
-const RssFeedEmitter = require('rss-feed-emitter');
+
 
 const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, EmbedBuilder, Discord } = require('discord.js');
 const { token } = require('./config.json');
 const fetch = require("node-fetch");  // Needs to be added for bot use
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
-const feeder = new RssFeedEmitter({ skipFirstLoad: true, userAgent: `Mozilla/5.0 (compatible; MikuBot/${mikuBotVer}; +https://discord.gg/hisokeee)` });
+
 // const youtube = require('discord-bot-youtube-notifications');
 
 
 //Logging channel
 const loggingChannelId = '1087810388936114316';
-const rssChannelId = '1087783783207534604';
+
+let latestTimestamp = new Date().getTime() / 1000;
+let firstRun = true;
 
 
 // Create a new client instance
@@ -121,6 +123,8 @@ client.once("ready", async client => {
 		timestamp: new Date()
 	};
 	loggingChannel.send({ embeds: [embed] });
+	checkGamebananaAPI();
+	setInterval(checkGamebananaAPI, 2 * 60 * 1000);
 });
 
 client.on('messageCreate', (message) => {
@@ -390,36 +394,83 @@ client.on('guildBanRemove', async (guild, user) => {
 	}
 });
 
-//RSS Feed
-feeder.add({
-	url: 'https://api.gamebanana.com/Rss/New?gameid=16522&include_updated=1',
-})
 
-feeder.on('new-item', async function (item) {
+async function checkGamebananaAPI() {
+	try {
+		console.log("Checking Gamebanana API...");
+		console.log(latestTimestamp + 1)
+		const response = await fetch("https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=default");
+		const data = await response.json();
+		console.log("Gamebanana API check complete.");
+
+		if (data._aRecords && data._aRecords.length > 0) {
+			if (firstRun) {
+				console.log("First run, setting latest timestamp.");
+				//latestTimestamp = Math.max(...data._aRecords.map(record => Math.max(record._tsDateAdded, record._tsDateUpdated))) + 1;
+				firstRun = false;
+			}
+			if (true) { // Remove this once done debugging
+				for (const record of data._aRecords) {
+					//console.log(`Checking record: ${record._sName}`)
+					if (isNaN(record._tsDateUpdated)) {
+						record._tsDateUpdated = 0;
+					}
+					const currentTimestamp = Math.max(record._tsDateAdded, record._tsDateUpdated);
+
+					//console.log(`currentTimestamp: ${currentTimestamp}, latestTimestamp: ${latestTimestamp}`)
+					if (currentTimestamp > latestTimestamp) {
+						if (!isNaN(currentTimestamp)) latestTimestamp = currentTimestamp;
+
+						// Determine if it's a new or updated record
+						let isNew = record._tsDateAdded > record._tsDateUpdated;
+						if (!record._tsDateUpdated) {
+							isNew = true;
+						}
+						// Process the new or updated record
+						await processRecord(record, isNew);
+					 } else {
+						console.log(`Skipping record: ${record._sName} (currentTimestamp: ${currentTimestamp}, latestTimestamp: ${latestTimestamp})`)
+					}
+
+					latestTimestamp = Math.max(currentTimestamp, latestTimestamp);
+
+				}
+			}
+		}
+		console.log("Done checking Gamebanana API.");
+	} catch (err) {
+		console.log("---- ERROR CHECKING API ----");
+		console.log(err);
+		console.log("---- ERROR CHECKING API ----");
+		errMsg(err);
+	}
+}
+
+async function processRecord(modInfo, isNew) {
 	try {
 
 		await new Promise(r => setTimeout(r, 1000));
-		console.log(`New item found: ${item.title}`);
+		console.log(`New item found: ${modInfo._sName}`);
 		while (!client.channels.cache.get(`1087783783207534604`)) {
-			console.log(`Waiting for channel to be ready...\tCurrent item title: ${item.title}`)
+			console.log(`Waiting for channel to be ready...\tCurrent item title: ${modInfo._sName}`)
 			await new Promise(r => setTimeout(r, 1000));
 		}
 		await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
 
 			if (!feedChannel) {
-				console.log(`Feed channel not found while loading item ${item.title}`);
+				console.log(`Feed channel not found while loading item ${modInfo._sName}`);
 				return
 			}
 			var embed;
-			const pathname = new URL(item.link).pathname;
+			const pathname = new URL(modInfo._sProfileUrl).pathname;
 			const modsSection = pathname.split("/")[1];
 			const modId = pathname.split("/")[2];
 			if (modsSection !== 'mods') {
-				console.log(`[${item.title}] Not a mod.`);
+				console.log(`[${modInfo._sName}] Not a mod.`);
 
 				//Sounds
 				if (modsSection === 'sounds') {
-					const modInfo = await fetch(`https://gamebanana.com/apiv10/Sound/${modId}/ProfilePage`).then(res => res.json());
+
 					console.log(`[${modInfo._sName}] New sound found at: ${pathname}`);
 					embed = new EmbedBuilder()
 						.setTitle(`${modInfo._sName}`)
@@ -434,7 +485,7 @@ feeder.on('new-item', async function (item) {
 							},
 							{name: 'Downloads', value: `${modInfo._nDownloadCount}`, inline: true},
 						)
-					if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo._tsDateUpdated > modInfo._tsDateAdded) {
+					if (!isNew) {
 						embed.setAuthor({name: "Sound Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
 							.setColor(0x86cecb)
 						console.log(`[${modInfo._sName}] Sound Updated: ${modInfo._tsDateUpdated}`);
@@ -449,7 +500,7 @@ feeder.on('new-item', async function (item) {
 
 				//Tutorials
 				else if (modsSection === 'tuts') {
-					const modInfo = await fetch(`https://gamebanana.com/apiv10/Tutorial/${modId}/ProfilePage`).then(res => res.json());
+
 					console.log(`[${modInfo._sName}] New tutorial found at: ${pathname}`);
 					embed = new EmbedBuilder()
 						.setTitle(`${modInfo._sName}`)
@@ -460,7 +511,7 @@ feeder.on('new-item', async function (item) {
 							{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
 							{ name: 'Likes', value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`, inline: true}
 						)
-					if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo._tsDateUpdated > modInfo._tsDateAdded) {
+					if (!isNew) {
 						embed.setAuthor({name: "Tutorial Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
 							.setColor(0x86cecb)
 						console.log(`[${modInfo._sName}] Tutorial Updated: ${modInfo._tsDateUpdated}`);
@@ -475,7 +526,7 @@ feeder.on('new-item', async function (item) {
 				}
 
 			} else {
-				const modInfo = await fetch(`https://gamebanana.com/apiv10/Mod/${modId}/ProfilePage`).then(res => res.json());
+
 				console.log(`[${modInfo._sName}] New mod found at: ${pathname}`);
 				embed = new EmbedBuilder()
 					.setTitle(`${modInfo._sName}`)
@@ -525,7 +576,7 @@ feeder.on('new-item', async function (item) {
 					embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
 				}
 
-				if (modInfo._tsDateUpdated !== null && modInfo._tsDateUpdated !== undefined && modInfo._tsDateUpdated > modInfo._tsDateAdded) {
+				if (!isNew) {
 					embed.setAuthor({name: "Post Updated", iconURL: "https://i.imgur.com/iJDHCx2.png"})
 						.setColor(0x86cecb)
 					console.log(`[${modInfo._sName}] Mod Updated: ${modInfo._tsDateUpdated}`);
@@ -540,10 +591,10 @@ feeder.on('new-item', async function (item) {
 			}
 
 			if (embed === undefined || embed === null) {
-				console.log(`[${item.title}] Embed not found while loading item ${item.title}, Skipping...`);
+				console.log(`[${modInfo._sName}] Embed not found while loading item ${modInfo._sName}, Skipping...`);
 				return;
 			}
-			console.log(`[${item.title}] uploading embed: ${item.title}}`);
+			console.log(`[${modInfo._sName}] uploading embed: ${modInfo._sName}}`);
 			feedChannel.send({embeds: [embed]});
 
 		})
@@ -554,13 +605,10 @@ feeder.on('new-item', async function (item) {
 		errMsg(err);
 	}
 
-	// Current time
-})
 
-feeder.on('error', function (err) {
-	console.error(err);
-	errMsg(err);
-});
+}
+
+
 
 // Log in to Discord with your client's token
 client.login(token);
