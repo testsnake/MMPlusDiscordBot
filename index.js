@@ -544,7 +544,11 @@ async function processRecord(modInfo, isNew) {
 				return;
 			}
 			console.log(`[${modInfo._sName}] uploading embed: ${modInfo._sName}}`);
-			feedChannel.send({embeds: [embed]});
+			feedChannel.send({embeds: [embed]}).then(message => {
+				message.crosspost()
+					.then(() => console.log("Message auto-published."))
+					.catch(console.error);
+			});
 
 		})
 	} catch (err) {
