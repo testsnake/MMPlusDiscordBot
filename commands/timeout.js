@@ -5,6 +5,24 @@ const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 const loggingChannel = '1087810388936114316';
 
+function parseDuration(durationStr) {
+    const units = {
+        's': 1000,
+        'm': 60 * 1000,
+        'h': 60 * 60 * 1000,
+        'd': 24 * 60 * 60 * 1000
+    };
+
+    const regex = /^(\d+)([smhd])$/;
+    const match = durationStr.match(regex);
+
+    if (!match) {
+        return null;
+    }
+
+    return parseInt(match[1], 10) * units[match[2]];
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('timeout')
@@ -31,6 +49,11 @@ module.exports = {
             return await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
         }
 
+        const durationMs = parseDuration(duration);
+        if (!durationMs) {
+            return await interaction.reply({ content: 'Invalid duration format. Please use the format: 10m, 1h, etc.', ephemeral: true });
+        }
+
         try {
             const member = await interaction.guild.members.fetch(user);
 
@@ -40,7 +63,7 @@ module.exports = {
                 return await interaction.reply({ content: 'You cannot give a timeout to a user with a protected role.', ephemeral: true });
             }
 
-            await member.timeout(5 * 60 * 1000, reason);
+            await member.timeout(durationMs, reason);
             await interaction.reply({ content: `${user.tag} has been given a timeout for ${duration}. Reason: ${reason}`, ephemeral: true });
 
             const loggingChannel = await interaction.client.channels.fetch(loggingChannelId);
