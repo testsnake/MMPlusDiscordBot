@@ -1,9 +1,14 @@
+/avatar - gets users profile picture
 /backup - tutorial on how to backup your save
-/chart - Comfy
+/chart - Comfy charting guide
 /compatibility - compatibility documentation
+/dlc - Links to DLC
 /drive - drive over download fix
 /dml - Diva Mod Loader Link
 /install - mod install guide
 /expatch - Links expatch
 /module - List of Eden Project Modules
+/ticket - Creates a support ticket
+/ticket-modify - Allows for adding, removing users from ticket, as well as deleting the ticket
 /upgrade /downgrade - Upgrade/downgrade guide for mm+
+/usercount - user count
