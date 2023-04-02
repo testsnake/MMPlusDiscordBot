@@ -3,6 +3,7 @@
     "@alexaltea/capstone-js": "^3.0.5",
     "collections": "^5.1.13",
     "discord-bot-youtube-notifications": "^1.1.5",
+    "discord-embedbuilder": "^4.0.0",
     "discord.js": "^14.7.1",
     "uwuifier": "^4.0.5"
   }

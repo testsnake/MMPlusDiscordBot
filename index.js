@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 
-const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, EmbedBuilder, Discord } = require('discord.js');
+
+const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, EmbedBuilder, Discord, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
 const { token } = require('./config.json');
 const fetch = require("node-fetch");  // Needs to be added for bot use
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
@@ -128,6 +129,7 @@ client.once("ready", async client => {
 });
 
 client.on('messageCreate', (message) => {
+
 	try {
 		if (message.author.bot) return;
 		console.log(`[${message.author.username}]: ${message.content}`);
@@ -329,8 +331,14 @@ client.on('guildBanAdd', async (guild, user) => {
 		const loggingChannel = await client.channels.fetch(loggingChannelId);
 		if (!loggingChannel) return;
 
-		const auditLogs = await guild.fetchAuditLogs({ type: 'MEMBER_BAN_ADD' });
-		const logEntry = auditLogs.entries.first();
+		let logEntry;
+		try {
+			logEntry = auditLogs.entries.first()
+		} catch(err) {
+			console.log("---- ERROR GUILDMEMBER BAN ----");
+			console.log(err);
+			console.log("---- ERROR GUILDMEMBER BAN ----");
+		}
 
 		let reason = 'unknown';
 		if (logEntry) {
@@ -393,6 +401,87 @@ client.on('guildBanRemove', async (guild, user) => {
 		errMsg(err);
 	}
 });
+
+
+client.on(Events.InteractionCreate, async interaction => {
+	try {
+		console.log("---- INTERACTION CREATE ----");
+		if (!interaction.isButton()) {
+			console.log("---- INTERACTION CREATE ERROR ISBUTTON ----");
+			return;
+		}
+
+		const { customId, user, message } = interaction;
+		const banConfirmRegex = /^(.+)#(\d{4})_ban_confirm_(\d+)$/;
+		const banCancelRegex = /^(.+)#(\d{4})_ban_cancel_(\d+)$/;
+		console.log(banConfirmRegex.test(customId))
+
+		if (banConfirmRegex.test(customId)) {
+			console.log("---- BAN CONFIRM ----");
+			console.log(customId);
+			console.log(message.content);
+			const [, requesterUsername, requesterDiscriminator, targetUserId] = customId.match(banConfirmRegex);
+			console.log(`${requesterUsername}#${requesterDiscriminator}`);
+
+			// Check if the user who clicked the button is not the one who initiated the ban request
+			if (customId.startsWith(`${interaction.user.tag}`)) {
+				console.log("---- BAN CONFIRM ERROR ----");
+				await interaction.reply({ content: `You can't confirm your own ban request.\n\`${message.content}\``, ephemeral: true });
+				return;
+			}
+
+			// Execute the ban
+			const targetUser = await client.users.fetch(targetUserId);
+			const targetMember = await message.guild.members.fetch(targetUser);
+			await targetMember.ban({ reason: `Banned by ${message.content}, Confirmed by ${user.tag}` });
+
+			await interaction.reply({ content: `Ban confirmed by ${user.tag}.`, components: [] });
+
+		} else if (banCancelRegex.test(customId)) {
+			console.log("---- BAN CANCEL ----");
+			const [, requesterUsername, requesterDiscriminator, targetUserId] = customId.match(banCancelRegex);
+
+			// Cancel the ban
+
+			await interaction.update({ content: `Ban request cancelled by ${user.tag}.`, components: [] });
+		} else if (kickConfirmRegex.test(customId)) {
+		console.log("---- KICK CONFIRM ----");
+		const [, requesterUsername, requesterDiscriminator, targetUserId] = customId.match(kickConfirmRegex);
+
+		// Check if the user who clicked the button is not the one who initiated the kick request
+		if (customId.startsWith(`${interaction.user.tag}`)) {
+			console.log("---- KICK CONFIRM ERROR ----");
+			await interaction.reply({ content: `You can't confirm your own kick request.\n\`${message.content}\``, ephemeral: true });
+			return;
+		}
+
+		// Execute the kick
+		const targetUser = await client.users.fetch(targetUserId);
+		const targetMember = await message.guild.members.fetch(targetUser);
+		await targetMember.kick({ reason: `Kicked by ${message.content}, Confirmed by ${user.tag}` });
+
+		await interaction.reply({ content: `Kick confirmed by ${user.tag}.`, components: [] });
+
+		} else if (kickCancelRegex.test(customId)) {
+			console.log("---- KICK CANCEL ----");
+			const [, requesterUsername, requesterDiscriminator, targetUserId] = customId.match(kickCancelRegex);
+
+			// Cancel the kick
+
+			await interaction.update({ content: `Kick request cancelled by ${user.tag}.`, components: [] });
+		} else {
+				console.log("---- UNKNOWN ERROR ----");
+				await interaction.reply({content: `Unknown Error\n${interaction.customId}`, ephemeral: true});
+		}
+	} catch(err) {
+		console.log("---- ERROR INTERACTION CREATE ----");
+		console.log(err);
+		console.log("---- ERROR INTERACTION CREATE ----");
+		errMsg(err);
+	}
+});
+
+
 
 async function checkGamebananaFeed() {
 	// Check Gamebanana feed for new items

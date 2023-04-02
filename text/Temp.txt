@@ -1,2 +1,0 @@
-/break - March break info
-/split - Info about plans to split Eden Project for v5
