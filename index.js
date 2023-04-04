@@ -19,6 +19,7 @@ let latestTimestamp = new Date().getTime() / 1000;
 let firstRun = true;
 
 
+
 // Create a new client instance
 const client = new Client({
 	intents: [
@@ -102,7 +103,7 @@ function errMsg(err) {
 		client.channels.fetch((loggingChannelId).then(channel => {
 			channel.send({ embeds: [embed] });
 		})).catch(console.error);
- 	} catch (err) {
+	} catch (err) {
 		console.log("error in error handler");
 		console.log(err);
 	}
@@ -158,7 +159,7 @@ client.on('messageCreate', (message) => {
 					break;
 				}
 			}
-	
+
 			// Check if the message has a Tenor GIF link
 			if (message.content.includes('tenor.com/view/')) {
 				hasMedia = true;
@@ -460,22 +461,23 @@ client.on(Events.InteractionCreate, async interaction => {
 
 			await interaction.update({ content: `Ban request cancelled by ${user.tag}.`, components: [] });
 		} else if (kickConfirmRegex.test(customId)) {
-		console.log("---- KICK CONFIRM ----");
-		const [, requesterUsername, requesterDiscriminator, targetUserId] = customId.match(kickConfirmRegex);
+			console.log("---- KICK CONFIRM ----");
+			const [, requesterUsername, requesterDiscriminator, targetUserId] = customId.match(kickConfirmRegex);
 
-		// Check if the user who clicked the button is not the one who initiated the kick request
-		if (customId.startsWith(`${interaction.user.tag}`)) {
-			console.log("---- KICK CONFIRM ERROR ----");
-			await interaction.reply({ content: `You can't confirm your own kick request.\n\`${message.content}\``, ephemeral: true });
-			return;
-		}
 
-		// Execute the kick
-		const targetUser = await client.users.fetch(targetUserId);
-		const targetMember = await message.guild.members.fetch(targetUser);
-		await targetMember.kick({ reason: `Kicked by ${message.content}, Confirmed by ${user.tag}` });
+			// Check if the user who clicked the button is not the one who initiated the kick request
+			if (customId.startsWith(`${interaction.user.tag}`)) {
+				console.log("---- KICK CONFIRM ERROR ----");
+				await interaction.reply({ content: `You can't confirm your own kick request.\n\`${message.content}\``, ephemeral: true });
+				return;
+			}
 
-		await interaction.reply({ content: `Kick confirmed by ${user.tag}.`, components: [] });
+			// Execute the kick
+			const targetUser = await client.users.fetch(targetUserId);
+			const targetMember = await message.guild.members.fetch(targetUser);
+			await targetMember.kick({ reason: `Kicked by ${message.content}, Confirmed by ${user.tag}` });
+
+			await interaction.reply({ content: `Kick confirmed by ${user.tag}.`, components: [] });
 
 		} else if (kickCancelRegex.test(customId)) {
 			console.log("---- KICK CANCEL ----");
@@ -485,8 +487,8 @@ client.on(Events.InteractionCreate, async interaction => {
 
 			await interaction.update({ content: `Kick request cancelled by ${user.tag}.`, components: [] });
 		} else {
-				console.log("---- UNKNOWN ERROR ----");
-				await interaction.reply({content: `Unknown Error\n${interaction.customId}`, ephemeral: true});
+			console.log("---- UNKNOWN ERROR ----");
+			await interaction.reply({content: `Unknown Error\n${interaction.customId}`, ephemeral: true});
 		}
 	} catch(err) {
 		console.log("---- ERROR INTERACTION CREATE ----");
@@ -536,7 +538,7 @@ async function checkGamebananaAPI(sort) {
 
 						// Process the new or updated record
 						await processRecord(record, isNew);
-					 } else {
+					} else {
 						console.log(`${currentTimestamp}\tSkipping record: ${record._sName}`)
 					}
 
@@ -569,7 +571,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 			// Create the embed
 			const starboardEmbed = new EmbedBuilder()
-				.setAuthor({ name: 'Starred Message', iconURL: reaction.message.author.avatarURL({ dynamic: true }) })
+				.setAuthor({name: 'Starred Message', iconURL: reaction.message.author.avatarURL({dynamic: true})})
 				.setDescription(ts(reaction.message.content, 4095))
 				.addFields(
 					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
@@ -598,6 +600,47 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 			// Post the embed in the starboard channel
 			starboardChannel.send({embeds: [starboardEmbed], components: [row]});
+		} else if (reaction.emoji.name === '❌' && reaction.count === 3) {
+			console.log("---- DELETE ----");
+			// Get the starboard channel
+			const alertsChannel = await client.channels.fetch('1092866838918086666');
+
+			// Create the embed
+			const starboardEmbed = new EmbedBuilder()
+				.setAuthor({name: 'Reported Message', iconURL: reaction.message.author.avatarURL({dynamic: true})})
+				.setDescription(ts(reaction.message.content, 4095))
+				.addFields(
+					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
+					{name: 'Channel', value: `<#${reaction.message.channel.id}>`, inline: true}
+				)
+				.setColor(0xeb4034)
+				.setTimestamp(reaction.message.createdAt);
+
+			// Check if the message has attachments and add the first image
+			if (reaction.message.attachments.size > 0) {
+				const attachment = reaction.message.attachments.first();
+				if (attachment.contentType.startsWith('image/')) {
+					starboardEmbed.setImage(attachment.url);
+				}
+			}
+
+			console.log(reaction.message.attachments);
+
+			const row = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setLabel('Link to original message')
+						.setStyle('Link')
+						.setURL(reaction.message.url)
+				).addComponents(
+					new ButtonBuilder()
+						.setLabel('Delete message (Currently WIP)')
+						.setStyle('Danger')
+						.setCustomId(`delete_msg_${reaction.message.id}`)
+				)
+
+			// Post the embed in the starboard channel
+			alertsChannel.send({embeds: [starboardEmbed], components: [row]});
 		}
 	} catch (err) {
 		console.log("---- ERROR MESSAGE REACTION ADD ----");

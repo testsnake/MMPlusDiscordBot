@@ -33,7 +33,7 @@ module.exports = {
             await interaction.channel.permissionOverwrites.create(user.id, {
                 ViewChannel: true
             });
-            await interaction.reply({ content: `${user.username} can now access this ticket channel.`});
+            await interaction.reply({ content: `${user.toString()} can now access this ticket channel.`});
         } else if (action === 'remove') {
             await interaction.channel.permissionOverwrites.delete(user.id);
             await interaction.reply({ content: `${user.username} can no longer access this ticket channel.`});

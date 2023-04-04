@@ -64,7 +64,7 @@ module.exports = {
                     );
 
                 // Send the message to the specified channel
-                const channel = interaction.guild.channels.cache.get('1089338656017350796');
+                const channel = interaction.guild.channels.cache.get('1092866838918086666');
                 await channel.send({ content: `${interaction.user.toString()} wants to ban ${user.tag.toString()} for ***${reason}***`, components: [row] });
                 await interaction.reply({ content: `Ban request for ${user.tag} is pending. A second moderator needs to confirm the ban.`, ephemeral: true });
             }
