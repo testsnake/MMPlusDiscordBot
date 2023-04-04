@@ -569,16 +569,24 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 			// Create the embed
 			const starboardEmbed = new EmbedBuilder()
-				.setTitle('Starred Message')
-				.setDescription( ts(reaction.message.content, 4095))
+				.setAuthor({ name: 'Starred Message', iconURL: reaction.message.author.avatarURL({ dynamic: true }) })
+				.setDescription(ts(reaction.message.content, 4095))
 				.addFields(
 					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
 					{name: 'Channel', value: `<#${reaction.message.channel.id}>`, inline: true}
 				)
 				.setColor(0xd9c65b)
-				.setTimestamp(reaction.message.createdAt)
+				.setTimestamp(reaction.message.createdAt);
 
-			console.log(reaction.message.attachments)
+			// Check if the message has attachments and add the first image
+			if (reaction.message.attachments.size > 0) {
+				const attachment = reaction.message.attachments.first();
+				if (attachment.contentType.startsWith('image/')) {
+					starboardEmbed.setImage(attachment.url);
+				}
+			}
+
+			console.log(reaction.message.attachments);
 
 			const row = new ActionRowBuilder()
 				.addComponents(
@@ -598,6 +606,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 		errMsg(err);
 	}
 });
+
 
 
 async function processRecord(modInfo, isNew) {
