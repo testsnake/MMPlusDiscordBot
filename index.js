@@ -575,7 +575,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
 					{name: 'Channel', value: `<#${reaction.message.channel.id}>`, inline: true}
 				)
-				.setColor(0xeb4034)
+				.setColor(0xd9c65b)
 				.setTimestamp(reaction.message.createdAt)
 
 			console.log(reaction.message.attachments)
