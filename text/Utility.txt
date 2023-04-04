@@ -1,7 +1,6 @@
 /avatar - gets users profile picture
 /backup - tutorial on how to back up your save
 /chart - Comfy charting guide
-/compatibility - compatibility documentation
 /dlc - Links to DLC
 /dml - Diva Mod Loader Link
 /install - mod install guide
