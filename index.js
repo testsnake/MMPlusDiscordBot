@@ -402,6 +402,21 @@ client.on('guildBanRemove', async (guild, user) => {
 	}
 });
 
+function truncateString(str, maxLength) {
+	if (maxLength < 0 || typeof maxLength !== 'number') {
+		throw new Error('maxLength must be a non-negative number');
+	}
+
+	if (str.length <= maxLength) {
+		return str;
+	}
+
+	return str.slice(0, maxLength);
+}
+
+function ts(str, maxLength) {
+	return truncateString(str, maxLength);
+}
 
 client.on(Events.InteractionCreate, async interaction => {
 	try {
@@ -542,6 +557,42 @@ async function checkGamebananaAPI(sort) {
 	}
 }
 
+client.on('messageReactionAdd', async (reaction, user) => {
+	try {
+		if (reaction.emoji.name === '⭐' && reaction.count === 6) {
+			// Get the starboard channel
+			const starboardChannel = await client.channels.fetch('1092643863820251196');
+
+			// Create the embed
+			const starboardEmbed = new EmbedBuilder()
+				.setTitle('Starred Message')
+				.setDescription({text: reaction.message.content})
+				.addFields(
+					{name: 'Author', value: reaction.message.author.username, inline: true},
+					{name: 'Channel', value: reaction.message.channel.name, inline: true}
+				)
+				.setTimestamp(reaction.message.createdAt)
+
+			const row = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setLabel('Link to original message')
+						.setStyle('Link')
+						.setURL(reaction.message.url)
+				);
+
+			// Post the embed in the starboard channel
+			starboardChannel.send({embeds: [starboardEmbed], components: [row]});
+		}
+	} catch (err) {
+		console.log("---- ERROR MESSAGE REACTION ADD ----");
+		console.log(err);
+		console.log("---- ERROR MESSAGE REACTION ADD ----");
+		errMsg(err);
+	}
+});
+
+
 async function processRecord(modInfo, isNew) {
 	try {
 		const subType = modInfo._sSingularTitle;
@@ -567,12 +618,12 @@ async function processRecord(modInfo, isNew) {
 
 			console.log(`[${modInfo._sName}] New mod found at: ${pathname}`);
 			embed = new EmbedBuilder()
-				.setTitle(`${modInfo._sName}`)
+				.setTitle(`${ts(modInfo._sName, 255)}`)
 				.setURL(`${modInfo._sProfileUrl}`)
 				.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
 				.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
 				.addFields(
-					{name: 'Submitter', value: `${modInfo._aSubmitter._sName}`, inline: true},
+					{name: 'Submitter', value: `${ts(modInfo._aSubmitter._sName, 255)}`, inline: true},
 					{
 						name: 'Likes',
 						value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
@@ -587,12 +638,12 @@ async function processRecord(modInfo, isNew) {
 				)
 				.setFooter({text: `${mikuBotVer}`})
 			if (modInfo._sDescription !== undefined) {
-				embed.setDescription(`${modInfo._sDescription}`);
+				embed.setDescription(`${ts(modInfo._sDescription, 4095)}`);
 				console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
 			}
 			if (modInfo._aAdditionalInfo._sVersion !== undefined) {
-				embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sversion}`, inline: true});
-				console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sversion}`);
+				embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sVersion}`, inline: true});
+				console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sVersion}`);
 			}
 
 			var contentWarnings;
@@ -613,7 +664,7 @@ async function processRecord(modInfo, isNew) {
 				console.log(contentWarnings);
 				console.log(modInfo._aContentRatings);
 
-				embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
+				embed.addFields({name: 'Content Warnings', value: `${ts(contentWarnings, 1023)}`, inline: true});
 			}
 
 			if (!isNew) {
