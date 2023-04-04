@@ -560,7 +560,7 @@ async function checkGamebananaAPI(sort) {
 client.on('messageReactionAdd', async (reaction, user) => {
 	console.log("---- STARBOARD ----");
 	try {
-		if (reaction.emoji.name === '⭐' && reaction.count === 1) {
+		if (reaction.emoji.name === '⭐' && reaction.count === 6) {
 			console.log("---- STARBOARD ----");
 			// Get the starboard channel
 			const starboardChannel = await client.channels.fetch('1092643863820251196');
