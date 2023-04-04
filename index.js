@@ -558,20 +558,27 @@ async function checkGamebananaAPI(sort) {
 }
 
 client.on('messageReactionAdd', async (reaction, user) => {
+	console.log("---- STARBOARD ----");
 	try {
-		if (reaction.emoji.name === '⭐' && reaction.count === 6) {
+		if (reaction.emoji.name === '⭐' && reaction.count === 1) {
+			console.log("---- STARBOARD ----");
 			// Get the starboard channel
 			const starboardChannel = await client.channels.fetch('1092643863820251196');
+
+			console.log(reaction.message.content)
 
 			// Create the embed
 			const starboardEmbed = new EmbedBuilder()
 				.setTitle('Starred Message')
-				.setDescription({text: reaction.message.content})
+				.setDescription( ts(reaction.message.content, 4095))
 				.addFields(
-					{name: 'Author', value: reaction.message.author.username, inline: true},
-					{name: 'Channel', value: reaction.message.channel.name, inline: true}
+					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
+					{name: 'Channel', value: `<#${reaction.message.channel.id}>`, inline: true}
 				)
+				.setColor(0xeb4034)
 				.setTimestamp(reaction.message.createdAt)
+
+			console.log(reaction.message.attachments)
 
 			const row = new ActionRowBuilder()
 				.addComponents(
