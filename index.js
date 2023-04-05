@@ -115,7 +115,7 @@ function errMsg(err) {
 // Event Triggers
 client.once("ready", async client => {
 	console.log(`Ready! Logged in as ${client.user.tag}`);
-	client.user.setActivity('Hatsune Miku: Project DIVA MegaMix+');
+	client.user.setActivity('Hatsune Miku: Project DIVA Mega Mix+');
 	const loggingChannelId = '1087810388936114316';
 	const loggingChannel = await client.channels.fetch(loggingChannelId);
 	if (!loggingChannel) return;
