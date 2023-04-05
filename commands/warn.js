@@ -79,7 +79,7 @@ module.exports = {
                 await member.timeout(timeoutDuration[3], reason);
                 await user.send(`You have been warned in ${interaction.guild.name} for the following reason: ${reason}`);
                 await interaction.reply(`${user} has reached maximum warning level, requesting ban in <#1092866838918086666>.`);
-                await channel.send({embeds: warningEmbed, components: [row]});
+                await channel.send({embeds: [warningEmbed],  components: [row] });
             }
         } catch (err) {
             console.error(err);
