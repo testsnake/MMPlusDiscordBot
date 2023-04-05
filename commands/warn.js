@@ -44,7 +44,7 @@ module.exports = {
                 await member.timeout(timeoutDuration[currentWarningLevel + 1], reason);
                 await user.send(`You have been warned in ${interaction.guild.name} for the following reason: ${reason}`);
                 await interaction.reply(`${user} has been warned with Level ${currentWarningLevel + 2}.`);
-                await channel.send(`${member.toString()} has been warned by ${interaction.user.tag} for **${reason}**\nUser is at ${currentWarningLevel} warning(s)`);
+                await channel.send(`${member.toString()} has been warned by ${interaction.user.tag} for **${reason}**\nUser is at ${currentWarningLevel + 2} warning(s)`);
             } else {
                 // User already has level 3, call reqban function
                 //await member.roles.remove(warningRoles[currentWarningLevel]);
