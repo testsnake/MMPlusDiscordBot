@@ -430,6 +430,8 @@ client.on(Events.InteractionCreate, async interaction => {
 		const { customId, user, message } = interaction;
 		const banConfirmRegex = /^(.+)#(\d{4})_ban_confirm_(\d+)$/;
 		const banCancelRegex = /^(.+)#(\d{4})_ban_cancel_(\d+)$/;
+		const kickConfirmRegex = /^(.+)#(\d{4})_kick_confirm_(\d+)$/;
+		const kickCancelRegex = /^(.+)#(\d{4})_kick_cancel_(\d+)$/;
 		console.log(banConfirmRegex.test(customId))
 
 		if (banConfirmRegex.test(customId)) {
