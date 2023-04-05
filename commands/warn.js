@@ -66,11 +66,11 @@ module.exports = {
                 const row = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setCustomId(`0_kick_confirm_${member.id}`)
+                            .setCustomId(`1087852383477977219_kick_confirm_${member.id}`)
                             .setLabel('Kick')
                             .setStyle('Secondary'),
                         new ButtonBuilder()
-                            .setCustomId(`0_ban_confirm_${member.id}`)
+                            .setCustomId(`1087852383477977219_ban_confirm_${member.id}`)
                             .setLabel('Ban')
                             .setStyle('Danger')
                     );
