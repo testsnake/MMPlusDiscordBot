@@ -159,6 +159,7 @@ module.exports = {
                         }
 
                         await specialRole.setColor(hexColor);
+                        return await interaction.reply({content: `Changed color to ${color} (${hexColor})`, ephemeral: true});
                     } else if (subcommand === 'changename') {
                         const name = interaction.options.getString('name');
                         await specialRole.setName(name);
