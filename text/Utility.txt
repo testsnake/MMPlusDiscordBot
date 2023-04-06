@@ -5,6 +5,7 @@
 /dml - Diva Mod Loader Link
 /install - mod install guide
 /expatch - Links expatch
+/mmm - Links to Miku Miku Model
 /ticket - Creates a support ticket
 /ticket-modify - Allows for adding, removing users from ticket, as well as deleting the ticket
 /upgrade /downgrade - Upgrade/downgrade guide for mm+
