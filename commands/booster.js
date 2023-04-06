@@ -33,8 +33,8 @@ module.exports = {
                 .setDescription('Changes the color of your booster role with hex')
                 .addStringOption(option =>
                     option.setName('color')
-                    .setDescription('The color to change to. Format #RRGGBB.')
-                    .setRequired(true)
+                        .setDescription('The color to change to. Format #RRGGBB.')
+                        .setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
@@ -43,36 +43,36 @@ module.exports = {
                 .setDescription('Changes the color of your booster role.')
                 .addStringOption(option =>
                     option.setName('color')
-                    .setDescription('The color to change to.')
-                    .setRequired(true)
-                    .addChoices(
-                        {name: 'Red', value: 'red'},
-                        {name: 'Orange', value: 'orange'},
-                        {name: 'Yellow', value: 'yellow'},
-                        {name: 'Green', value: 'green'},
-                        {name: 'Blue', value: 'blue'},
-                        {name: 'Purple', value: 'purple'},
-                        {name: 'Pink', value: 'pink'},
-                        {name: 'Black', value: 'black'},
-                        {name: 'White', value: 'white'},
-                        {name: 'Grey', value: 'grey'},
-                        {name: 'Brown', value: 'brown'},
-                        {name: 'Cyan', value: 'cyan'},
-                        {name: 'Lime', value: 'lime'},
-                        {name: 'Magenta', value: 'magenta'},
-                        {name: 'Teal', value: 'teal'},
-                        {name: 'Navy', value: 'navy'},
-                        {name: 'Miku Blue', value: 'mikublue'},
-                        {name: 'Rin Orange', value: 'rinyellow'},
-                        {name: 'Len Yellow', value: 'lenorange'},
-                        {name: 'Luka Pink', value: 'lukapink'},
-                        {name: 'Katio Blue', value: 'Kaito Blue'},
-                        {name: 'Meiko Red', value: 'meikored'},
-                        {name: 'Neru Yellow', value: 'neruyellow'},
-                        {name: 'Haku Grey', value: 'hakugrey'},
-                        {name: 'Teto Red', value: 'tetored'},
-                        {name: 'Gumi Green', value: 'gumigreen'}
-                    )
+                        .setDescription('The color to change to.')
+                        .setRequired(true)
+                        .addChoices(
+                            {name: 'Red', value: 'red'},
+                            {name: 'Orange', value: 'orange'},
+                            {name: 'Yellow', value: 'yellow'},
+                            {name: 'Green', value: 'green'},
+                            {name: 'Blue', value: 'blue'},
+                            {name: 'Purple', value: 'purple'},
+                            {name: 'Pink', value: 'pink'},
+                            {name: 'Black', value: 'black'},
+                            {name: 'White', value: 'white'},
+                            {name: 'Grey', value: 'grey'},
+                            {name: 'Brown', value: 'brown'},
+                            {name: 'Cyan', value: 'cyan'},
+                            {name: 'Lime', value: 'lime'},
+                            {name: 'Magenta', value: 'magenta'},
+                            {name: 'Teal', value: 'teal'},
+                            {name: 'Navy', value: 'navy'},
+                            {name: 'Miku Blue', value: 'mikublue'},
+                            {name: 'Rin Orange', value: 'rinyellow'},
+                            {name: 'Len Yellow', value: 'lenorange'},
+                            {name: 'Luka Pink', value: 'lukapink'},
+                            {name: 'Katio Blue', value: 'Kaito Blue'},
+                            {name: 'Meiko Red', value: 'meikored'},
+                            {name: 'Neru Yellow', value: 'neruyellow'},
+                            {name: 'Haku Grey', value: 'hakugrey'},
+                            {name: 'Teto Red', value: 'tetored'},
+                            {name: 'Gumi Green', value: 'gumigreen'}
+                        )
                 )
         )
         .addSubcommand(subcommand =>
@@ -81,8 +81,8 @@ module.exports = {
                 .setDescription('Changes the name of your booster role.')
                 .addStringOption(option =>
                     option.setName('name')
-                    .setDescription('The name to change to.')
-                    .setRequired(true)
+                        .setDescription('The name to change to.')
+                        .setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
@@ -91,8 +91,8 @@ module.exports = {
                 .setDescription('Changes the icon of your booster role.')
                 .addStringOption(option =>
                     option.setName('icon')
-                    .setDescription('Icon URL')
-                    .setRequired(true)
+                        .setDescription('Icon URL')
+                        .setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
@@ -103,20 +103,26 @@ module.exports = {
     async execute(interaction) {
         try {
             if (!interaction.member.roles.cache.has('1092636310142980127') && !interaction.member.roles.cache.has('1093385832540405770')) {
-                return await interaction.reply({ content: 'You do not have a booster role.', ephemeral: true });
+                return await interaction.reply({content: 'You do not have a booster role.', ephemeral: true});
             } else {
                 const subcommand = interaction.options.getSubcommand();
                 const specialRole = await grabSpecialRole(interaction.member, '1093246448566550579', '1093246368077840424');
                 if (!specialRole) {
-                    return await interaction.reply({ content: 'You do not have a booster role. Contact <@201460040564080651> for more information.', ephemeral: true });
+                    return await interaction.reply({
+                        content: 'You do not have a booster role. Contact <@201460040564080651> for more information.',
+                        ephemeral: true
+                    });
                 } else {
                     if (subcommand === 'changecolorhex') {
                         const color = interaction.options.getString('color');
                         if (color.startsWith('#')) {
                             await specialRole.setColor(color);
-                            return await interaction.reply({ content: 'Changed color to ' + color, ephemeral: true });
+                            return await interaction.reply({content: 'Changed color to ' + color, ephemeral: true});
                         } else {
-                            return await interaction.reply({ content: 'Invalid color. Please use the format #RRGGBB.', ephemeral: true });
+                            return await interaction.reply({
+                                content: 'Invalid color. Please use the format #RRGGBB.',
+                                ephemeral: true
+                            });
                         }
                     } else if (subcommand === 'changecolor') {
                         const colorMap = {
@@ -151,33 +157,37 @@ module.exports = {
                         const hexColor = colorMap[color];
 
                         if (!hexColor) {
-                            return await interaction.reply({ content: 'Invalid color.', ephemeral: true });
+                            return await interaction.reply({content: 'Invalid color.', ephemeral: true});
                         }
 
                         await specialRole.setColor(hexColor);
                     } else if (subcommand === 'changename') {
                         const name = interaction.options.getString('name');
                         await specialRole.setName(name);
-                        return await interaction.reply({ content: 'Changed name to ' + name, ephemeral: true });
+                        return await interaction.reply({content: 'Changed name to ' + name, ephemeral: true});
                     } else if (subcommand === 'changeicon') {
                         try {
                             const icon = interaction.options.getString('icon');
                             await specialRole.setIcon(icon);
-                            return await interaction.reply({ content: 'Changed icon to ' + icon, ephemeral: true });
+                            return await interaction.reply({content: 'Changed icon to ' + icon, ephemeral: true});
                         } catch (error) {
-                            return await interaction.reply({ content: 'Invalid icon. Make sure it is a valid URL.', ephemeral: true });
+                            return await interaction.reply({
+                                content: 'Invalid icon. Make sure it is a valid URL.',
+                                ephemeral: true
+                            });
                         }
                     } else if (subcommand === 'help') {
-                        return await interaction.reply({ content: 'This feature is still in its early stages. Message testsnake if you have any issues', ephemeral: true });
+                        return await interaction.reply({
+                            content: 'This feature is still in its early stages. Message testsnake if you have any issues',
+                            ephemeral: true
+                        });
                     }
                 }
             }
 
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
-            return await interaction.reply({ content: 'An error occurred. Please try again later.', ephemeral: true });
+            return await interaction.reply({content: 'An error occurred. Please try again later.', ephemeral: true});
         }
-
-
+    }
 }
