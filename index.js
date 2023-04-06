@@ -747,11 +747,21 @@ async function processRecord(modInfo, isNew) {
 				return;
 			}
 			console.log(`[${modInfo._sName}] uploading embed: ${modInfo._sName}}`);
-			feedChannel.send({embeds: [embed]}).then(message => {
-				message.crosspost()
-					.then(() => console.log("Message auto-published."))
-					.catch(console.error);
-			});
+			try {
+				feedChannel.send({embeds: [embed]}).then(message => {
+					message.crosspost()
+						.then(() => console.log("Message auto-published."))
+						.catch(console.error);
+				});
+			} catch (err) {
+				console.error(`[${modInfo._sName}] Error while uploading embed: ${modInfo._sName}}`);
+				console.error(err);
+				const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
+				loggingChannel.send(`<@201460040564080651> Error while uploading embed: ${modInfo._sName}}`);
+				loggingChannel.send(`<@201460040564080651> ${err}`);
+				errMsg(err);
+
+			}
 
 		})
 	} catch (err) {
