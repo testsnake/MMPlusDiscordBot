@@ -1,0 +1,10 @@
+/ban - User Ban request / confirmation
+/giveallrole - Gives all users a specified role (Admin only)
+/kick - User Kick request / confirmation
+/warn - Warns a user
+    - 1st warning: 30 minute mute
+    - 2nd warning: 1 hour mute
+    - 3rd warning: 1 day mute
+    - 4th warning: 1 week mute + Request for ban
+/timeout - timeouts a user
+

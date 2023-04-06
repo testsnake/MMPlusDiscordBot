@@ -10,3 +10,4 @@
 /ticket-modify - Allows for adding, removing users from ticket, as well as deleting the ticket
 /upgrade /downgrade - Upgrade/downgrade guide for mm+
 /usercount - user count
+/ping - Pong!

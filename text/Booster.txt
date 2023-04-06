@@ -1,0 +1,6 @@
+/booster create - Creates a blank booster role
+/booster delete - Deletes a booster role
+/booster setname - Sets the name of a booster role
+/booster setcolor - Sets the color of a booster role from a list of colors
+/booster setcolorhex - Sets the color of a booster role from a hex color
+/booster seticon - Sets the icon of a booster role
