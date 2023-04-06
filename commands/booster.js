@@ -29,7 +29,7 @@ module.exports = {
         .setDescription('Manages your booster role.')
         .addSubcommand(subcommand =>
             subcommand
-                .setName('changecolorhex')
+                .setName('setcolorhex')
                 .setDescription('Changes the color of your booster role with hex')
                 .addStringOption(option =>
                     option.setName('color')
@@ -39,7 +39,7 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('changecolor')
+                .setName('setcolor')
                 .setDescription('Changes the color of your booster role.')
                 .addStringOption(option =>
                     option.setName('color')
@@ -76,7 +76,7 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('changename')
+                .setName('setname')
                 .setDescription('Changes the name of your booster role.')
                 .addStringOption(option =>
                     option.setName('name')
@@ -86,7 +86,7 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('changeicon')
+                .setName('seticon')
                 .setDescription('Changes the icon of your booster role.')
                 .addStringOption(option =>
                     option.setName('icon')
@@ -98,6 +98,16 @@ module.exports = {
             subcommand
                 .setName('help')
                 .setDescription('Shows help message.')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('create')
+                .setDescription('Creates a custom booster role.')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('delete')
+                .setDescription('Deletes your booster role.')
         ),
     async execute(interaction) {
         try {
@@ -107,12 +117,32 @@ module.exports = {
                 const subcommand = interaction.options.getSubcommand();
                 const specialRole = await grabSpecialRole(interaction.member, '1093246448566550579', '1093246368077840424');
                 if (!specialRole) {
+                    if (subcommand === 'help') {
+                        return await interaction.reply({
+                            content: 'This feature is still in its early stages. Message testsnake if you have any issues',
+                            ephemeral: true
+                        });
+                    } else if (subcommand === 'create') {
+                        let boosterRole = await interaction.guild.roles.create({
+                            data: {
+                                name: 'Unnamed Booster Role',
+                                hoist: false,
+                                mentionable: false,
+                                permissions: 0
+                            }
+                        });
+                        const boosterRolePosition = await interaction.guild.roles.cache.get('1093246368077840424').position;
+                        boosterRole.setPosition(boosterRole - 1);
+                        await interaction.member.roles.add(boosterRole);
+                        return await interaction.reply({content: 'Created a booster role.', ephemeral: true});
+                    }
+
                     return await interaction.reply({
-                        content: 'You do not have a booster role. Contact <@201460040564080651> for more information.',
+                        content: 'You do not have a booster role. You can use /booster create to create a booster role.\nContact <@201460040564080651> for more information.',
                         ephemeral: true
                     });
                 } else {
-                    if (subcommand === 'changecolorhex') {
+                    if (subcommand === 'setcolorhex') {
                         const color = interaction.options.getString('color');
                         if (color.startsWith('#')) {
                             await specialRole.setColor(color);
@@ -123,7 +153,7 @@ module.exports = {
                                 ephemeral: true
                             });
                         }
-                    } else if (subcommand === 'changecolor') {
+                    } else if (subcommand === 'setcolor') {
                         const colorMap = {
                             red: '#FF0000',
                             orange: '#FFA500',
@@ -160,11 +190,11 @@ module.exports = {
 
                         await specialRole.setColor(hexColor);
                         return await interaction.reply({content: `Changed color to ${color} (${hexColor})`, ephemeral: true});
-                    } else if (subcommand === 'changename') {
+                    } else if (subcommand === 'setname') {
                         const name = interaction.options.getString('name');
                         await specialRole.setName(name);
                         return await interaction.reply({content: 'Changed name to ' + name, ephemeral: true});
-                    } else if (subcommand === 'changeicon') {
+                    } else if (subcommand === 'seticon') {
                         try {
                             const icon = interaction.options.getString('icon');
                             await specialRole.setIcon(icon);
@@ -180,6 +210,11 @@ module.exports = {
                             content: 'This feature is still in its early stages. Message testsnake if you have any issues',
                             ephemeral: true
                         });
+                    } else if (subcommand === 'create') {
+                        await interaction.reply({content: 'You already have a custom booster role', ephemeral: true});
+                    } else if (subcommand === 'delete') {
+                        await specialRole.delete();
+                        return await interaction.reply({content: 'Deleted your custom booster role', ephemeral: true});
                     }
                 }
             }
