@@ -81,7 +81,7 @@ function nPR(message, text) {
 }
 
 
-function errMsg(err) {
+async function errMsg(err) {
 	try {
 		console.log("unhandled error");
 		console.log(err);
@@ -100,9 +100,17 @@ function errMsg(err) {
 			}
 		}
 
-		client.channels.fetch((loggingChannelId).then(channel => {
-			channel.send({ embeds: [embed] });
+		await client.channels.fetch((loggingChannelId).then(async channel => {
+			await channel.send({embeds: [embed]});
 		})).catch(console.error);
+
+		const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
+		if (!loggingChannel) return;
+		await loggingChannel.send(`Error:\n\`\`\`${err}\`\`\``);
+		await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
+		await loggingChannel.send(`\`\`\`${JSON.stringify(err.stack)}\`\`\``);
+		await loggingChannel.send(`\`\`\`${JSON.stringify(err.message)}\`\`\``)
+		await loggingChannel.send(`<@201460040564080651>`);
 	} catch (err) {
 		console.log("error in error handler");
 		console.log(err);
@@ -557,7 +565,13 @@ async function checkGamebananaAPI(sort) {
 		console.log(err);
 		console.log("---- ERROR CHECKING API ----");
 		errMsg(err);
-		return 0;
+		const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
+		await loggingChannel.send(`Error checking Gamebanana API:\n\`\`\`${err}\`\`\``);
+		await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
+		await loggingChannel.send(`\`\`\`${JSON.stringify(err.stack)}\`\`\``);
+		await loggingChannel.send(`\`\`\`${JSON.stringify(err.message)}\`\`\``)
+		await loggingChannel.send(`<@201460040564080651>`);
+
 	}
 }
 
@@ -757,8 +771,9 @@ async function processRecord(modInfo, isNew) {
 				console.error(`[${modInfo._sName}] Error while uploading embed: ${modInfo._sName}}`);
 				console.error(err);
 				const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
-				loggingChannel.send(`<@201460040564080651> Error while uploading embed: ${modInfo._sName}}`);
+				loggingChannel.send(`<@201460040564080651> error when posting GameBanana Post: ${modInfo._sName}`);
 				loggingChannel.send(`<@201460040564080651> ${err}`);
+				loggingChannel.send(`${modInfo}`);
 				errMsg(err);
 
 			}
