@@ -123,7 +123,7 @@ module.exports = {
                             ephemeral: true
                         });
                     } else if (subcommand === 'create') {
-                        const boosterRolePosition = await interaction.guild.roles.cache.get('1093246368077840424').position;
+                        const boosterRolePosition = await interaction.guild.roles.cache.get('1093246448566550579').position;
                         const boosterRolePos = boosterRolePosition + 1;
                         const boosterRole = await interaction.guild.roles.create({
 
