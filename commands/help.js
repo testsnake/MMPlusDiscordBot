@@ -38,7 +38,9 @@ module.exports = {
 				{ name: 'Booster', value: textBooster}
 			)
 		}
-		if (interaction.member.roles.cache.has('1087782913199833158') || interaction.member.roles.cache.has('1087782822879690772')) {
+		const modRole = interaction.member.roles.cache.has('1087782913199833158')
+		const adminRole = interaction.member.roles.cache.has('1087782822879690772')
+		if (modRole || adminRole) {
 			helpEmbed.addFields(
 				{ name: 'Admin', value: textAdmin}
 			)
