@@ -130,10 +130,9 @@ module.exports = {
                                 name: "Unnamed Role",
                                 hoist: false,
                                 mentionable: false,
-                                permissions: 0,
                                 position: boosterRolePos,
                                 reason: 'Booster role creation'
-                            
+
                         });
 
 
