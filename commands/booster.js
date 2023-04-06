@@ -125,19 +125,20 @@ module.exports = {
                     } else if (subcommand === 'create') {
                         const boosterRolePosition = await interaction.guild.roles.cache.get('1093246368077840424').position;
                         const boosterRolePos = boosterRolePosition - 1;
-                        let boosterRole = await interaction.guild.roles.create({
-                            data: {
+                        const boosterRole = await interaction.guild.roles.create({
+
                                 name: "Unnamed Role",
                                 hoist: false,
                                 mentionable: false,
                                 permissions: 0,
                                 position: boosterRolePos,
                                 reason: 'Booster role creation'
-                            }
+                            
                         });
 
 
                         await interaction.member.roles.add(boosterRole);
+
                         return await interaction.reply({content: 'Created a booster role.', ephemeral: true});
                     }
 
