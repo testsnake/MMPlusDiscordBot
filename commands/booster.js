@@ -123,16 +123,20 @@ module.exports = {
                             ephemeral: true
                         });
                     } else if (subcommand === 'create') {
+                        const boosterRolePosition = await interaction.guild.roles.cache.get('1093246368077840424').position;
+                        const boosterRolePos = boosterRolePosition - 1;
                         let boosterRole = await interaction.guild.roles.create({
                             data: {
-                                name: 'Unnamed Booster Role',
+                                name: "Unnamed Role",
                                 hoist: false,
                                 mentionable: false,
-                                permissions: 0
+                                permissions: 0,
+                                position: boosterRolePos,
+                                reason: 'Booster role creation'
                             }
                         });
-                        const boosterRolePosition = await interaction.guild.roles.cache.get('1093246368077840424').position;
-                        boosterRole.setPosition(boosterRole - 1);
+
+
                         await interaction.member.roles.add(boosterRole);
                         return await interaction.reply({content: 'Created a booster role.', ephemeral: true});
                     }
