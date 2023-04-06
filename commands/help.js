@@ -33,7 +33,8 @@ module.exports = {
 			)
 			.setFooter({ text: `${mikuBotVer}`})
 			.setTimestamp();
-		if (interaction.member.roles.cache.has('1092636310142980127')) {
+		const boosterRole = interaction.member.roles.cache.has('1092636310142980127')
+		if (boosterRole) {
 			helpEmbed.addFields(
 				{ name: 'Booster', value: textBooster}
 			)
