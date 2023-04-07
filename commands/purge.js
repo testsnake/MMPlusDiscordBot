@@ -49,12 +49,12 @@ module.exports = {
       } catch (error) {
         console.error(error);
         await interaction.reply({ content: 'There was an error purging messages. Please try again. C-01', ephemeral: true });
-        await interaction.followUp({ content: `${error}`, ephemeral: true })
+        return await interaction.followUp({ content: `${error}`, ephemeral: true })
       }
     } catch (error) {
         console.error(error);
         await interaction.reply({ content: 'There was an error purging messages. Please try again. C-02', ephemeral: true });
-        await interaction.followUp({ content: `${error}`, ephemeral: true })
+        return await interaction.followUp({ content: `${error}`, ephemeral: true })
     }
   },
 };
