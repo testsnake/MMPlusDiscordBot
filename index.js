@@ -100,10 +100,6 @@ async function errMsg(err, errType, msg) {
 
 		const embed = {
 			color: parseInt('ff0000', 16),
-			author: {
-				name: user.tag,
-				iconURL: user.avatarURL()
-			},
 			description: `MikuBot has Encountered an Error\n${err}`,
 			timestamp: new Date(),
 			footer: {
@@ -112,13 +108,13 @@ async function errMsg(err, errType, msg) {
 			}
 		}
 
-		await client.channels.fetch((loggingChannelId).then(async channel => {
-			await channel.send({embeds: [embed]});
-		})).catch(console.error);
+
 
 		const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
 		if (!loggingChannel) return;
+		await loggingChannel.send({ embeds: [embed] });
 		await loggingChannel.send(`***ERROR HANDLER***`);
+		await
 		await loggingChannel.send(`Error Type:\n\`\`\`${errType}\`\`\``);
 		await loggingChannel.send(`Error:\n\`\`\`${err}\`\`\``);
 		await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
@@ -645,6 +641,138 @@ async function checkGamebananaAPI(sort) {
 	}
 }
 
+
+
+
+async function processRecord(modInfo, isNew) {
+	try {
+		const subType = modInfo._sSingularTitle;
+
+		modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
+		await new Promise(r => setTimeout(r, 1000));
+		console.log(`New item found: ${modInfo._sName}`);
+		while (!client.channels.cache.get(`1087783783207534604`)) {
+			console.log(`Waiting for channel to be ready...\tCurrent item title: ${modInfo._sName}`)
+			await new Promise(r => setTimeout(r, 1000));
+		}
+
+		await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
+
+			if (!feedChannel) {
+				console.log(`Feed channel not found while loading item ${modInfo._sName}`);
+				errMsg(`Feed channel not found while loading item ${modInfo._sName}`, "processRecord function", `modInfo: ${modInfo}`)
+				return
+			}
+			addLog(`[Feed channel at ${new Date()}] ${feedChannel}`);
+			var embed;
+			const pathname = new URL(modInfo._sProfileUrl).pathname;
+			const modsSection = pathname.split("/")[1];
+			const modId = pathname.split("/")[2];
+
+
+			console.log(`[${modInfo._sName}] New mod found at: ${pathname}`);
+			addLog(`[${modInfo._sName}] New mod found at: ${pathname}`);
+			embed = new EmbedBuilder()
+				.setTitle(`${ts(modInfo._sName, 255)}`)
+				.setURL(`${modInfo._sProfileUrl}`)
+
+				.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
+				.addFields(
+					{name: 'Submitter', value: `${ts(modInfo._aSubmitter._sName, 255)}`, inline: true},
+					{
+						name: 'Likes',
+						value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
+						inline: true
+					},
+					{
+						name: 'Views',
+						value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
+						inline: true
+					},
+
+				)
+				.setFooter({text: `${mikuBotVer}`})
+			if (modInfo._sDescription !== undefined) {
+				embed.setDescription(`${ts(modInfo._sDescription, 4095)}`);
+				console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
+			}
+			if (modInfo._aAdditionalInfo._sVersion) {
+				embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sVersion}`, inline: true});
+				console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sVersion}`);
+			}
+
+			if (modInfo._aPreviewMedia._aImages && modInfo._aPreviewMedia._aImages[0]._sBaseUrl && modInfo._aPreviewMedia._aImages[0]._sFile) {
+				embed.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
+			}
+
+			var contentWarnings;
+
+			if (modInfo._aContentRatings !== undefined) {
+				console.log(`Content Warnings: ${modInfo._aContentRatings}`);
+				for (var rating in modInfo._aContentRatings) {
+
+					if (modInfo._aContentRatings[rating] !== undefined) {
+						console.log(`[${modInfo._sName}] Content Ratings: ${modInfo._aContentRatings[rating]}`);
+						if (contentWarnings === undefined) {
+							contentWarnings = `${modInfo._aContentRatings[rating]}`;
+						} else {
+							contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
+						}
+					}
+				}
+				console.log(contentWarnings);
+				console.log(modInfo._aContentRatings);
+
+				embed.addFields({name: 'Content Warnings', value: `${ts(contentWarnings, 1023)}`, inline: true});
+			}
+
+			if (!isNew) {
+				embed.setAuthor({name: `${subType} Updated`, iconURL: "https://i.imgur.com/iJDHCx2.png"})
+					.setColor(0x86cecb)
+				console.log(`[${modInfo._sName}] ${subType} Updated: ${modInfo._tsDateUpdated}`);
+
+			} else {
+				embed.setAuthor({name: `New ${subType}`, iconURL: "https://i.imgur.com/eJyrdy7.png"})
+					.setColor(0x6bed78)
+				console.log(`[${modInfo._sName}] New ${subType}: ${modInfo._tsDateAdded}`);
+
+			}
+
+			addLog(`[${modInfo._sName}] New ${subType} found: ${modInfo._sName} by ${modInfo._aSubmitter._sName} at ${modInfo._sProfileUrl}`);
+
+			if (embed === undefined || embed === null) {
+				console.log(`[${modInfo._sName}] Embed not found while loading item ${modInfo._sName}, Skipping...`);
+				return;
+			}
+			console.log(`[${modInfo._sName}] uploading embed: ${modInfo._sName}}`);
+			try {
+				feedChannel.send({embeds: [embed]}).then(message => {
+					message.crosspost()
+						.then(() => console.log("Message auto-published."))
+						.catch(console.error);
+				});
+			} catch (err) {
+				console.error(`[${modInfo._sName}] Error while uploading embed: ${modInfo._sName}}`);
+				console.error(err);
+				const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
+				loggingChannel.send(`<@201460040564080651> error when posting GameBanana Post: ${modInfo._sName}`);
+				loggingChannel.send(`<@201460040564080651> ${err}`);
+				loggingChannel.send(`${modInfo}`);
+				errMsg(err, `Error when posting GameBanana Post: ${modInfo._sName}`, "");
+
+			}
+
+		})
+	} catch (err) {
+		console.log("---- ERROR FEEDER ----");
+		console.log(err);
+		console.log("---- ERROR FEEDER ----");
+		errMsg(err, "Error in Feeder", "");
+	}
+
+
+}
+
 client.on('messageReactionAdd', async (reaction, user) => {
 	console.log("---- STARBOARD ----");
 	try {
@@ -736,128 +864,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 	}
 });
 
-
-
-async function processRecord(modInfo, isNew) {
-	try {
-		const subType = modInfo._sSingularTitle;
-
-		modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
-		await new Promise(r => setTimeout(r, 1000));
-		console.log(`New item found: ${modInfo._sName}`);
-		while (!client.channels.cache.get(`1087783783207534604`)) {
-			console.log(`Waiting for channel to be ready...\tCurrent item title: ${modInfo._sName}`)
-			await new Promise(r => setTimeout(r, 1000));
-		}
-		await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
-
-			if (!feedChannel) {
-				console.log(`Feed channel not found while loading item ${modInfo._sName}`);
-				return
-			}
-			var embed;
-			const pathname = new URL(modInfo._sProfileUrl).pathname;
-			const modsSection = pathname.split("/")[1];
-			const modId = pathname.split("/")[2];
-
-
-			console.log(`[${modInfo._sName}] New mod found at: ${pathname}`);
-			embed = new EmbedBuilder()
-				.setTitle(`${ts(modInfo._sName, 255)}`)
-				.setURL(`${modInfo._sProfileUrl}`)
-				.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
-				.setTimestamp(new Date(modInfo._tsDateAdded * 1000))
-				.addFields(
-					{name: 'Submitter', value: `${ts(modInfo._aSubmitter._sName, 255)}`, inline: true},
-					{
-						name: 'Likes',
-						value: `${modInfo._nLikeCount !== undefined ? modInfo._nLikeCount : 0}`,
-						inline: true
-					},
-					{
-						name: 'Views',
-						value: `${modInfo._nViewCount !== undefined ? modInfo._nViewCount : 0}`,
-						inline: true
-					},
-
-				)
-				.setFooter({text: `${mikuBotVer}`})
-			if (modInfo._sDescription !== undefined) {
-				embed.setDescription(`${ts(modInfo._sDescription, 4095)}`);
-				console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
-			}
-			if (modInfo._aAdditionalInfo._sVersion !== undefined) {
-				embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sVersion}`, inline: true});
-				console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sVersion}`);
-			}
-
-			var contentWarnings;
-
-			if (modInfo._aContentRatings !== undefined) {
-				console.log(`Content Warnings: ${modInfo._aContentRatings}`);
-				for (var rating in modInfo._aContentRatings) {
-
-					if (modInfo._aContentRatings[rating] !== undefined) {
-						console.log(`[${modInfo._sName}] Content Ratings: ${modInfo._aContentRatings[rating]}`);
-						if (contentWarnings === undefined) {
-							contentWarnings = `${modInfo._aContentRatings[rating]}`;
-						} else {
-							contentWarnings = `${contentWarnings}, ${modInfo._aContentRatings[rating]}`;
-						}
-					}
-				}
-				console.log(contentWarnings);
-				console.log(modInfo._aContentRatings);
-
-				embed.addFields({name: 'Content Warnings', value: `${ts(contentWarnings, 1023)}`, inline: true});
-			}
-
-			if (!isNew) {
-				embed.setAuthor({name: `${subType} Updated`, iconURL: "https://i.imgur.com/iJDHCx2.png"})
-					.setColor(0x86cecb)
-				console.log(`[${modInfo._sName}] ${subType} Updated: ${modInfo._tsDateUpdated}`);
-
-			} else {
-				embed.setAuthor({name: `New ${subType}`, iconURL: "https://i.imgur.com/eJyrdy7.png"})
-					.setColor(0x6bed78)
-				console.log(`[${modInfo._sName}] New ${subType}: ${modInfo._tsDateAdded}`);
-
-			}
-
-			addLog(`[${modInfo._sName}] New ${subType} found: ${modInfo._sName} by ${modInfo._aSubmitter._sName} at ${modInfo._sProfileUrl}`);
-
-			if (embed === undefined || embed === null) {
-				console.log(`[${modInfo._sName}] Embed not found while loading item ${modInfo._sName}, Skipping...`);
-				return;
-			}
-			console.log(`[${modInfo._sName}] uploading embed: ${modInfo._sName}}`);
-			try {
-				feedChannel.send({embeds: [embed]}).then(message => {
-					message.crosspost()
-						.then(() => console.log("Message auto-published."))
-						.catch(console.error);
-				});
-			} catch (err) {
-				console.error(`[${modInfo._sName}] Error while uploading embed: ${modInfo._sName}}`);
-				console.error(err);
-				const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
-				loggingChannel.send(`<@201460040564080651> error when posting GameBanana Post: ${modInfo._sName}`);
-				loggingChannel.send(`<@201460040564080651> ${err}`);
-				loggingChannel.send(`${modInfo}`);
-				errMsg(err, `Error when posting GameBanana Post: ${modInfo._sName}`, "");
-
-			}
-
-		})
-	} catch (err) {
-		console.log("---- ERROR FEEDER ----");
-		console.log(err);
-		console.log("---- ERROR FEEDER ----");
-		errMsg(err, "Error in Feeder", "");
-	}
-
-
-}
 
 
 
