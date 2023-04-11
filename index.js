@@ -633,7 +633,14 @@ async function checkGamebananaAPI(sort) {
 		await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
 		await loggingChannel.send(`\`\`\`${JSON.stringify(err.stack)}\`\`\``);
 		await loggingChannel.send(`\`\`\`${JSON.stringify(err.message)}\`\`\``)
-		await loggingChannel.send(`<@201460040564080651>`);
+		await loggingChannel.send(`<@201460040564080651> pls halp`);
+		delay(1000);
+		let i = 1;
+		for (const log of lastLogs) {
+			await loggingChannel.send(`Log ${i}\`\`\`${log}\`\`\``);
+			await delay(1000);
+			i++;
+		}
 
 	}
 }
