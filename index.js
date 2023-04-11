@@ -11,6 +11,9 @@ const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 
 // const youtube = require('discord-bot-youtube-notifications');
 
+let lastLogs = [];
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 
 //Logging channel
 const loggingChannelId = '1087810388936114316';
@@ -76,12 +79,21 @@ function rxt(message, regExPattern) {
 
 // No Ping Reply
 function nPR(message, text) {
+	addLog(`nPR: ${text}`);
 	message.reply({content: text, allowedMentions: { repliedUser: false }})
 		.catch(console.error);
 }
 
+function addLog(log) {
+	if (lastLogs.length >= 10) {
+		lastLogs.shift(); // Remove the oldest log (first item in the array)
+	}
 
-async function errMsg(err) {
+	lastLogs.push(log); // Add the new log to the array
+}
+
+
+async function errMsg(err, errType, msg) {
 	try {
 		console.log("unhandled error");
 		console.log(err);
@@ -106,14 +118,51 @@ async function errMsg(err) {
 
 		const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
 		if (!loggingChannel) return;
+		await loggingChannel.send(`***ERROR HANDLER***`);
+		await loggingChannel.send(`Error Type:\n\`\`\`${errType}\`\`\``);
 		await loggingChannel.send(`Error:\n\`\`\`${err}\`\`\``);
 		await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
 		await loggingChannel.send(`\`\`\`${JSON.stringify(err.stack)}\`\`\``);
-		await loggingChannel.send(`\`\`\`${JSON.stringify(err.message)}\`\`\``)
-		await loggingChannel.send(`<@201460040564080651>`);
+		await loggingChannel.send(`\`\`\`${JSON.stringify(err.message)}\`\`\``);
+		await loggingChannel.send(`***MSG***`);
+		if (msg) {
+			try {
+
+
+				try {
+					await loggingChannel.send(`Message:\n\`\`\`${JSON.stringify(msg)}\`\`\``);
+				} catch (err) {
+
+					await loggingChannel.send(`Message:\n\`\`\`${msg}\`\`\``);
+				}
+			} catch (err) {
+				await loggingChannel.send(`Message:\n\`\`\`Could not stringify message\`\`\``);
+			}
+
+		}
+		await delay(5000);
+		await loggingChannel.send(`***LAST LOG MESSAGES***`);
+		let i = 1;
+		// Prints each message in lastLogs
+		for (const log of lastLogs) {
+			await loggingChannel.send(`Log ${i}\`\`\`${log}\`\`\``);
+			await delay(1000);
+			i++;
+		}
+		await delay(5000);
+		await loggingChannel.send(`<@201460040564080651> halp pls`);
 	} catch (err) {
 		console.log("error in error handler");
 		console.log(err);
+		try {
+			const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
+			loggingChannel.send(`<@201460040564080651> halp pls. error in error handler`);
+		} catch (err) {
+			console.log("error in error handler error handler");
+			console.log(err);
+			console.error(err)
+			console.error(err.stack)
+		}
 	}
 
 
@@ -132,6 +181,7 @@ client.once("ready", async client => {
 		description: `おはよう！ ${mikuBotVer} is Ready!`,
 		timestamp: new Date()
 	};
+	addLog(`[READY] おはよう！ ${mikuBotVer} is ready at ${new Date()}`);
 	loggingChannel.send({ embeds: [embed] });
 	checkGamebananaFeed();
 	setInterval(checkGamebananaFeed, 2 * 60 * 1000);
@@ -176,6 +226,7 @@ client.on('messageCreate', (message) => {
 
 			if (hasMedia) {
 				console.log(`${message.author.username} sent a message with media in channel ${message.channel.name}.`);
+				addLog(`${message.author.username} sent a message with media in channel ${message.channel.name}.`);
 
 				// Add the role to the user
 				const roleToAdd = message.guild.roles.cache.get('1087921322832699412');
@@ -198,7 +249,7 @@ client.on('messageCreate', (message) => {
 		console.log("---- ERROR MESSAGE EVENT ----");
 		console.log(err);
 		console.log("---- ERROR MESSAGE EVENT ----");
-		errMsg(err);
+		errMsg(err, "message event", message);
 	}
 
 });
@@ -222,13 +273,13 @@ client.on('messageDelete', async (message) => {
 				iconURL: botAvatarURL
 			}
 		};
-
+		addLog(`[MESSAGE DELETE] ${message.author.username} deleted a message in ${message.channel.name} at ${new Date()}.`);
 		loggingChannel.send({ embeds: [embed] });
 	} catch(err) {
 		console.log("---- ERROR MESSAGEDELETE ----");
 		console.log(err);
 		console.log("---- ERROR MESSAGEDELETE ----");
-		errMsg(err);
+		errMsg(err, "messageDelete event", message);
 	}
 });
 
@@ -271,7 +322,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 		console.log("---- ERROR MESSAGE UPDATE ----");
 		console.log(err);
 		console.log("---- ERROR MESSAGE UPDATE ----");
-		errMsg(err);
+		errMsg(err, "messageUpdate event", `old message: ${oldMessage}, newMessage: ${newMessage}`);
 	}
 });
 
@@ -301,7 +352,7 @@ client.on('guildMemberAdd', async (member) => {
 		console.log("---- ERROR GUILDMEMBER ADD ----");
 		console.log(err);
 		console.log("---- ERROR GUILDMEMBER ADD ----");
-		errMsg(err);
+		errMsg(err, "guildMemberAdd event", member);
 	}
 });
 
@@ -330,7 +381,7 @@ client.on('guildMemberRemove', async (member) => {
 		console.log("---- ERROR GUILDMEMBER REMOVE ----");
 		console.log(err);
 		console.log("---- ERROR GUILDMEMBER REMOVE ----");
-		errMsg(err);
+		errMsg(err, "guildMemberRemove event", member);
 	}
 });
 
@@ -347,6 +398,7 @@ client.on('guildBanAdd', async (guild, user) => {
 			console.log("---- ERROR GUILDMEMBER BAN ----");
 			console.log(err);
 			console.log("---- ERROR GUILDMEMBER BAN ----");
+			errMsg(err, "guildBanAdd event", `guild: ${guild}, user: ${user}`);
 		}
 
 		let reason = 'unknown';
@@ -377,7 +429,7 @@ client.on('guildBanAdd', async (guild, user) => {
 		console.log("---- ERROR GUILDMEMBER BAN ----");
 		console.log(err);
 		console.log("---- ERROR GUILDMEMBER BAN ----");
-		errMsg(err);
+		errMsg(err, "guildBanAdd event", `guild: ${guild}, user: ${user}`);
 	}
 });
 
@@ -407,7 +459,7 @@ client.on('guildBanRemove', async (guild, user) => {
 		console.log("---- ERROR GUILDMEMBERREBANREMOVE ----");
 		console.log(err);
 		console.log("---- ERROR GUILDMEMBERREBANREMOVE ----");
-		errMsg(err);
+		errMsg(err, "guildBanRemove event", `guild: ${guild}, user: ${user}`);
 	}
 });
 
@@ -434,7 +486,7 @@ client.on(Events.InteractionCreate, async interaction => {
 			console.log("---- INTERACTION CREATE ERROR ISBUTTON ----");
 			return;
 		}
-
+		addLog(`[INTERACTION at ${new Date()}] ${interaction.customId} ${interaction.user.tag} ${interaction.message.content}`);
 		const { customId, user, message } = interaction;
 		const banConfirmRegex = /^(.+)#(\d{4})_ban_confirm_(\d+)$/;
 		const banCancelRegex = /^(.+)#(\d{4})_ban_cancel_(\d+)$/;
@@ -504,7 +556,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		console.log("---- ERROR INTERACTION CREATE ----");
 		console.log(err);
 		console.log("---- ERROR INTERACTION CREATE ----");
-		errMsg(err);
+		errMsg(err, "InteractionCreate event", `interaction: ${interaction}`);
 	}
 });
 
@@ -526,7 +578,18 @@ async function checkGamebananaAPI(sort) {
 		console.log("Checking Gamebanana API...");
 		console.log(latestTimestamp)
 		let response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
-		const data = await response.json();
+		addLog(`[Response at ${new Date()}] ${response}`);
+
+		let data;
+		try {
+			data = await response.json();
+			addLog(`[Data at ${new Date()}] ${data}`);
+		} catch (err) {
+			console.log("Error parsing JSON");
+			console.log(err);
+
+			return;
+		}
 		latestTimestampTemp = latestTimestamp;
 		if (data._aRecords && data._aRecords.length > 0) {
 			if (firstRun) {
@@ -564,7 +627,7 @@ async function checkGamebananaAPI(sort) {
 		console.log("---- ERROR CHECKING API ----");
 		console.log(err);
 		console.log("---- ERROR CHECKING API ----");
-		errMsg(err);
+		errMsg(err, "checkGamebananaAPI function", `sort: ${sort}`);
 		const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
 		await loggingChannel.send(`Error checking Gamebanana API:\n\`\`\`${err}\`\`\``);
 		await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
@@ -662,7 +725,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 		console.log("---- ERROR MESSAGE REACTION ADD ----");
 		console.log(err);
 		console.log("---- ERROR MESSAGE REACTION ADD ----");
-		errMsg(err);
+		errMsg(err, "messageReactionAdd event", `reaction: ${reaction}\tuser: ${user}`);
 	}
 });
 
@@ -754,7 +817,7 @@ async function processRecord(modInfo, isNew) {
 
 			}
 
-
+			addLog(`[${modInfo._sName}] New ${subType} found: ${modInfo._sName} by ${modInfo._aSubmitter._sName} at ${modInfo._sProfileUrl}`);
 
 			if (embed === undefined || embed === null) {
 				console.log(`[${modInfo._sName}] Embed not found while loading item ${modInfo._sName}, Skipping...`);
@@ -774,7 +837,7 @@ async function processRecord(modInfo, isNew) {
 				loggingChannel.send(`<@201460040564080651> error when posting GameBanana Post: ${modInfo._sName}`);
 				loggingChannel.send(`<@201460040564080651> ${err}`);
 				loggingChannel.send(`${modInfo}`);
-				errMsg(err);
+				errMsg(err, `Error when posting GameBanana Post: ${modInfo._sName}`, "");
 
 			}
 
@@ -783,7 +846,7 @@ async function processRecord(modInfo, isNew) {
 		console.log("---- ERROR FEEDER ----");
 		console.log(err);
 		console.log("---- ERROR FEEDER ----");
-		errMsg(err);
+		errMsg(err, "Error in Feeder", "");
 	}
 
 
