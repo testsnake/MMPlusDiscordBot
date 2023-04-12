@@ -646,7 +646,10 @@ async function checkGamebananaAPI(sort) {
 
 async function processRecord(modInfo, isNew) {
 	try {
-		const subType = modInfo._sSingularTitle;
+		let subType = modInfo._sSingularTitle;
+		if (subType === "WiP") {
+			subType = "Wip";
+		}
 
 		modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
 		await new Promise(r => setTimeout(r, 1000));
