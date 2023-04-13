@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getRecentLogs } = require('../logManager.js');
+const {addLog} = require("../logManager");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -27,5 +28,6 @@ module.exports = {
                 await sleep(3000);
             }
         }
+        addLog(`Sent ${logs.length} logs to ${interaction.user.tag} (${interaction.user.id})`);
     }
 }
