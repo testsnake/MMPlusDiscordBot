@@ -729,17 +729,33 @@ async function processRecord(modInfo, isNew) {
 				embed.addFields({name: 'Content Warnings', value: `${ts(contentWarnings, 1023)}`, inline: true});
 			}
 
-			if (!isNew) {
-				embed.setAuthor({name: `${subType} Updated`, iconURL: "https://i.imgur.com/iJDHCx2.png"})
-					.setColor(0x86cecb)
-				console.log(`[${modInfo._sName}] ${subType} Updated: ${modInfo._tsDateUpdated}`);
+			try {
+				if (!isNew) {
+					embed.setAuthor({name: `${subType} Updated`, iconURL:`${modInfo._aCategory._sIconUrl}`})
+						.setColor(0x86cecb)
+					console.log(`[${modInfo._sName}] ${subType} Updated: ${modInfo._tsDateUpdated}`);
 
-			} else {
-				embed.setAuthor({name: `New ${subType}`, iconURL: "https://i.imgur.com/eJyrdy7.png"})
-					.setColor(0x6bed78)
-				console.log(`[${modInfo._sName}] New ${subType}: ${modInfo._tsDateAdded}`);
+				} else {
+					embed.setAuthor({name: `New ${subType}`, iconURL: `${modInfo._aCategory._sIconUrl}`})
+						.setColor(0x6bed78)
+					console.log(`[${modInfo._sName}] New ${subType}: ${modInfo._tsDateAdded}`);
 
+				}
+				
+			} catch (e) {
+				if (!isNew) {
+					embed.setAuthor({name: `${subType} Updated`, iconURL: "https://i.imgur.com/iJDHCx2.png"})
+						.setColor(0x86cecb)
+					console.log(`[${modInfo._sName}] ${subType} Updated: ${modInfo._tsDateUpdated}`);
+
+				} else {
+					embed.setAuthor({name: `New ${subType}`, iconURL: "https://i.imgur.com/eJyrdy7.png"})
+						.setColor(0x6bed78)
+					console.log(`[${modInfo._sName}] New ${subType}: ${modInfo._tsDateAdded}`);
+
+				}
 			}
+			
 
 			addLog(`[${modInfo._sName}] New ${subType} found: ${modInfo._sName} by ${modInfo._aSubmitter._sName} at ${modInfo._sProfileUrl}`);
 
