@@ -577,7 +577,7 @@ async function checkGamebananaAPI(sort) {
 		let data;
 		try {
 			data = await response.json();
-			addLog(`[Data at ${new Date()}] ${data}`);
+			addLog(`[Data at ${new Date()}] ${data.toString()}`);
 		} catch (err) {
 			console.log("Error parsing JSON");
 			console.log(err);

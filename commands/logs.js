@@ -18,9 +18,9 @@ module.exports = {
         const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
         let messagesSent = 0;
-        await interaction.user.send({ content: `Sending ${logs.length} logs.`});
+        await interaction.user.send({ content: `Sending ${logs.length} logs.`, ephemeral: true, allowedMentions: { repliedUser: false }});
         for (const log of logs) {
-            await interaction.user.send({ content: log, ephemeral: true, allowedMentions: { repliedUser: false }});
+            await interaction.user.send({ content: `\`\`\`${log}\`\`\``, ephemeral: true, allowedMentions: { repliedUser: false }});
             messagesSent++;
 
             // If 5 messages have been sent, wait for 3 seconds before sending the next group
