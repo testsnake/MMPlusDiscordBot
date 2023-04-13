@@ -7,4 +7,4 @@
     - 3rd warning: 1 day mute
     - 4th warning: 1 week mute + Request for ban
 /timeout - timeouts a user
-
+/logs - sends logs to the user

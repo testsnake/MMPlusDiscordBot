@@ -658,9 +658,10 @@ async function processRecord(modInfo, isNew) {
 		if (!isNew) {
 			try {
 				updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => res.json());
-				const changeLog1 = updateInfo._aRecords[0]._aChangeLog.map(entry => `${entry.cat} - ${entry.text}`);
+				const changeLog1 = updateInfo._aRecords[0]._aChangeLog.map(entry => `**${entry.cat}** - ${entry.text}`);
 				changeLog = changeLog1.join('\n');
 				changeLogTitle = updateInfo._aRecords[0]._sName;
+				changeLogTitle = changeLogTitle !== undefined ? changeLogTitle : "Update";
 				hasChangeLog = true;
 			} catch (err) {
 				console.log("Error fetching update info");
