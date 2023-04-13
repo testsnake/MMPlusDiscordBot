@@ -572,12 +572,12 @@ async function checkGamebananaAPI(sort) {
 		console.log("Checking Gamebanana API...");
 		console.log(latestTimestamp)
 		let response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
-		addLog(`[Response at ${new Date()}] ${response}`);
+		addLog(`[Response at ${new Date()}] ${JSON.stringify(response)}`);
 
 		let data;
 		try {
 			data = await response.json();
-			addLog(`[Data at ${new Date()}] ${data.stringify()}`);
+			addLog(`[Data at ${new Date()}] ${JSON.stringify(data)}`);
 		} catch (err) {
 			console.log("Error parsing JSON");
 			console.log(err);
@@ -657,7 +657,7 @@ async function processRecord(modInfo, isNew) {
 			console.log(`Waiting for channel to be ready...\tCurrent item title: ${modInfo._sName}`)
 			await new Promise(r => setTimeout(r, 1000));
 		}
-		addLog(`{ProcessRecord at ${new Date()}}\nisNew: ${isNew}\n${modInfo.stringify()}`);
+		addLog(`{ProcessRecord at ${new Date()}}\nisNew: ${isNew}\n${JSON.stringify(modInfo)}`);
 
 		await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
 
