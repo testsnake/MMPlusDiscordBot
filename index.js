@@ -569,6 +569,16 @@ async function checkGamebananaFeed() {
 
 async function checkGamebananaAPI(sort) {
 	try {
+		try {
+			await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
+				feedChannel.sendTyping();
+			});
+
+		} catch (err) {
+			console.log("Error sending typing");
+			console.log(err);
+			errMsg(err, "Gamebanana API Typing", "Error sending typing");
+		}
 		console.log("Checking Gamebanana API...");
 		console.log(latestTimestamp)
 		let response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
