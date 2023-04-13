@@ -699,9 +699,14 @@ async function processRecord(modInfo, isNew) {
 				embed.setDescription(`${ts(modInfo._sDescription, 4095)}`);
 				console.log(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);
 			}
-			if (modInfo._aAdditionalInfo._sVersion) {
-				embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sVersion}`, inline: true});
-				console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sVersion}`);
+			try {
+				if (modInfo._aAdditionalInfo._sVersion) {
+					embed.addFields({name: 'Version', value: `${modInfo._aAdditionalInfo._sVersion}`, inline: true});
+					console.log(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sVersion}`);
+				}
+			} catch (err) {
+				console.log(`[${modInfo._sName}] Version: undefined`);
+				addLog(`[${modInfo._sName}] Version: could not be found and caused an error`);
 			}
 
 			if (modInfo._aPreviewMedia._aImages && modInfo._aPreviewMedia._aImages[0]._sBaseUrl && modInfo._aPreviewMedia._aImages[0]._sFile) {
