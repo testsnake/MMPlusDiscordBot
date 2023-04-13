@@ -651,6 +651,23 @@ async function processRecord(modInfo, isNew) {
 		}
 
 		modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
+		let updateInfo;
+		let changeLog = "";
+		let changeLogTitle = "Changelog";
+		let hasChangeLog = false;
+		if (!isNew) {
+			try {
+				updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => res.json());
+				changeLog = updateInfo._aRecords[0]._aChangeLog.map(entry => `${entry.cat} - ${entry.text}`);
+				changeLogTitle = updateInfo._aRecords[0]._sName;
+				hasChangeLog = true;
+			} catch (err) {
+				console.log("Error fetching update info");
+				console.log(err);
+				errMsg(err, "processRecord function", `modInfo: ${JSON.stringify(modInfo)}`);
+			}
+			}
+
 		await new Promise(r => setTimeout(r, 1000));
 		console.log(`New item found: ${modInfo._sName}`);
 		while (!client.channels.cache.get(`1087783783207534604`)) {
@@ -760,7 +777,18 @@ async function processRecord(modInfo, isNew) {
 
 				}
 			}
-			
+
+			if (hasChangeLog) {
+				try {
+					embed.addFields({
+						name: `${changeLogTitle} changelog`,
+						value: `${ts(changeLog, 1023)}`,
+						inline: false
+					});
+				} catch (err) {
+					addLog(`[${modInfo._sName}] Error while adding changelog: ${modInfo._sName}}`);
+				}
+			}
 
 			addLog(`[${modInfo._sName}] New ${subType} found: ${modInfo._sName} by ${modInfo._aSubmitter._sName} at ${modInfo._sProfileUrl}`);
 
