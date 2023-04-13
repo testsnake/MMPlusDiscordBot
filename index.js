@@ -8,10 +8,12 @@ const { token } = require('./config.json');
 const fetch = require("node-fetch");  // Needs to be added for bot use
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
+const { addLog } = require('./logManager.js');
+const {getLogs, getRecentLogs} = require("./logManager");
 
 // const youtube = require('discord-bot-youtube-notifications');
 
-let lastLogs = [];
+
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 
@@ -35,6 +37,7 @@ const client = new Client({
 		GatewayIntentBits.MessageContent,
 	]
 });
+
 
 
 
@@ -84,13 +87,7 @@ function nPR(message, text) {
 		.catch(console.error);
 }
 
-function addLog(log) {
-	if (lastLogs.length >= 10) {
-		lastLogs.shift(); // Remove the oldest log (first item in the array)
-	}
 
-	lastLogs.push(log); // Add the new log to the array
-}
 
 
 async function errMsg(err, errType, msg) {
@@ -140,6 +137,7 @@ async function errMsg(err, errType, msg) {
 		await loggingChannel.send(`***LAST LOG MESSAGES***`);
 		let i = 1;
 		// Prints each message in lastLogs
+		const lastLogs = getRecentLogs(10);
 		for (const log of lastLogs) {
 			await loggingChannel.send(`Log ${i}\`\`\`${log}\`\`\``);
 			await delay(1000);
@@ -632,6 +630,7 @@ async function checkGamebananaAPI(sort) {
 		await loggingChannel.send(`<@201460040564080651> pls halp`);
 		delay(1000);
 		let i = 1;
+		const lastLogs = getRecentLogs(10)
 		for (const log of lastLogs) {
 			await loggingChannel.send(`Log ${i}\`\`\`${log}\`\`\``);
 			await delay(1000);
@@ -658,6 +657,7 @@ async function processRecord(modInfo, isNew) {
 			console.log(`Waiting for channel to be ready...\tCurrent item title: ${modInfo._sName}`)
 			await new Promise(r => setTimeout(r, 1000));
 		}
+		addLog(`{ProcessRecord at ${new Date()}}\nisNew: ${isNew}\n${modInfo.toString()}`);
 
 		await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
 
