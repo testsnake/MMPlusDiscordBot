@@ -572,15 +572,15 @@ async function checkGamebananaAPI(sort) {
 		console.log("Checking Gamebanana API...");
 		console.log(latestTimestamp)
 		let response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
-		addLog(`[Response at ${new Date()}] ${JSON.stringify(response)}`);
 
 		let data;
 		try {
 			data = await response.json();
-			addLog(`[Gamebanana data at ${new Date()}] ${ts(JSON.stringify(data), 1800)}...`);
 		} catch (err) {
 			console.log("Error parsing JSON");
 			console.log(err);
+			addLog(`[Gamebanana error at ${new Date()}]\n${ts(JSON.stringify(response), 1800)}...`);
+			errMsg(err, "Gamebanana API", `response: ${ts(JSON.stringify(response), 1800)}...`);
 
 			return;
 		}
