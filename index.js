@@ -848,9 +848,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
 			console.log(reaction.message.content)
 
 			// Create the embed
-			const starboardEmbed = new EmbedBuilder()
+			let starboardEmbed = new EmbedBuilder()
 				.setAuthor({name: 'Starred Message', iconURL: reaction.message.author.avatarURL({dynamic: true})})
-				.setDescription(`${ts(reaction.message.content, 4095)}`)
 				.addFields(
 					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
 					{name: 'Channel', value: `<#${reaction.message.channel.id}>`, inline: true}
@@ -864,6 +863,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				if (attachment.contentType.startsWith('image/')) {
 					starboardEmbed.setImage(attachment.url);
 				}
+			}
+
+			if (message.content.length > 0) {
+				starboardEmbed.setDescription(ts(message.content, 4095));
 			}
 
 			console.log(reaction.message.attachments);
