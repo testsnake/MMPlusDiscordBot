@@ -660,7 +660,14 @@ async function processRecord(modInfo, isNew) {
 			subType = "Wip";
 		}
 
+
+
 		modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
+
+		if (modInfo._nUpdatesCount > 0) {
+			isNew = false;
+		}
+
 		let updateInfo;
 		let changeLog = "";
 		let changeLogTitle = "Changelog";
