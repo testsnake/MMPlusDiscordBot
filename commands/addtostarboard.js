@@ -16,9 +16,9 @@ async function addMessageToStarboard(message, starboardChannelId) {
     try {
         const starboardChannel = await message.client.channels.fetch(starboardChannelId);
 
-        const starboardEmbed = new EmbedBuilder()
+       let starboardEmbed = new EmbedBuilder()
             .setAuthor({name: 'Starred Message', iconURL: message.author.avatarURL({dynamic: true})})
-            .setDescription(`${ts(message.content, 4095)}`)
+
             .addFields(
                 {name: 'Author', value: `${message.author.toString()}`, inline: true},
                 {name: 'Channel', value: `<#${message.channel.id}>`, inline: true}
@@ -40,6 +40,10 @@ async function addMessageToStarboard(message, starboardChannelId) {
                     .setStyle('Link')
                     .setURL(message.url)
             );
+
+        if (message.content.length > 0) {
+            starboardEmbed.setDescription(ts(message.content, 2048));
+        }
 
         starboardChannel.send({embeds: [starboardEmbed], components: [row]});
     } catch (err) {
