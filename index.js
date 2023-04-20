@@ -887,15 +887,18 @@ client.on('messageReactionAdd', async (reaction, user) => {
 			const alertsChannel = await client.channels.fetch('1092866838918086666');
 
 			// Create the embed
-			const starboardEmbed = new EmbedBuilder()
+			let starboardEmbed = new EmbedBuilder()
 				.setAuthor({name: 'Reported Message', iconURL: reaction.message.author.avatarURL({dynamic: true})})
-				.setDescription(`${ts(reaction.message.content, 4095)}`)
 				.addFields(
 					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
 					{name: 'Channel', value: `<#${reaction.message.channel.id}>`, inline: true}
 				)
 				.setColor(0xeb4034)
 				.setTimestamp(reaction.message.createdAt);
+
+			if (message.content.length > 0) {
+				starboardEmbed.setDescription(ts(message.content, 4095));
+			}
 
 			// Check if the message has attachments and add the first image
 			if (reaction.message.attachments.size > 0) {
