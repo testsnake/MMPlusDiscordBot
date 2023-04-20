@@ -2,7 +2,15 @@ const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 
 function ts(str, maxLength) {
-    return truncateString(str, maxLength);
+    if (maxLength < 0 || typeof maxLength !== 'number') {
+        throw new Error('maxLength must be a non-negative number');
+    }
+
+    if (str.length <= maxLength) {
+        return str;
+    }
+
+    return str.slice(0, maxLength);
 }
 async function addMessageToStarboard(message, starboardChannelId) {
     try {
