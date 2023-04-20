@@ -665,6 +665,7 @@ async function processRecord(modInfo, isNew) {
 		let changeLog = "";
 		let changeLogTitle = "Changelog";
 		let hasChangeLog = false;
+		let changeLogDescription = "";
 		if (!isNew) {
 			try {
 				updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => res.json());
@@ -672,6 +673,8 @@ async function processRecord(modInfo, isNew) {
 				changeLog = changeLog1.join('\n');
 				changeLogTitle = updateInfo._aRecords[0]._sName;
 				changeLogTitle = changeLogTitle !== undefined ? changeLogTitle : "Update";
+				changeLogDescription = updateInfo._aRecords[0]._sText;
+				changeLogDescription = changeLogDescription !== undefined ? '\n' + changeLogDescription.replace(/<[^>]*>/g, '') : "";
 				hasChangeLog = true;
 			} catch (err) {
 				console.log("Error fetching update info");
@@ -794,7 +797,7 @@ async function processRecord(modInfo, isNew) {
 				try {
 					embed.addFields({
 						name: `${changeLogTitle} changelog`,
-						value: `${ts(changeLog, 1023)}`,
+						value: `${ts(`${changeLog}${changeLogDescription}`, 1023)}`,
 						inline: false
 					});
 				} catch (err) {
