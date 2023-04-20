@@ -1,6 +1,9 @@
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 
+function ts(str, maxLength) {
+    return truncateString(str, maxLength);
+}
 async function addMessageToStarboard(message, starboardChannelId) {
     try {
         const starboardChannel = await message.client.channels.fetch(starboardChannelId);
