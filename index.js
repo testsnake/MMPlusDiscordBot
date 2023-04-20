@@ -850,7 +850,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 			// Create the embed
 			const starboardEmbed = new EmbedBuilder()
 				.setAuthor({name: 'Starred Message', iconURL: reaction.message.author.avatarURL({dynamic: true})})
-				.setDescription(ts(reaction.message.content, 4095))
+				.setDescription(`${ts(reaction.message.content, 4095)}`)
 				.addFields(
 					{name: 'Author', value: `${reaction.message.author.toString()}`, inline: true},
 					{name: 'Channel', value: `<#${reaction.message.channel.id}>`, inline: true}
