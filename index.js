@@ -676,13 +676,24 @@ async function processRecord(modInfo, isNew) {
 		if (!isNew) {
 			try {
 				updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => res.json());
-				const changeLog1 = updateInfo._aRecords[0]._aChangeLog.map(entry => `**${entry.cat}** - ${entry.text}`);
-				changeLog = changeLog1.join('\n');
+				let changeLog1;
+				if (updateInfo._aRecords[0]._aChangeLog) {
+					changeLog1 = updateInfo._aRecords[0]._aChangeLog.map(entry => `**${entry.cat}** - ${entry.text}`);
+					changeLog = changeLog1.join('\n');
+					addLog(`Changelog added for mod ${modInfo._sName}:\n${changeLog}`)
+				} else {
+					addLog(`No changelog found for mod ${modInfo._sName}:\n${JSON.stringify(updateInfo)}`)
+				}
+
 				changeLogTitle = updateInfo._aRecords[0]._sName;
 				changeLogTitle = changeLogTitle !== undefined ? changeLogTitle : "Update";
+
 				changeLogDescription = updateInfo._aRecords[0]._sText;
 				changeLogDescription = changeLogDescription !== undefined ? '\n' + changeLogDescription.replace(/<[^>]*>/g, '') : "";
-				hasChangeLog = true;
+				if (changeLog.length > 0 && changeLogDescription.length > 0) {
+					hasChangeLog = true;
+				}
+
 			} catch (err) {
 				console.log("Error fetching update info");
 				console.log(err);
