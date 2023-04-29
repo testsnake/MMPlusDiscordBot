@@ -22,6 +22,7 @@ const loggingChannelId = '1087810388936114316';
 
 let latestTimestamp = new Date().getTime() / 1000;
 let firstRun = true;
+let attemptsToReconnect = 0;
 
 
 
@@ -569,19 +570,40 @@ async function checkGamebananaFeed() {
 
 async function checkGamebananaAPI(sort) {
 	try {
-		try {
-			await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
-				feedChannel.sendTyping();
-			});
 
-		} catch (err) {
-			console.log("Error sending typing");
-			console.log(err);
-			errMsg(err, "Gamebanana API Typing", "Error sending typing");
-		}
 		console.log("Checking Gamebanana API...");
 		console.log(latestTimestamp)
-		let response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
+		let response
+		try {
+			response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
+			attemptsToReconnect = 0;
+		} catch (err) {
+			addLog(`[Gamebanana error at ${new Date()}]\n${ts(err, 1800)}...`);
+			await errMsg(err, "Gamebanana API", `response: ${ts(response, 1800)}...`);
+			if (attemptsToReconnect < 3 || (attemptsToReconnect > 3 && attemptsToReconnect < 10)) {
+				attemptsToReconnect++;
+				console.log("Error fetching Gamebanana API, reconnecting...");
+				await new Promise(resolve => setTimeout(resolve, 20000));
+				return await checkGamebananaAPI(sort);
+			} else if (attemptsToReconnect === 10) {
+				addLog(`[Gamebanana error at ${new Date()}]\n${ts(err, 1800)}...`);
+				addLog(`giving up on reconnecting to Gamebanana API`);
+				await errMsg(err, "Gamebanana API - Given Up", `response: ${ts(response, 1800)}...`);
+				return 0;
+
+			} else {
+				attemptsToReconnect++;
+				await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
+					try {
+						await feedChannel.send(`An error occurred while fetching the Gamebanana API. Mods may not appear in the feed until this is resolved. (<@$201460040564080651>)`);
+					} catch (err) {
+						console.log("Error sending message");
+						console.log(err);
+						await errMsg(err, "Gamebanana API", "Error sending message about Gamebanana API error");
+					}
+				});
+			}
+		}
 
 		let data;
 		try {
@@ -659,7 +681,16 @@ async function processRecord(modInfo, isNew) {
 		if (subType === "WiP") {
 			subType = "Wip";
 		}
+		try {
+			await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
 
+			});
+
+		} catch (err) {
+			console.log("Error sending typing");
+			console.log(err);
+			errMsg(err, "Gamebanana API Typing", "Error sending typing");
+		}
 
 
 		modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
@@ -829,6 +860,7 @@ async function processRecord(modInfo, isNew) {
 				console.log(`[${modInfo._sName}] Embed not found while loading item ${modInfo._sName}, Skipping...`);
 				return;
 			}
+			await new Promise(resolve => setTimeout(resolve, 2000));
 			console.log(`[${modInfo._sName}] uploading embed: ${modInfo._sName}}`);
 			try {
 				feedChannel.send({embeds: [embed]}).then(message => {
