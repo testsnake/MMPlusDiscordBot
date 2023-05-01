@@ -80,9 +80,7 @@ module.exports = {
             'zh-CN': '添加到明星板',
             ja: 'スターボードに追加',
             'zh-TW': '添加到明星板',
-            ko: '스타 보드에 추가',
-
-
+            ko: '스타보드에추가',
         })
         .addChannelOption(option => option
             .setName('channel')

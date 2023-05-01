@@ -18,7 +18,7 @@ module.exports = {
 			ko: 'Pong!으로 응답',
 		})
 		.setNameLocalizations({
-			japanese: 'ピン',
+			ja: 'ピン',
 			ko: '핑',
 			'zh-TW': '平',
 			'zh-CN': '平',

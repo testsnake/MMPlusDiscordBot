@@ -8,7 +8,7 @@ module.exports = {
             'es-ES': 'ticket-modificar',
             fr: 'ticket-modifier',
             ja: 'チケット変更',
-            ko: '티켓 수정',
+            ko: '티켓수정',
             'zh-CN': '票务修改',
             'zh-TW': '票務修改',
         })
