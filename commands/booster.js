@@ -157,7 +157,7 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('set name')
+                .setName('setname')
                 .setNameLocalizations({
                     de: 'setze-name',
                     'en-GB': 'setname',
