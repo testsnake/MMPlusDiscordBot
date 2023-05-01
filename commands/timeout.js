@@ -26,10 +26,59 @@ function parseDuration(durationStr) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('timeout')
-        .setDescription('Gives a user a timeout for a specified duration.')
-        .addUserOption(option => option.setName('user').setDescription('The user to give a timeout.').setRequired(true))
-        .addStringOption(option => option.setName('duration').setDescription('The duration of the timeout. (e.g., 10m, 1h)').setRequired(true))
-        .addStringOption(option => option.setName('reason').setDescription('The reason for the timeout.').setRequired(false)),
+        .setDescription('Gibt einem Benutzer eine Auszeit für eine angegebene Dauer.')
+        .setDescriptionLocalizations({
+            de: 'Gibt einem Benutzer eine Auszeit für eine angegebene Dauer.',
+            'en-GB': 'Gives a user a timeout for a specified duration.',
+            'en-US': 'Gives a user a timeout for a specified duration.',
+            'es-ES': 'Da a un usuario un tiempo de espera por una duración especificada.',
+            fr: 'Donne à un utilisateur une période d\'attente pour une durée spécifiée.',
+            nl: 'Geeft een gebruiker een time-out voor een opgegeven tijdsduur.',
+            'pt-BR': 'Dá a um usuário uma pausa por um período de tempo especificado.',
+            'zh-CN': '为用户指定的持续时间给予超时。',
+            ja: '指定された期間のユーザーのタイムアウトを与えます。',
+            'zh-TW': '為用戶指定的持續時間給予超時。',
+            ko: '지정된 기간 동안 사용자에게 타임아웃을 부여합니다.',
+        })
+        .addUserOption(option => option.setName('user').setDescription('Den Benutzer geben, der eine Auszeit erhält.').setDescriptionLocalizations({
+            de: 'Den Benutzer geben, der eine Auszeit erhält.',
+            'en-GB': 'The user to give a timeout.',
+            'en-US': 'The user to give a timeout.',
+            'es-ES': 'El usuario al que dar un tiempo de espera.',
+            fr: 'L\'utilisateur à mettre en attente.',
+            nl: 'De gebruiker aan wie een time-out moet worden gegeven.',
+            'pt-BR': 'O usuário que receberá uma pausa.',
+            'zh-CN': '给予超时的用户。',
+            ja: 'タイムアウトを与えるユーザー。',
+            'zh-TW': '給予超時的用戶。',
+            ko: '타임아웃을 부여할 사용자입니다.',
+        }).setRequired(true))
+        .addStringOption(option => option.setName('duration').setDescription('Die Dauer des Timeouts. (z.B. 10m, 1h)').setRequired(true).setDescriptionLocalizations({
+            de: 'Die Dauer des Timeouts. (z.B. 10m, 1h)',
+            'en-GB': 'The duration of the timeout. (e.g., 10m, 1h)',
+            'en-US': 'The duration of the timeout. (e.g., 10m, 1h)',
+            'es-ES': 'La duración del tiempo de espera. (por ejemplo, 10m, 1h)',
+            fr: 'La durée du temps d\'attente. (par exemple, 10m, 1h)',
+            nl: 'De duur van de time-out. (bijv. 10m, 1u)',
+            'pt-BR': 'A duração do timeout. (ex.: 10m, 1h)',
+            'zh-CN': '超时的持续时间。 (例如，10m，1h)',
+            ja: 'タイムアウトの期間（例：10m、1h）',
+            'zh-TW': '超時的持續時間。 (例如，10m，1h)',
+            ko: '타임아웃 지속 시간. (예 : 10m, 1h)',
+        }))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for the timeout.').setRequired(false).setDescriptionLocalizations({
+            de: 'Der Grund für den Timeout.',
+            'en-GB': 'The reason for the timeout.',
+            'en-US': 'The reason for the timeout.',
+            'es-ES': 'La razón del tiempo de espera.',
+            fr: 'La raison du temps d\'attente.',
+            nl: 'De reden voor de time-out.',
+            'pt-BR': 'A razão para o timeout.',
+            'zh-CN': '超时的原因。',
+            ja: 'タイムアウトの理由。',
+            'zh-TW': '超時的原因。',
+            ko: '타임아웃의 이유.',
+        })),
     async execute(interaction) {
         const user = interaction.options.getUser('user');
         const duration = interaction.options.getString('duration');
