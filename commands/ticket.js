@@ -4,7 +4,20 @@ const { ChannelType, PermissionsBitField } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ticket')
-        .setDescription('Open a ticket.'),
+        .setDescription('Open a ticket.')
+        .setDescriptionLocalizations({
+            de: 'Öffnen Sie ein Ticket.',
+            'en-GB': 'Open a ticket.',
+            'en-US': 'Open a ticket.',
+            'es-ES': 'Abre un ticket.',
+            fr: 'Ouvrir un ticket.',
+            nl: 'Open een ticket.',
+            'pt-BR': 'Abra um ticket.',
+            'zh-CN': '打开一个工单。',
+            ja: 'チケットを開く。',
+            'zh-TW': '開啟一個工單。',
+            ko: '티켓을 열다.',
+        }),
     async execute(interaction) {
         const categoryName = 'TICKETS';
         const channelName = `ticket-${Math.floor(Math.random() * 10000)}`;

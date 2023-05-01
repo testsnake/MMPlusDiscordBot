@@ -19,7 +19,20 @@ const textAdmin = fs.readFileSync(filePathAdmin, 'utf8')
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
-		.setDescription('Gives a list of avalible commands.'),
+		.setDescription('Gives a list of available commands.')
+		.setDescriptionLocalizations({
+			de: 'Gibt eine Liste der verfügbaren Befehle aus.',
+			'en-GB': 'Gives a list of available commands.',
+			'en-US': 'Gives a list of available commands.',
+			'es-ES': 'Proporciona una lista de comandos disponibles.',
+			fr: 'Fournit une liste des commandes disponibles.',
+			nl: 'Geeft een lijst van beschikbare commando\'s.',
+			'pt-BR': 'Fornece uma lista de comandos disponíveis.',
+			'zh-CN': '提供可用命令的列表。',
+			ja: '利用可能なコマンドのリストを提供します。',
+			'zh-TW': '提供可用命令的列表。',
+			ko: '사용 가능한 명령어 목록을 제공합니다.',
+		}),
 	async execute(interaction) {
 		let helpEmbed = new EmbedBuilder()
 			.setColor(0x86cecb)

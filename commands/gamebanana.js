@@ -6,12 +6,38 @@ const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('gamebanana')
-    .setDescription('Searches for a mod in the MegaMix+ section of Gamebanana')
-    .addStringOption(option =>
-        option.setName('query')
-        .setDescription('The mod name or submission ID to search for')
-        .setRequired(true)),
+        .setName('gamebanana')
+        .setDescription('Searches for a mod in the MegaMix+ section of Gamebanana')
+        .setDescriptionLocalizations({
+            de: 'Sucht nach einem Mod im MegaMix+-Bereich von Gamebanana',
+            'en-GB': 'Searches for a mod in the MegaMix+ section of Gamebanana',
+            'en-US': 'Searches for a mod in the MegaMix+ section of Gamebanana',
+            'es-ES': 'Busca un mod en la sección MegaMix+ de Gamebanana',
+            fr: 'Recherche un mod dans la section MegaMix+ de Gamebanana',
+            nl: 'Zoekt naar een mod in het MegaMix+-gedeelte van Gamebanana',
+            'pt-BR': 'Procura um mod na seção MegaMix+ do Gamebanana',
+            'zh-CN': '在 Gamebanana 的 MEGA39\'s+ 部分搜索模组',
+            ja: 'GamebananaのMEGA39\'s+セクションでModを検索します',
+            'zh-TW': '在 Gamebanana 的 MEGA39\'s+ 區域搜尋模組',
+            ko: 'Gamebanana의 MEGA39\'s+ 섹션에서 모드 검색',
+        })
+        .addStringOption(option =>
+            option.setName('query')
+                .setDescription('The mod name or submission ID to search for')
+                .setDescriptionLocalizations({
+                    de: 'Der Mod-Name oder die Einreichungs-ID, nach der gesucht werden soll',
+                    'en-GB': 'The mod name or submission ID to search for',
+                    'en-US': 'The mod name or submission ID to search for',
+                    'es-ES': 'El nombre del mod o la ID de la presentación que se va a buscar',
+                    fr: 'Le nom du mod ou l\'ID de la soumission à rechercher',
+                    nl: 'De modnaam of inzendings-ID om naar te zoeken',
+                    'pt-BR': 'O nome do mod ou o ID de submissão a ser procurado',
+                    'zh-CN': '要搜索的模组名称或提交 ID',
+                    ja: '検索するModの名前または提出ID',
+                    'zh-TW': '要搜尋的模組名稱或提交 ID',
+                    ko: '검색할 모드 이름 또는 제출 ID',
+                })
+                .setRequired(true)),
     async execute(interaction) {
         const query = interaction.options.getString('query');
         await interaction.deferReply();

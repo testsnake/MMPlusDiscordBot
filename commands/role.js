@@ -4,9 +4,35 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('role')
         .setDescription('Gives you a role')
+        .setDescriptionLocalizations({
+            de: 'Gibt Ihnen eine Rolle',
+            'en-GB': 'Gives you a role',
+            'en-US': 'Gives you a role',
+            'es-ES': 'Te da un rol',
+            fr: 'Vous donne un rôle',
+            nl: 'Geeft je een rol',
+            'pt-BR': 'Dá-lhe um papel',
+            'zh-CN': '给你一个角色',
+            ja: '役割を与えます',
+            'zh-TW': '給你一個角色',
+            ko: '역할을 부여합니다',
+        })
         .addStringOption(option =>
-            option.setName('role')
-                .setDescription('The role you want to give yourself')
+                option.setName('role')
+                    .setDescription('The role you want to give yourself')
+                    .setDescriptionLocalizations({
+                        de: 'Die Rolle, die Sie sich selbst geben möchten',
+                        'en-GB': 'The role you want to give yourself',
+                        'en-US': 'The role you want to give yourself',
+                        'es-ES': 'El rol que quieres darte a ti mismo',
+                        fr: 'Le rôle que vous voulez vous donner',
+                        nl: 'De rol die je jezelf wilt geven',
+                        'pt-BR': 'O papel que você quer dar a si mesmo',
+                        'zh-CN': '你想赋予自己的角色',
+                        ja: '自分に与えたい役割',
+                        'zh-TW': '你想給自己的角色',
+                        ko: '자신에게 부여하려는 역할',
+                    })
                 .setRequired(true)
                 .addChoices(
                     { name: 'Event Ping', value: '1102399054656315523' },

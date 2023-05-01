@@ -12,8 +12,45 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('Ban a user from the server.')
-        .addUserOption(option => option.setName('user').setDescription('The user to ban.').setRequired(true))
-        .addStringOption(option => option.setName('reason').setDescription('The reason for the ban.').setRequired(false)),
+        .setDescriptionLocalizations({
+            de: 'Bannt einen Benutzer vom Server.',
+            'en-GB': 'Ban a user from the server.',
+            'en-US': 'Ban a user from the server.',
+            'es-ES': 'Prohibir a un usuario del servidor.',
+            fr: 'Bannir un utilisateur du serveur.',
+            nl: 'Ban een gebruiker van de server.',
+            'pt-BR': 'Banir um usuário do servidor.',
+            'zh-CN': '将用户从服务器中封禁。',
+            ja: 'サーバーからユーザーをBANします。',
+            'zh-TW': '將用戶從伺服器中封禁。',
+            ko: '서버에서 사용자를 밴합니다.',
+        })
+        .addUserOption(option => option.setName('user').setDescription('The user to ban.').setDescriptionLocalizations({
+            de: 'Der Benutzer, der gebannt werden soll.',
+            'en-GB': 'The user to ban.',
+            'en-US': 'The user to ban.',
+            'es-ES': 'El usuario a prohibir.',
+            fr: 'L\'utilisateur à bannir.',
+            nl: 'De gebruiker om te bannen.',
+            'pt-BR': 'O usuário a ser banido.',
+            'zh-CN': '要封禁的用户。',
+            ja: 'BANするユーザー。',
+            'zh-TW': '要封禁的用戶。',
+            ko: '밴할 사용자.',
+        }).setRequired(true))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for the ban.').setDescriptionLocalizations({
+            de: 'Der Grund für das Verbot.',
+            'en-GB': 'The reason for the ban.',
+            'en-US': 'The reason for the ban.',
+            'es-ES': 'La razón de la prohibición.',
+            fr: 'La raison de l\'interdiction.',
+            nl: 'De reden voor de ban.',
+            'pt-BR': 'O motivo do banimento.',
+            'zh-CN': '封禁的原因。',
+            ja: 'BANの理由。',
+            'zh-TW': '封禁的原因。',
+            ko: '밴 사유.',
+        }).setRequired(false)),
     async execute(interaction) {
         const user = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason') || 'No reason provided';
