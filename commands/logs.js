@@ -6,6 +6,32 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('logs')
         .setDescription('Sends recent logs')
+        .setDescriptionLocalizations({
+            de: 'Sendet die neuesten Logs',
+            'en-GB': 'Sends recent logs',
+            'en-US': 'Sends recent logs',
+            'es-ES': 'Envía registros recientes',
+            fr: 'Envoie les journaux récents',
+            nl: 'Stuurt recente logs',
+            'pt-BR': 'Envia logs recentes',
+            'zh-CN': '发送最近的日志',
+            ja: '最近のログを送信します',
+            'zh-TW': '發送最近的日誌',
+            ko: '최근 로그를 보냅니다',
+        })
+        .setNameLocalizations({
+            ja: 'ログ',
+            ko: '로그',
+            'zh-TW': '日誌',
+            'zh-CN': '日志',
+            "en-GB": "logs",
+            "en-US": "logs",
+            "es-ES": "logs",
+            "fr": "logs",
+            "nl": "logs",
+            "pt-BR": "logs",
+            "de": "logs",
+        })
         .addIntegerOption(option => option.setName('count').setDescription('The number of logs to send.').setRequired(false)),
     async execute(interaction) {
         const count = interaction.options.getInteger('count') || 10;

@@ -4,7 +4,23 @@ const { ChannelType, PermissionsBitField } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ticket-modify')
+        .setNameLocalizations({
+            'es-ES': 'ticket-modificar',
+            fr: 'ticket-modifier',
+            'zh-CN': 'ticket-modify',
+            ja: 'ticket-modify',
+            'zh-TW': 'ticket-modify',
+            ko: 'ticket-modify',
+        })
         .setDescription('Modify a ticket channel.')
+        .setDescriptionLocalizations({
+            'es-ES': 'Modifica un canal de ticket.',
+            fr: 'Modifie un canal de ticket.',
+            'zh-CN': '修改票务频道。',
+            ja: 'チケットチャンネルを変更します。',
+            'zh-TW': '修改票務頻道。',
+            ko: '티켓 채널을 수정합니다.',
+        })
         .addStringOption(option =>
             option.setName('action')
                 .setDescription('Action to perform')

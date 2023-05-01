@@ -4,6 +4,19 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('purge')
     .setDescription('Deletes the last X messages in the channel.')
+      .setDescriptionLocalizations({
+        de: 'Löscht die letzten X Nachrichten im Kanal.',
+        'en-GB': 'Deletes the last X messages in the channel.',
+        'en-US': 'Deletes the last X messages in the channel.',
+        'es-ES': 'Elimina los últimos X mensajes del canal.',
+        fr: 'Supprime les X derniers messages du canal.',
+        nl: 'Verwijdert de laatste X berichten in het kanaal.',
+        'pt-BR': 'Exclui as últimas X mensagens no canal.',
+        'zh-CN': '删除频道中的最后 X 条消息。',
+        ja: 'チャンネルの最後の X メッセージを削除します。',
+        'zh-TW': '刪除頻道中的最後 X 條消息。',
+        ko: '채널에서 마지막 X 개의 메시지를 삭제합니다.',
+      })
     .addIntegerOption(option => option.setName('count').setDescription('The number of messages to delete (max 100).').setRequired(true)),
   async execute(interaction) {
     try {

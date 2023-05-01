@@ -17,6 +17,20 @@ module.exports = {
             ja: 'チケットを開く。',
             'zh-TW': '開啟一個工單。',
             ko: '티켓을 열다.',
+        })
+        .setNameLocalizations({
+            ja: 'チケット',
+            ko: '티켓',
+            'zh-TW': '工單',
+            'zh-CN': '工单',
+            "pt-BR": "ticket",
+            nl: "ticket",
+            fr: "ticket",
+            "es-ES": "ticket",
+            "en-US": "ticket",
+            "en-GB": "ticket",
+            de: "ticket",
+
         }),
     async execute(interaction) {
         const categoryName = 'TICKETS';

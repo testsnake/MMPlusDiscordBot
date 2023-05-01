@@ -11,6 +11,19 @@ const loggingChannel = '1087810388936114316';
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ban')
+        .setNameLocalizations({
+            de: 'ban',
+            'en-GB': 'ban',
+            'en-US': 'ban',
+            'es-ES': 'prohibir',
+            fr: 'bannir',
+            nl: 'ban',
+            'pt-BR': 'banir',
+            'zh-CN': '禁止',
+            ja: '禁止',
+            'zh-TW': '禁止',
+            ko: '금지',
+        })
         .setDescription('Ban a user from the server.')
         .setDescriptionLocalizations({
             de: 'Bannt einen Benutzer vom Server.',
@@ -25,7 +38,23 @@ module.exports = {
             'zh-TW': '將用戶從伺服器中封禁。',
             ko: '서버에서 사용자를 밴합니다.',
         })
-        .addUserOption(option => option.setName('user').setDescription('The user to ban.').setDescriptionLocalizations({
+        .addUserOption(option => option
+            .setName('user')
+            .setDescription('The user to ban.')
+            .setNameLocalizations({
+            de: 'benutzer',
+            'en-GB': 'user',
+            'en-US': 'user',
+            'es-ES': 'usuario',
+            fr: 'utilisateur',
+            nl: 'gebruiker',
+            'pt-BR': 'do-utilizador',
+            'zh-CN': '用户',
+            ja: 'ユーザー',
+            'zh-TW': '用戶',
+            ko: '사용자',
+            })
+            .setDescriptionLocalizations({
             de: 'Der Benutzer, der gebannt werden soll.',
             'en-GB': 'The user to ban.',
             'en-US': 'The user to ban.',
@@ -37,7 +66,7 @@ module.exports = {
             ja: 'BANするユーザー。',
             'zh-TW': '要封禁的用戶。',
             ko: '밴할 사용자.',
-        }).setRequired(true))
+            }).setRequired(true))
         .addStringOption(option => option.setName('reason').setDescription('The reason for the ban.').setDescriptionLocalizations({
             de: 'Der Grund für das Verbot.',
             'en-GB': 'The reason for the ban.',

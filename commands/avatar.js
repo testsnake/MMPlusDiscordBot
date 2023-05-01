@@ -11,6 +11,7 @@ module.exports = {
             ja: 'アバター',
             'zh-TW': '頭像',
             ko: '아바타',
+
         })
         .setDescription('Get the avatar of a user.')
         .setDescriptionLocalizations({

@@ -21,6 +21,12 @@ module.exports = {
             'zh-TW': '在 Gamebanana 的 MEGA39\'s+ 區域搜尋模組',
             ko: 'Gamebanana의 MEGA39\'s+ 섹션에서 모드 검색',
         })
+        .setNameLocalizations({
+            ja: 'gamebananaで検索する',
+            ko: 'gamebanana에서검색',
+            'zh-CN': '在gamebanana上搜索',
+            'zh-TW': '在gamebanana上搜尋',
+        })
         .addStringOption(option =>
             option.setName('query')
                 .setDescription('The mod name or submission ID to search for')

@@ -4,12 +4,16 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('backup')
 		.setNameLocalizations({
-			'es-ES': 'backup_seguridad',
-			fr: 'backup_sauvegarde',
-			'zh-CN': 'backup_备份',
-			ja: 'backup_バックアップ',
-			'zh-TW': 'backup_備份',
-			ko: 'backup_백업',
+			de: 'sicherung',
+			'en-GB': 'backup',
+			'en-US': 'backup',
+			fr: 'sauvegarde',
+			nl: 'back-up',
+			'pt-BR': 'cópia-de-segurança',
+			'zh-CN': '备份',
+			ja: 'バックアップ',
+			'zh-TW': '備份',
+			ko: '백업',
 		})
 		.setDescription('Tutorial on backing up MM+ save data')
 		.setDescriptionLocalizations({

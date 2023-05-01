@@ -26,6 +26,19 @@ function parseDuration(durationStr) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('timeout')
+        .setNameLocalizations({
+            ja: 'タイムアウト',
+            'zh-TW': '超時',
+            ko: '타임아웃',
+            "zh-CN": "超时",
+            'pt-BR': 'tempolimite',
+            nl: 'time-out',
+            fr: 'tempsmort',
+            "es-ES": 'tiempofuera',
+            'en-US': 'timeout',
+            'en-GB': 'mute',
+            de: 'timeout'
+        })
         .setDescription('Gibt einem Benutzer eine Auszeit für eine angegebene Dauer.')
         .setDescriptionLocalizations({
             de: 'Gibt einem Benutzer eine Auszeit für eine angegebene Dauer.',

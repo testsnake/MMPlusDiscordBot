@@ -4,6 +4,13 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('dml')
         .setDescription('Diva Mod Loader link')
+        .setNameLocalizations({
+            ja: 'dmlリンク',
+            ko: 'dml링크',
+            'zh-TW': 'dml連結',
+            'zh-CN': 'dml链接',
+
+        })
         .setDescriptionLocalizations({
             de: 'Diva Mod Loader Link',
             'en-GB': 'Diva Mod Loader link',

@@ -58,6 +58,20 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('setcolorhex')
+                .setNameLocalizations({
+                    de: 'setcolorhex',
+                    'en-GB': 'setcolourhex',
+                    'en-US': 'setcolorhex',
+                    'es-ES': 'establecercolorhex',
+                    fr: 'setcouleurhex',
+                    nl: 'setkleurhex',
+                    'pt-BR': 'definircorhex',
+                    'zh-CN': '设置颜色十六进制值',
+                    ja: '色の16進数値を設定する',
+                    'zh-TW': '設置顏色十六進制值',
+                    ko: '색상16진수값설정',
+
+                })
                 .setDescription('Changes the color of your booster role with hex')
                 .setDescriptionLocalizations({
                     de: 'Ändert die Farbe deiner Booster-Rolle mit Hex.',
@@ -74,6 +88,19 @@ module.exports = {
                 })
                 .addStringOption(option =>
                     option.setName('color')
+                        .setNameLocalizations({
+                            de: 'farbe',
+                            'en-GB': 'colour',
+                            'en-US': 'color',
+                            'es-ES': 'color',
+                            fr: 'couleur',
+                            nl: 'kleur',
+                            'pt-BR': 'cor',
+                            'zh-CN': '颜色',
+                            ja: '色',
+                            'zh-TW': '顏色',
+                            ko: '색깔',
+                        })
                         .setDescription('The color to change to. Format #RRGGBB.')
                         .setDescriptionLocalizations({
                             de: 'Die Farbe, zu der gewechselt werden soll. Format #RRGGBB.',
@@ -94,6 +121,19 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('setcolor')
+                .setNameLocalizations({
+                    de: 'setcolor',
+                    'en-GB': 'setcolour',
+                    'en-US': 'setcolor',
+                    'es-ES': 'establecercolor',
+                    fr: 'setcouleur',
+                    nl: 'setkleur',
+                    'pt-BR': 'definircor',
+                    'zh-CN': '设置颜色',
+                    ja: '色を設定する',
+                    'zh-TW': '設置顏色',
+                    ko: '색상설정',
+                })
                 .setDescription('Changes the color of your booster role.')
                     .setDescriptionLocalizations({
                         de: 'Ändert die Farbe deiner Booster-Rolle.',
@@ -153,6 +193,7 @@ module.exports = {
                                 {name: 'Gumi Green', value: 'gumigreen'}
                             )
 
+
                     )
         )
         .addSubcommand(subcommand =>
@@ -166,10 +207,10 @@ module.exports = {
                     fr: 'nom-ensemble',
                     nl: 'setname',
                     'pt-BR': 'definir-nome',
-                    'zh-CN': 'setname',
-                    ja: 'setname',
-                    'zh-TW': 'setname',
-                    ko: 'setname',
+                    'zh-CN': '设置名称',
+                    ja: '名前を設定する',
+                    'zh-TW': '設置名稱',
+                    ko: '이름설정',
                 })
                 .setDescription('Changes the name of your booster role.')
                 .setDescriptionLocalizations({
@@ -324,6 +365,20 @@ module.exports = {
                     ja: 'ブースターロールを削除します。',
                     'zh-TW': '刪除您的助推器角色。',
                     ko: '부스터 역할 삭제.',
+                })
+                .setNameLocalizations({
+                    de: 'löschen',
+                    'en-GB': 'delete',
+                    'en-US': 'delete',
+                    'es-ES': 'eliminar',
+                    fr: 'supprimer',
+                    nl: 'verwijderen',
+                    'pt-BR': 'excluir',
+                    'zh-CN': '删除',
+                    ja: '削除',
+                    'zh-TW': '刪除',
+                    ko: '삭제',
+
                 })
         ),
 

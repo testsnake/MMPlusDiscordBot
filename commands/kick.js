@@ -11,6 +11,32 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
         .setDescription('Kick a user from the server.')
+        .setNameLocalizations({
+            de: 'kick',
+            'en-GB': 'kick',
+            'en-US': 'kick',
+            'es-ES': 'expulsar',
+            fr: 'expulser',
+            nl: 'schop',
+            'pt-BR': 'expulsar',
+            'zh-CN': '踢',
+            ja: 'キック',
+            'zh-TW': '踢',
+            ko: '킥',
+        })
+        .setDescriptionLocalizations({
+            de: 'Kickt einen Benutzer vom Server.',
+            'en-GB': 'Kick a user from the server.',
+            'en-US': 'Kick a user from the server.',
+            'es-ES': 'Expulsa a un usuario del servidor.',
+            fr: 'Expulsez un utilisateur du serveur.',
+            nl: 'Schop een gebruiker van de server.',
+            'pt-BR': 'Expulse um usuário do servidor.',
+            'zh-CN': '从服务器中踢出用户。',
+            ja: 'サーバーからユーザーをキックします。',
+            'zh-TW': '從伺服器中踢出用戶。',
+            ko: '사용자를 서버에서 킥합니다.',
+        })
         .addUserOption(option => option.setName('user').setDescription('The user to kick.').setRequired(true))
         .addStringOption(option => option.setName('reason').setDescription('The reason for the kick.').setRequired(false)),
     async execute(interaction) {

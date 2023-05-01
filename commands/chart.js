@@ -3,6 +3,12 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('chart')
+		.setNameLocalizations({
+			ja: '譜面',
+			ko: '차트',
+			'zh-TW': '譜面',
+			'zh-CN': '谱面',
+		})
 		.setDescription('Comfy Charting Manual')
 		.setDescriptionLocalizations({
 			de: 'Comfy Charting-Handbuch',

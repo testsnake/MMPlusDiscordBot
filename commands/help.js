@@ -21,17 +21,30 @@ module.exports = {
 		.setName('help')
 		.setDescription('Gives a list of available commands.')
 		.setDescriptionLocalizations({
-			de: 'Gibt eine Liste der verfügbaren Befehle aus.',
+			de: 'Gibt eine Liste der verfügbaren Befehle aus. (Engl.)',
 			'en-GB': 'Gives a list of available commands.',
 			'en-US': 'Gives a list of available commands.',
-			'es-ES': 'Proporciona una lista de comandos disponibles.',
-			fr: 'Fournit une liste des commandes disponibles.',
-			nl: 'Geeft een lijst van beschikbare commando\'s.',
-			'pt-BR': 'Fornece uma lista de comandos disponíveis.',
-			'zh-CN': '提供可用命令的列表。',
-			ja: '利用可能なコマンドのリストを提供します。',
-			'zh-TW': '提供可用命令的列表。',
-			ko: '사용 가능한 명령어 목록을 제공합니다.',
+			fr: 'Donne une liste des commandes disponibles. (Angl.)',
+			nl: 'Geeft een lijst van beschikbare commando\'s. (Engels)',
+			'pt-BR': 'Fornece uma lista de comandos disponíveis. (Inglês)',
+			'zh-CN': '提供可用命令的列表。 （英语）',
+			ja: '使用可能なコマンドのリストを提供します。 （英語）',
+			'zh-TW': '提供可用命令的列表。 （英語）',
+			ko: '사용 가능한 명령 목록을 제공합니다. (영어)',
+			"es-ES": "Proporciona una lista de comandos disponibles. (Inglés)"
+		})
+		.setNameLocalizations({
+			de: 'hilfe',
+			'en-GB': 'help',
+			'en-US': 'help',
+			fr: 'aide',
+			nl: 'help',
+			'pt-BR': 'ajuda',
+			'zh-CN': '帮助',
+			ja: 'ヘルプ',
+			'zh-TW': '幫助',
+			ko: '도움말',
+			"es-ES": "ayuda"
 		}),
 	async execute(interaction) {
 		let helpEmbed = new EmbedBuilder()

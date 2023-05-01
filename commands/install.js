@@ -16,6 +16,12 @@ module.exports = {
 			ja: 'MEGA39\'s+モッドインストールガイド',
 			'zh-TW': 'MEGA39\'s+模組安裝指南',
 			ko: 'MEGA39\'s+ 모드 설치 가이드',
+		})
+		.setNameLocalizations({
+			ja: 'インストール',
+			ko: '설치',
+			'zh-TW': '安裝',
+			'zh-CN': '安装',
 		}),
 	async execute(interaction) {
 		await interaction.reply({ content: 'https://gamebanana.com/tuts/15379'});

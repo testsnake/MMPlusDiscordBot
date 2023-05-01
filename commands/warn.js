@@ -6,6 +6,20 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('warn')
         .setDescription('Warns a user.')
+        .setNameLocalizations({
+            de: 'verwarnen',
+            'en-GB': 'warn',
+            'en-US': 'warn',
+            'es-ES': 'advertir',
+            fr: 'avertir',
+            nl: 'waarschuwen',
+            'pt-BR': 'avisar',
+            'zh-CN': '警告',
+            ja: '警告',
+            'zh-TW': '警告',
+            ko: '경고',
+
+            })
         .setDescriptionLocalizations({
             de: 'Verwarnt einen Benutzer.',
             'en-GB': 'Warns a user.',
