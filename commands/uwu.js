@@ -21,9 +21,6 @@ module.exports = {
 		.addStringOption(option =>
 			option.setName('text')
 				.setNameLocalizations({
-					de: 'Text',
-					'en-GB': 'text',
-					'en-US': 'text',
 					'es-ES': 'texto',
 					fr: 'texte',
 					nl: 'tekst',

@@ -3,19 +3,6 @@ const { SlashCommandBuilder, discord } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('role')
-        .setNameLocalizations({
-            de: 'Rolle',
-            'en-GB': 'Role',
-            'en-US': 'Role',
-            'es-ES': 'Rol',
-            fr: 'Rôle',
-            nl: 'Rol',
-            'pt-BR': 'Papel',
-            'zh-CN': '角色',
-            ja: '役割',
-            'zh-TW': '角色',
-            ko: '역할',
-        })
         .setDescription('Gives you a role')
         .setDescriptionLocalizations({
             de: 'Gibt Ihnen eine Rolle',
@@ -33,13 +20,11 @@ module.exports = {
         .addStringOption(option =>
             option.setName('role')
                 .setNameLocalizations({
-                    de: 'Rolle',
-                    'en-GB': 'Role',
-                    'en-US': 'Role',
-                    'es-ES': 'Rol',
-                    fr: 'Rôle',
-                    nl: 'Rol',
-                    'pt-BR': 'Papel',
+                    de: 'rolle',
+                    'es-ES': 'rol',
+                    fr: 'rôle',
+                    nl: 'rol',
+                    'pt-BR': 'papel',
                     'zh-CN': '角色',
                     ja: '役割',
                     'zh-TW': '角色',

@@ -2,18 +2,13 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
+		.setName('clap')
+		.setDescription('Adds 👏 Clap 👏 Emoji 👏 in 👏 between 👏 each 👏 word.')
 		.setNameLocalizations({
-			de: 'Klatschen',
-			'en-GB': 'Clap',
-			'en-US': 'Clap',
-			'es-ES': 'Aplaudir',
-			fr: 'Applaudir',
-			nl: 'Klap',
-			'pt-BR': 'Palmas',
-			'zh-CN': '鼓掌',
-			ja: '拍手',
-			'zh-TW': '鼓掌',
-			ko: '박수',
+			'zh-CN': 'clap_鼓掌',
+			ja: 'clap_拍手',
+			'zh-TW': 'clap_鼓掌',
+			ko: 'clap_박수',
 		})
 		.setDescriptionLocalizations({
 			de: 'Fügt 👏 Klatsch-Emoji 👏 zwischen 👏 jedes 👏 Wort 👏 ein.',
@@ -31,13 +26,10 @@ module.exports = {
 		.addStringOption(option =>
 				option.setName('text')
 					.setNameLocalizations({
-						de: 'Text',
-						'en-GB': 'Text',
-						'en-US': 'Text',
-						'es-ES': 'Texto',
-						fr: 'Texte',
-						nl: 'Tekst',
-						'pt-BR': 'Texto',
+						'es-ES': 'texto',
+						fr: 'texte',
+						nl: 'tekst',
+						'pt-BR': 'texto',
 						'zh-CN': '文本',
 						ja: 'テキスト',
 						'zh-TW': '文字',

@@ -54,19 +54,6 @@ async function addMessageToStarboard(message, starboardChannelId) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('addtostarboard')
-        .setNameLocalizations({
-            de: 'Zum Starboard hinzufügen',
-            'en-GB': 'Add to starboard',
-            'en-US': 'Add to starboard',
-            'es-ES': 'Añadir al tablón de estrellas',
-            fr: 'Ajouter au tableau des étoiles',
-            nl: 'Toevoegen aan de sterrenplank',
-            'pt-BR': 'Adicionar à prancha de estrelas',
-            'zh-CN': '添加到明星板',
-            ja: 'スターボードに追加する',
-            'zh-TW': '添加到明星板',
-            ko: '스타보드에 추가하기',
-        })
         .setDescription('Manually add a message to the starboard')
         .setDescriptionLocalizations({
             de: 'Fügen Sie eine Nachricht manuell zum Starboard hinzu',
@@ -84,13 +71,13 @@ module.exports = {
         .addChannelOption(option => option
             .setName('channel')
             .setNameLocalizations({
-                de: 'Kanal',
-                'en-GB': 'Channel',
-                'en-US': 'Channel',
-                'es-ES': 'Canal',
-                fr: 'Canal',
-                nl: 'Kanaal',
-                'pt-BR': 'Canal',
+                de: 'kanal',
+                'en-GB': 'channel',
+                'en-US': 'channel',
+                'es-ES': 'canal',
+                fr: 'canal',
+                nl: 'kanaal',
+                'pt-BR': 'canal',
                 'zh-CN': '频道',
                 ja: 'チャンネル',
                 'zh-TW': '頻道',
@@ -114,17 +101,13 @@ module.exports = {
         .addStringOption(option => option
             .setName('message_id')
             .setNameLocalizations({
-                de: 'Nachricht-ID',
-                'en-GB': 'Message ID',
-                'en-US': 'Message ID',
-                'es-ES': 'ID del mensaje',
-                fr: 'ID du message',
-                nl: 'Bericht-ID',
-                'pt-BR': 'ID da mensagem',
-                'zh-CN': '消息 ID',
-                ja: 'メッセージID',
-                'zh-TW': '訊息 ID',
-                ko: '메시지 ID',
+                'es-ES': 'mensaje_id',
+                nl: 'bericht_id',
+                'pt-BR': 'mensagem_id',
+                'zh-CN': '消息_id',
+                ja: 'メッセージ_id',
+                'zh-TW': '訊息_id',
+                ko: '메시지_id',
             })
             .setDescription('The ID of the message to be added to the starboard')
             .setDescriptionLocalizations({

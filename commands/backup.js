@@ -4,23 +4,18 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('backup')
 		.setNameLocalizations({
-			de: 'Sicherungskopie',
-			'en-GB': 'Backup',
-			'en-US': 'Backup',
-			'es-ES': 'Copia de seguridad',
-			fr: 'Sauvegarde',
-			nl: 'Back-up',
-			'pt-BR': 'Backup',
-			'zh-CN': '备份',
-			ja: 'バックアップ',
-			'zh-TW': '備份',
-			ko: '백업',
+			'es-ES': 'backup_seguridad',
+			fr: 'backup_sauvegarde',
+			'zh-CN': 'backup_备份',
+			ja: 'backup_バックアップ',
+			'zh-TW': 'backup_備份',
+			ko: 'backup_백업',
 		})
-		.setDescription('Tutorial on backing up MM+ save data (English only)')
+		.setDescription('Tutorial on backing up MM+ save data')
 		.setDescriptionLocalizations({
 			de: 'Tutorial zur Sicherung von MM+ Speicherdaten (English only)',
-			'en-GB': 'Tutorial on backing up MM+ save data (English only)',
-			'en-US': 'Tutorial on backing up MM+ save data (English only)',
+			'en-GB': 'Tutorial on backing up MM+ save data',
+			'en-US': 'Tutorial on backing up MM+ save data',
 			'es-ES': 'Tutorial sobre cómo hacer una copia de seguridad de los datos guardados de MM+ (solo en inglés)',
 			fr: 'Tutoriel sur la sauvegarde des données de MM+ (en anglais uniquement)',
 			nl: 'Tutorial over het maken van een back-up van MM+ save data (alleen in het Engels)',

@@ -7,17 +7,10 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('avatar')
         .setNameLocalizations({
-            de: 'Avatar',
-            'en-GB': 'Avatar',
-            'en-US': 'Avatar',
-            'es-ES': 'Avatar',
-            fr: 'Avatar',
-            nl: 'Avatar',
-            'pt-BR': 'Avatar',
-            'zh-CN': '头像',
-            ja: 'アバター',
-            'zh-TW': '頭像',
-            ko: '아바타',
+            'zh-CN': 'avatar_头像',
+            ja: 'avatar_アバター',
+            'zh-TW': 'avatar_頭像',
+            ko: 'avatar_아바타',
         })
         .setDescription('Get the avatar of a user.')
         .setDescriptionLocalizations({
@@ -37,13 +30,13 @@ module.exports = {
             option
                 .setName('user')
                 .setNameLocalizations({
-                    de: 'Benutzer',
-                    'en-GB': 'User',
-                    'en-US': 'User',
-                    'es-ES': 'Usuario',
-                    fr: 'Utilisateur',
-                    nl: 'Gebruiker',
-                    'pt-BR': 'Usuário',
+                    de: 'benutzer',
+                    'en-GB': 'user',
+                    'en-US': 'user',
+                    'es-ES': 'usuario',
+                    fr: 'utilisateur',
+                    nl: 'gebruiker',
+                    'pt-BR': 'usuário',
                     'zh-CN': '用户',
                     ja: 'ユーザー',
                     'zh-TW': '用戶',

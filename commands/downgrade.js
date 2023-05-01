@@ -18,17 +18,12 @@ module.exports = {
 			ko: 'M39+ 다운그레이드 튜토리얼',
 		})
 		.setNameLocalizations({
-			de: 'Downgrade',
-			'en-GB': 'Downgrade',
-			'en-US': 'Downgrade',
-			'es-ES': 'Degradar',
-			fr: 'Rétrograder',
-			nl: 'Downgrade',
-			'pt-BR': 'Downgrade',
-			'zh-CN': '降级',
-			ja: 'ダウングレード',
-			'zh-TW': '降級',
-			ko: '다운그레이드',
+			'es-ES': 'downgrade_degradar',
+			fr: 'downgrade_rétrograder',
+			'zh-CN': 'downgrade_降级',
+			ja: 'downgrade_ダウングレード',
+			'zh-TW': 'downgrade_降級',
+			ko: 'downgrade_다운그레이드',
 		}),
 	async execute(interaction) {
 		await interaction.reply({ content: ' https://gamebanana.com/tuts/15371 '});
