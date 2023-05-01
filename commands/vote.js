@@ -4,14 +4,14 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('vote')
         .setNameLocalizations({
-            'es-ES': 'vote_votar',
-            fr: 'vote_voter',
-            nl: 'vote_stemmen',
-            'pt-BR': 'vote_votar',
-            'zh-CN': 'vote_投票',
-            ja: 'vote_投票',
-            'zh-TW': 'vote_投票',
-            ko: 'vote_투표',
+            'es-ES': 'votar',
+            fr: 'voter',
+            nl: 'stemmen',
+            'pt-BR': 'votar',
+            'zh-CN': '投票',
+            ja: '投票',
+            'zh-TW': '投票',
+            ko: '투표',
         })
         .setDescription('vote for the current event')
         .setDescriptionLocalizations({

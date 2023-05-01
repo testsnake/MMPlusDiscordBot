@@ -7,10 +7,10 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('avatar')
         .setNameLocalizations({
-            'zh-CN': 'avatar_头像',
-            ja: 'avatar_アバター',
-            'zh-TW': 'avatar_頭像',
-            ko: 'avatar_아바타',
+            'zh-CN': '头像',
+            ja: 'アバター',
+            'zh-TW': '頭像',
+            ko: '아바타',
         })
         .setDescription('Get the avatar of a user.')
         .setDescriptionLocalizations({

@@ -26,6 +26,21 @@ async function grabSpecialRole(member, lowerBoundId, upperBoundId) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('booster')
+        .setNameLocalizations({
+            de: 'booster',
+            'en-GB': 'booster',
+            'en-US': 'booster',
+            'es-ES': 'impluso',
+            it: 'potenziamento',
+            fr: 'booster',
+            nl: 'booster',
+            'pt-BR': 'impulsionador',
+            'zh-CN': '助推器',
+            ja: 'ブースター',
+            'zh-TW': '助推器',
+            ko: '부스터',
+
+        })
         .setDescription('Manages your booster role.')
         .setDescriptionLocalizations({
             de: 'Verwalte deine Booster-Rolle.',
@@ -137,11 +152,25 @@ module.exports = {
                                 {name: 'Teto Red', value: 'tetored'},
                                 {name: 'Gumi Green', value: 'gumigreen'}
                             )
+
                     )
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('setname')
+                .setName('set name')
+                .setNameLocalizations({
+                    de: 'setze-name',
+                    'en-GB': 'setname',
+                    'en-US': 'setname',
+                    'es-ES': 'establecer-nombre',
+                    fr: 'nom-ensemble',
+                    nl: 'setname',
+                    'pt-BR': 'definir-nome',
+                    'zh-CN': 'setname',
+                    ja: 'setname',
+                    'zh-TW': 'setname',
+                    ko: 'setname',
+                })
                 .setDescription('Changes the name of your booster role.')
                 .setDescriptionLocalizations({
                     de: 'Ändert den Namen deiner Booster-Rolle.',
@@ -177,7 +206,13 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('seticon')
+                .setName('set_icon')
+                .setNameLocalizations({
+                    'zh-CN': '设置图标',
+                    ja: 'アイコンを設定',
+                    'zh-TW': '設置圖示',
+                    ko: '아이콘설정',
+                })
                 .setDescription('Changes the icon of your booster role.')
                 .setDescriptionLocalizations({
                     de: 'Ändert das Symbol Ihrer Booster-Rolle.',
@@ -214,6 +249,19 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('help')
+                .setNameLocalizations({
+                    de: 'hilfe',
+                    'en-GB': 'help',
+                    'en-US': 'help',
+                    'es-ES': 'ayuda',
+                    fr: 'aide',
+                    nl: 'help',
+                    'pt-BR': 'ajuda',
+                    'zh-CN': '帮助',
+                    ja: 'ヘルプ',
+                    'zh-TW': '説明',
+                    ko: '도움말',
+                })
                 .setDescription('Shows help message.')
                 .setDescriptionLocalizations({
                     de: 'Zeigt die Hilfenachricht an.',
@@ -232,6 +280,19 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('create')
+                .setNameLocalizations({
+                    de: 'erstellen',
+                    'en-GB': 'create',
+                    'en-US': 'create',
+                    'es-ES': 'crear',
+                    fr: 'créer',
+                    nl: 'creëren',
+                    'pt-BR': 'criar',
+                    'zh-CN': '创建',
+                    ja: '作成',
+                    'zh-TW': '創建',
+                    ko: '만들기',
+                })
                 .setDescription('Creates a custom booster role.')
                 .setDescriptionLocalizations({
                     de: 'Erstellt eine benutzerdefinierte Booster-Rolle.',

@@ -5,10 +5,10 @@ module.exports = {
 		.setName('clap')
 		.setDescription('Adds 👏 Clap 👏 Emoji 👏 in 👏 between 👏 each 👏 word.')
 		.setNameLocalizations({
-			'zh-CN': 'clap_鼓掌',
-			ja: 'clap_拍手',
-			'zh-TW': 'clap_鼓掌',
-			ko: 'clap_박수',
+			'zh-CN': '鼓掌',
+			ja: '拍手',
+			'zh-TW': '鼓掌',
+			ko: '박수',
 		})
 		.setDescriptionLocalizations({
 			de: 'Fügt 👏 Klatsch-Emoji 👏 zwischen 👏 jedes 👏 Wort 👏 ein.',
