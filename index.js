@@ -578,7 +578,7 @@ async function checkGamebananaAPI(sort) {
 			response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
 			attemptsToReconnect = 0;
 		} catch (err) {
-			addLog(`[Gamebanana error at ${new Date()}]\n${ts(err, 1800)}...`);
+			addLog(`[Gamebanana error 002 at ${new Date()}]\n${ts(err, 1800)}...`);
 			await errMsg(err, "Gamebanana API", `response: ${ts(response, 1800)}...`);
 			if (attemptsToReconnect < 3 || (attemptsToReconnect > 3 && attemptsToReconnect < 10)) {
 				attemptsToReconnect++;
@@ -586,7 +586,7 @@ async function checkGamebananaAPI(sort) {
 				await new Promise(resolve => setTimeout(resolve, 20000));
 				return await checkGamebananaAPI(sort);
 			} else if (attemptsToReconnect === 10) {
-				addLog(`[Gamebanana error at ${new Date()}]\n${ts(err, 1800)}...`);
+				addLog(`[Gamebanana error 001 at ${new Date()}]\n${ts(err, 1800)}...`);
 				addLog(`giving up on reconnecting to Gamebanana API`);
 				await errMsg(err, "Gamebanana API - Given Up", `response: ${ts(response, 1800)}...`);
 				return 0;
@@ -611,10 +611,10 @@ async function checkGamebananaAPI(sort) {
 		} catch (err) {
 			console.log("Error parsing JSON");
 			console.log(err);
-			addLog(`[Gamebanana error at ${new Date()}]\n${ts(JSON.stringify(response), 1800)}...`);
+			addLog(`[Gamebanana error 003 at ${new Date()}]\n${ts(JSON.stringify(response), 1800)}...`);
 			errMsg(err, "Gamebanana API", `response: ${ts(JSON.stringify(response), 1800)}...`);
 
-			return;
+			return 0;
 		}
 		latestTimestampTemp = latestTimestamp;
 		if (data._aRecords && data._aRecords.length > 0) {
