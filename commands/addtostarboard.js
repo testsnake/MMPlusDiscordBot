@@ -68,6 +68,22 @@ module.exports = {
             'zh-TW': '手動將訊息添加到明星板',
             ko: '메시지를 수동으로 스타보드에 추가합니다',
         })
+        // Adds to star board
+        .setNameLocalizations({
+            de: 'zumstarboardhinzufügen',
+            'en-GB': 'addtostarboard',
+            'en-US': 'addtostarboard',
+            'es-ES': 'añadiralatablóndeestrellas',
+            fr: 'ajouteràlatabledesétoiles',
+            nl: 'toevoegenaanhetsterrenbord',
+            'pt-BR': 'adicionaraotabladeestrelas',
+            'zh-CN': '添加到明星板',
+            ja: 'スターボードに追加',
+            'zh-TW': '添加到明星板',
+            ko: '스타 보드에 추가',
+
+
+        })
         .addChannelOption(option => option
             .setName('channel')
             .setNameLocalizations({

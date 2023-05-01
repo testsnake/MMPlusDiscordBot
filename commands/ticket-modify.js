@@ -7,10 +7,10 @@ module.exports = {
         .setNameLocalizations({
             'es-ES': 'ticket-modificar',
             fr: 'ticket-modifier',
-            'zh-CN': 'ticket-modify',
-            ja: 'ticket-modify',
-            'zh-TW': 'ticket-modify',
-            ko: 'ticket-modify',
+            ja: 'チケット変更',
+            ko: '티켓 수정',
+            'zh-CN': '票务修改',
+            'zh-TW': '票務修改',
         })
         .setDescription('Modify a ticket channel.')
         .setDescriptionLocalizations({
