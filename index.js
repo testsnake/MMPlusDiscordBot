@@ -918,7 +918,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				}
 			}
 
-			if (message.content.length > 0) {
+			if (reaction.message.content.length > 0) {
 				starboardEmbed.setDescription(ts(message.content, 4095));
 			}
 
