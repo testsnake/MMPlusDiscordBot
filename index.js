@@ -893,7 +893,7 @@ async function processRecord(modInfo, isNew) {
 client.on('messageReactionAdd', async (reaction, user) => {
 	console.log("---- STARBOARD ----");
 	try {
-		if (reaction.emoji.name === '⭐' && reaction.count === 6) {
+		if (reaction.emoji.name === '⭐' && reaction.count === 4) {
 			console.log("---- STARBOARD ----");
 			// Get the starboard channel
 			const starboardChannel = await client.channels.fetch('1092643863820251196');
