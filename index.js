@@ -892,6 +892,7 @@ async function processRecord(modInfo, isNew) {
 
 client.on('messageReactionAdd', async (reaction, user) => {
 	console.log("---- STARBOARD ----");
+	const message = reaction.message;
 	try {
 		if (reaction.emoji.name === '⭐' && reaction.count === 4) {
 			console.log("---- STARBOARD ----");
