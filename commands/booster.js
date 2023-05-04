@@ -622,7 +622,7 @@ module.exports = {
                                 newIconURL = interaction.options.getString('icon');
 
                                 if (!(await checkFileSize(newIconURL))) {
-                                    return await interaction.reply({content: 'The file size must be under 2048KB.', ephemeral: true});
+                                    return await interaction.editReply({content: 'The file size must be under 2048KB.', ephemeral: true});
                                 }
 
                                 break;
@@ -632,11 +632,11 @@ module.exports = {
 
                                 // Check if the URL ends with .gif, .png, or .jpg
                                 if (!/\.(gif|png|jpg)$/i.test(attachmentURL)) {
-                                    return await interaction.reply({content: 'Invalid image format. Please use a .gif, .png, or .jpg image.', ephemeral: true});
+                                    return await interaction.editReply({content: 'Invalid image format. Please use a .gif, .png, or .jpg image.', ephemeral: true});
                                 }
 
                                 if (!(await checkFileSize(attachmentURL))) {
-                                    return await interaction.reply({content: 'The file size must be under 2048KB.', ephemeral: true});
+                                    return await interaction.editReply({content: 'The file size must be under 2048KB.', ephemeral: true});
                                 }
 
                                 newIconURL = attachmentURL;
