@@ -20,9 +20,18 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 //Logging channel
 const loggingChannelId = '1087810388936114316';
 
-let latestTimestamp = new Date().getTime() / 1000;
 let firstRun = true;
 let attemptsToReconnect = 0;
+
+
+const timestampFile = 'latestTimestamp.txt';
+let latestTimestamp;
+try {
+	latestTimestamp = parseInt(fs.readFileSync(timestampFile, 'utf8'));
+} catch (err) {
+	latestTimestamp = new Date().getTime() / 1000;
+	fs.writeFileSync(timestampFile, latestTimestamp.toString());
+}
 
 
 
@@ -564,6 +573,7 @@ async function checkGamebananaFeed() {
 	await checkGamebananaAPI('new').then(async (newItems) => {
 		await checkGamebananaAPI('updated').then(async (updatedItems) => {
 			latestTimestamp = Math.max(newItems, updatedItems);
+			fs.writeFileSync(timestampFile, latestTimestamp.toString());
 		});
 	});
 
