@@ -506,9 +506,10 @@ client.on(Events.InteractionCreate, async interaction => {
 			// Execute the ban
 			const targetUser = await client.users.fetch(targetUserId);
 			const targetMember = await message.guild.members.fetch(targetUser);
+			await interaction.update({ content: `Banning ${targetMember.nickname}. Requested by ${message.content}, confirmed by ${user.tag}.`, components: [] });
 			await targetMember.ban({ reason: `Banned by ${message.content}, Confirmed by ${user.tag}` });
 
-			await interaction.reply({ content: `Ban confirmed by ${user.tag}.`, components: [] });
+
 
 		} else if (banCancelRegex.test(customId)) {
 			console.log("---- BAN CANCEL ----");

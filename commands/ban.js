@@ -121,12 +121,12 @@ module.exports = {
                     .addComponents(
                         new ButtonBuilder()
                             .setCustomId(`${interaction.user.tag}_ban_confirm_${user.id}`)
-                            .setLabel('Yes')
-                            .setStyle('Success'),
+                            .setLabel('Confirm')
+                            .setStyle('Danger'),
                         new ButtonBuilder()
                             .setCustomId(`${interaction.user.tag}_ban_cancel_${user.id}`)
-                            .setLabel('No')
-                            .setStyle('Danger')
+                            .setLabel('Cancel')
+                            .setStyle('Secondary')
                     );
 
                 // Send the message to the specified channel
