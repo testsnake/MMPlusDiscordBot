@@ -55,68 +55,180 @@ module.exports = {
             'zh-TW': '管理您的助推器角色。',
             ko: '부스터 역할 관리.',
         })
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('setcolorhex')
+        .addSubcommandGroup(group =>
+            group.setName('setroleicon')
                 .setNameLocalizations({
-                    de: 'setcolorhex',
-                    'en-GB': 'setcolourhex',
-                    'en-US': 'setcolorhex',
-                    'es-ES': 'establecercolorhex',
-                    fr: 'setcouleurhex',
-                    nl: 'setkleurhex',
-                    'pt-BR': 'definircorhex',
-                    'zh-CN': '设置颜色十六进制值',
-                    ja: '色の16進数値を設定する',
-                    'zh-TW': '設置顏色十六進制值',
-                    ko: '색상16진수값설정',
-
+                    de: 'setroleicon',
+                    'en-GB': 'setroleicon',
+                    'en-US': 'setroleicon',
+                    'es-ES': 'establecericonoderol',
+                    fr: 'seticonepave',
+                    nl: 'setrolepictogram',
+                    'pt-BR': 'definiriconedepapel',
+                    'zh-CN': '设置角色图标',
+                    ja: '役割アイコンを設定',
+                    'zh-TW': '設置角色圖標',
+                    ko: '역할아이콘설정',
                 })
-                .setDescription('Changes the color of your booster role with hex')
+                .setDescription('Changes the icon of your booster role.')
                 .setDescriptionLocalizations({
-                    de: 'Ändert die Farbe deiner Booster-Rolle mit Hex.',
-                    'en-GB': 'Changes the color of your booster role with hex.',
-                    'en-US': 'Changes the color of your booster role with hex.',
-                    'es-ES': 'Cambia el color de tu rol de potenciador con hex.',
-                    fr: 'Change la couleur de votre rôle de booster avec hex.',
-                    nl: 'Verandert de kleur van je booster-rol met hex.',
-                    'pt-BR': 'Altera a cor do seu papel de impulsionador com hex.',
-                    'zh-CN': '使用十六进制更改助推器角色的颜色。',
-                    ja: 'ブースターロールの色を16進数で変更します。',
-                    'zh-TW': '使用十六進制更改助推器角色的顏色。',
-                    ko: '부스터 역할 색상 변경 (16진수).',
+                    de: 'Ändert das Symbol Ihrer Booster-Rolle.',
+                    'en-GB': 'Changes the icon of your booster role.',
+                    'en-US': 'Changes the icon of your booster role.',
+                    'es-ES': 'Cambia el ícono de tu rol de potenciador.',
+                    fr: 'Change l\'icône de votre rôle de booster.',
+                    nl: 'Verandert het pictogram van je booster-rol.',
+                    'pt-BR': 'Altera o ícone do seu papel de impulsionador.',
+                    'zh-CN': '更改助推器角色的图标。',
+                    ja: 'ブースターロールのアイコンを変更します。',
+                    'zh-TW': '更改助推器角色的圖標。',
+                    ko: '부스터 역할 아이콘 변경.',
                 })
-                .addStringOption(option =>
-                    option.setName('color')
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName('link')
                         .setNameLocalizations({
-                            de: 'farbe',
-                            'en-GB': 'colour',
-                            'en-US': 'color',
-                            'es-ES': 'color',
-                            fr: 'couleur',
-                            nl: 'kleur',
-                            'pt-BR': 'cor',
-                            'zh-CN': '颜色',
-                            ja: '色',
-                            'zh-TW': '顏色',
-                            ko: '색깔',
+                            de: 'link',
+                            'en-GB': 'link',
+                            'en-US': 'link',
+                            'es-ES': 'enlace',
+                            fr: 'lien',
+                            nl: 'link',
+                            'pt-BR': 'link',
+                            'zh-CN': '链接',
+                            ja: 'リンク',
+                            'zh-TW': '連結',
+                            ko: '링크',
                         })
-                        .setDescription('The color to change to. Format #RRGGBB.')
+                        .setDescription('Set icon using a link.')
                         .setDescriptionLocalizations({
-                            de: 'Die Farbe, zu der gewechselt werden soll. Format #RRGGBB.',
-                            'en-GB': 'The color to change to. Format #RRGGBB.',
-                            'en-US': 'The color to change to. Format #RRGGBB.',
-                            'es-ES': 'El color al que cambiar. Formato #RRGGBB.',
-                            fr: 'La couleur à changer. Format #RRGGBB.',
-                            nl: 'De kleur om naar te veranderen. Formaat #RRGGBB.',
-                            'pt-BR': 'A cor para mudar. Formato #RRGGBB.',
-                            'zh-CN': '要更改的颜色。格式 #RRGGBB。',
-                            ja: '変更する色。形式 #RRGGBB。',
-                            'zh-TW': '要更改的顏色。格式 #RRGGBB。',
-                            ko: '변경할 색상. 형식 #RRGGBB.',
+                            de: 'Symbol mit einem Link setzen.',
+                            'en-GB': 'Set icon using a link.',
+                            'en-US': 'Set icon using a link.',
+                            'es-ES': 'Establecer icono utilizando un enlace.',
+                            fr: 'Définir l\'icône en utilisant un lien.',
+                            nl: 'Pictogram instellen met behulp van een link.',
+                            'pt-BR': 'Definir ícone usando um link.',
+                            'zh-CN': '使用链接设置图标。',
+                            ja: 'リンクを使用してアイコンを設定します。',
+                            'zh-TW': '使用連結設置圖標。',
+                            ko: '링크를 사용하여 아이콘 설정.',
                         })
-                        .setRequired(true)
+                        .addStringOption(option =>
+                            option.setName('icon')
+                                .setDescription('Icon URL')
+                                .setRequired(true)
+                        )
                 )
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName('attachment')
+                        .setNameLocalizations({
+                            de: 'anhang',
+                            'en-GB': 'attachment',
+                            'en-US': 'attachment',
+                            'es-ES': 'adjunto',
+                            fr: 'attachement',
+                            nl: 'bijlage',
+                            'pt-BR': 'anexo',
+                            'zh-CN': '附件',
+                            ja: '添付',
+                            'zh-TW': '附件',
+                            ko: '첨부',
+                        })
+                        .setDescription('Set icon using an attachment.')
+                        .setDescriptionLocalizations({
+                            de: 'Symbol mit einem Anhang setzen.',
+                            'en-GB': 'Set icon using an attachment.',
+                            'en-US': 'Set icon using an attachment.',
+                            'es-ES': 'Establecer icono utilizando un adjunto.',
+                            fr: 'Définir l\'icône en utilisant une pièce jointe.',
+                            nl: 'Pictogram instellen met behulp van een bijlage.',
+                            'pt-BR': 'Definir ícone usando um anexo.',
+                            'zh-CN': '使用附件设置图标。',
+                            ja: '添付ファイルを使用してアイコンを設定します。',
+                            'zh-TW': '使用附件設置圖標。',
+                            ko: '첨부 파일을 사용하여 아이콘 설정.',
+                        })
+                        .addAttachmentOption(option =>
+                            option.setName('icon')
+                                .setDescription('Icon')
+                                .setRequired(true)
+                        )
+                )
+                .addSubcommand(subcommand =>
+                        subcommand
+                            .setName('emoji')
+                            .setNameLocalizations({
+                                de: 'emoji',
+                                'en-GB': 'emoji',
+                                'en-US': 'emoji',
+                                'es-ES': 'emoji',
+                                fr: 'emoji',
+                                nl: 'emoji',
+                                'pt-BR': 'emoji',
+                                'zh-CN': '表情',
+                                ja: '絵文字',
+                                'zh-TW': '表情',
+                                ko: '이모티콘',
+                            })
+                            .setDescription('Set icon using an emoji.')
+                            .setDescriptionLocalizations({
+                                de: 'Symbol mit einem Emoji setzen.',
+                                'en-GB': 'Set icon using an emoji.',
+                                'en-US': 'Set icon using an emoji.',
+                                'es-ES': 'Establecer icono utilizando un emoji.',
+                                fr: 'Définir l\'icône en utilisant un emoji.',
+                                nl: 'Pictogram instellen met behulp van een emoji.',
+                                'pt-BR': 'Definir ícone usando um emoji.',
+                                'zh-CN': '使用表情设置图标。',
+                                ja: '絵文字を使用してアイコンを設定します。',
+                                'zh-TW': '使用表情設置圖標。',
+                                ko: '이모티콘을 사용하여 아이콘 설정.',
+                            })
+                            .addStringOption(option =>
+                                option.setName('emoji')
+                                    .setDescription('Emoji')
+                                    .setRequired(true)
+                            )
+                )
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName('avatar')
+                        .setNameLocalizations({
+                            de: 'avatar',
+                            'en-GB': 'avatar',
+                            'en-US': 'avatar',
+                            'es-ES': 'avatar',
+                            fr: 'avatar',
+                            nl: 'avatar',
+                            'pt-BR': 'avatar',
+                            'zh-CN': '头像',
+                            ja: 'アバター',
+                            'zh-TW': '頭像',
+                            ko: '아바타',
+                        })
+                        .setDescription('Set icon using an avatar.')
+                        .setDescriptionLocalizations({
+                            de: 'Symbol mit einem Avatar setzen.',
+                            'en-GB': 'Set icon using an avatar.',
+                            'en-US': 'Set icon using an avatar.',
+                            'es-ES': 'Establecer icono utilizando un avatar.',
+                            fr: 'Définir l\'icône en utilisant un avatar.',
+                            nl: 'Pictogram instellen met behulp van een avatar.',
+                            'pt-BR': 'Definir ícone usando um avatar.',
+                            'zh-CN': '使用头像设置图标。',
+                            ja: 'アバターを使用してアイコンを設定します。',
+                            'zh-TW': '使用頭像設置圖標。',
+                            ko: '아바타를 사용하여 아이콘 설정.',
+                        })
+                        .addUserOption(option =>
+                            option.setName('user')
+                                .setDescription('User')
+                                .setRequired(true)
+                        )
+                )
+
         )
         .addSubcommand(subcommand =>
             subcommand
@@ -198,6 +310,69 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
+                .setName('setcolorhex')
+                .setNameLocalizations({
+                    de: 'setcolorhex',
+                    'en-GB': 'setcolourhex',
+                    'en-US': 'setcolorhex',
+                    'es-ES': 'establecercolorhex',
+                    fr: 'setcouleurhex',
+                    nl: 'setkleurhex',
+                    'pt-BR': 'definircorhex',
+                    'zh-CN': '设置颜色十六进制值',
+                    ja: '色の16進数値を設定する',
+                    'zh-TW': '設置顏色十六進制值',
+                    ko: '색상16진수값설정',
+
+                })
+                .setDescription('Changes the color of your booster role with hex')
+                .setDescriptionLocalizations({
+                    de: 'Ändert die Farbe deiner Booster-Rolle mit Hex.',
+                    'en-GB': 'Changes the color of your booster role with hex.',
+                    'en-US': 'Changes the color of your booster role with hex.',
+                    'es-ES': 'Cambia el color de tu rol de potenciador con hex.',
+                    fr: 'Change la couleur de votre rôle de booster avec hex.',
+                    nl: 'Verandert de kleur van je booster-rol met hex.',
+                    'pt-BR': 'Altera a cor do seu papel de impulsionador com hex.',
+                    'zh-CN': '使用十六进制更改助推器角色的颜色。',
+                    ja: 'ブースターロールの色を16進数で変更します。',
+                    'zh-TW': '使用十六進制更改助推器角色的顏色。',
+                    ko: '부스터 역할 색상 변경 (16진수).',
+                })
+                .addStringOption(option =>
+                    option.setName('color')
+                        .setNameLocalizations({
+                            de: 'farbe',
+                            'en-GB': 'colour',
+                            'en-US': 'color',
+                            'es-ES': 'color',
+                            fr: 'couleur',
+                            nl: 'kleur',
+                            'pt-BR': 'cor',
+                            'zh-CN': '颜色',
+                            ja: '色',
+                            'zh-TW': '顏色',
+                            ko: '색깔',
+                        })
+                        .setDescription('The color to change to. Format #RRGGBB.')
+                        .setDescriptionLocalizations({
+                            de: 'Die Farbe, zu der gewechselt werden soll. Format #RRGGBB.',
+                            'en-GB': 'The color to change to. Format #RRGGBB.',
+                            'en-US': 'The color to change to. Format #RRGGBB.',
+                            'es-ES': 'El color al que cambiar. Formato #RRGGBB.',
+                            fr: 'La couleur à changer. Format #RRGGBB.',
+                            nl: 'De kleur om naar te veranderen. Formaat #RRGGBB.',
+                            'pt-BR': 'A cor para mudar. Formato #RRGGBB.',
+                            'zh-CN': '要更改的颜色。格式 #RRGGBB。',
+                            ja: '変更する色。形式 #RRGGBB。',
+                            'zh-TW': '要更改的顏色。格式 #RRGGBB。',
+                            ko: '변경할 색상. 형식 #RRGGBB.',
+                        })
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
                 .setName('setname')
                 .setNameLocalizations({
                     de: 'setze-name',
@@ -241,48 +416,6 @@ module.exports = {
                             ja: '変更する名前。',
                             'zh-TW': '要更改的名稱。',
                             ko: '변경할 이름.',
-                        })
-                        .setRequired(true)
-                )
-        )
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('set_icon')
-                .setNameLocalizations({
-                    'zh-CN': '设置图标',
-                    ja: 'アイコンを設定',
-                    'zh-TW': '設置圖示',
-                    ko: '아이콘설정',
-                })
-                .setDescription('Changes the icon of your booster role.')
-                .setDescriptionLocalizations({
-                    de: 'Ändert das Symbol Ihrer Booster-Rolle.',
-                    'en-GB': 'Changes the icon of your booster role.',
-                    'en-US': 'Changes the icon of your booster role.',
-                    'es-ES': 'Cambia el ícono de tu rol de potenciador.',
-                    fr: 'Change l\'icône de votre rôle de booster.',
-                    nl: 'Verandert het pictogram van uw booster-rol.',
-                    'pt-BR': 'Altera o ícone do seu papel de impulsionador.',
-                    'zh-CN': '更改助推器角色的图标。',
-                    ja: 'ブースターロールのアイコンを変更します。',
-                    'zh-TW': '更改您的助推器角色的圖示。',
-                    ko: '부스터 역할의 아이콘 변경.',
-                })
-                .addStringOption(option =>
-                    option.setName('icon')
-                        .setDescription('Icon URL')
-                        .setDescriptionLocalizations({
-                            de: 'Symbol-URL',
-                            'en-GB': 'Icon URL',
-                            'en-US': 'Icon URL',
-                            'es-ES': 'URL del ícono',
-                            fr: 'URL de l\'icône',
-                            nl: 'Icoon URL',
-                            'pt-BR': 'URL do ícone',
-                            'zh-CN': '图标的URL',
-                            ja: 'アイコンのURL',
-                            'zh-TW': '圖示網址',
-                            ko: '아이콘 URL',
                         })
                         .setRequired(true)
                 )
@@ -388,6 +521,7 @@ module.exports = {
                 return await interaction.reply({content: 'You do not have a booster role.', ephemeral: true});
             } else {
                 const subcommand = interaction.options.getSubcommand();
+                const subcommandGroup = interaction.options.getSubcommandGroup();
                 const specialRole = await grabSpecialRole(interaction.member, '1093246448566550579', '1093246368077840424');
                 if (!specialRole) {
                     if (subcommand === 'help') {
@@ -471,18 +605,67 @@ module.exports = {
                         const name = interaction.options.getString('name');
                         await specialRole.setName(name);
                         return await interaction.reply({content: 'Changed name to ' + name, ephemeral: true});
-                    } else if (subcommand === 'seticon') {
-                        try {
-                            const icon = interaction.options.getString('icon');
-                            await specialRole.setIcon(icon);
-                            return await interaction.reply({content: 'Changed icon to ' + icon, ephemeral: true});
-                        } catch (error) {
-                            return await interaction.reply({
-                                content: 'Invalid icon. Make sure it is a valid URL.',
-                                ephemeral: true
-                            });
+                    } else if (subcommandGroup === 'setroleicon') {
+                        let newIconURL;
+
+                        switch (subcommand) {
+                            case 'link':
+                                newIconURL = interaction.options.getString('icon');
+                                break;
+                            case 'attachment':
+                                const attachment = interaction.options.getAttachment('icon');
+                                const attachmentURL = attachment.url;
+
+                                // Check if the URL ends with .gif, .png, or .jpg
+                                if (!/\.(gif|png|jpg)$/i.test(attachmentURL)) {
+                                    return await interaction.reply({content: 'Invalid image format. Please use a .gif, .png, or .jpg image.', ephemeral: true});
+                                }
+
+                                newIconURL = attachmentURL;
+                                break;
+                            case 'avatar':
+                                const user = interaction.options.getUser('user');
+                                newIconURL = user.displayAvatarURL();
+                                break;
+                            case 'emoji':
+                                const emojiInput = interaction.options.getString('emoji');
+                                const emojiId = emojiInput.match(/(?<=:)\d+(?=>)/g)?.[0];
+                                const emojiObject = interaction.guild.emojis.cache.get(emojiId);
+
+                                if (!emojiObject || !emojiObject.url) {
+                                    const newEmojiObject = await interaction.client.emojis.cache.get(emojiId);
+                                    if (!newEmojiObject || !newEmojiObject.url) {
+                                        // If it's an animated emoji
+                                        if (emojiInput.startsWith('<a:')) {
+                                            newIconURL = `https://cdn.discordapp.com/emojis/${emojiId}.gif`;
+                                        } else {
+                                            // Try different extensions for static emoji
+                                            const extensions = ['webp', 'png', 'jpg'];
+                                            for (const extension of extensions) {
+                                                const response = await fetch(`https://cdn.discordapp.com/emojis/${emojiId}.${extension}`);
+                                                if (response.ok) {
+                                                    newIconURL = `https://cdn.discordapp.com/emojis/${emojiId}.${extension}`;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (!newIconURL) {
+                                                return await interaction.reply({content: 'Unable to find the emoji\'s image ID.', ephemeral: true});
+                                            }
+                                        }
+                                    } else {
+                                        newIconURL = newEmojiObject.url;
+                                    }
+                                } else {
+                                    newIconURL = emojiObject.url;
+                                }
+                                break;
                         }
-                    } else if (subcommand === 'help') {
+
+                        await specialRole.setIcon(newIconURL);
+                        return await interaction.reply({content: `Changed icon to: ${newIconURL}`, ephemeral: true});
+                    }
+                    else if (subcommand === 'help') {
                         return await interaction.reply({
                             content: 'This feature is still in its early stages. Message testsnake if you have any issues',
                             ephemeral: true
