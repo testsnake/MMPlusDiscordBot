@@ -13,6 +13,8 @@ module.exports = {
         if (!channel.isText()) {
             return interaction.reply({ content: `Error: Channel must be a text channel.`, ephemeral: true });
         }
+        await channel.sendTyping();
+        await new Promise(resolve => setTimeout(resolve, 4000));
         await channel.send(message);
         await interaction.reply({ content: `Message sent.`, ephemeral: true });
     }
