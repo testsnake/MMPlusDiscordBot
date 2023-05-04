@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const fetch = require('node-fetch');
 
 async function grabSpecialRole(member, lowerBoundId, upperBoundId) {
     const lowerBoundRole = await member.guild.roles.cache.get(lowerBoundId);
@@ -20,6 +21,13 @@ async function grabSpecialRole(member, lowerBoundId, upperBoundId) {
     } else {
         return null;
     }
+}
+
+async function checkFileSize(url) {
+    const response = await fetch(url);
+    const buffer = await response.buffer();
+    const sizeInKB = buffer.length / 1024;
+    return sizeInKB <= 2048;
 }
 
 
@@ -517,15 +525,16 @@ module.exports = {
 
     async execute(interaction) {
         try {
+            await interaction.deferReply();
             if (!interaction.member.roles.cache.has('1092636310142980127') && !interaction.member.roles.cache.has('1093385832540405770')) {
-                return await interaction.reply({content: 'You do not have a booster role.', ephemeral: true});
+                return await interaction.editReply({content: 'You do not have a booster role.', ephemeral: true});
             } else {
                 const subcommand = interaction.options.getSubcommand();
                 const subcommandGroup = interaction.options.getSubcommandGroup();
                 const specialRole = await grabSpecialRole(interaction.member, '1093246448566550579', '1093246368077840424');
                 if (!specialRole) {
                     if (subcommand === 'help') {
-                        return await interaction.reply({
+                        return await interaction.editReply({
                             content: 'This feature is still in its early stages. Message testsnake if you have any issues',
                             ephemeral: true
                         });
@@ -545,10 +554,10 @@ module.exports = {
 
                         await interaction.member.roles.add(boosterRole);
 
-                        return await interaction.reply({content: 'Created a booster role.', ephemeral: true});
+                        return await interaction.editReply({content: 'Created a booster role.', ephemeral: true});
                     }
 
-                    return await interaction.reply({
+                    return await interaction.editReply({
                         content: 'You do not have a booster role. You can use /booster create to create a booster role.\nContact <@201460040564080651> for more information.',
                         ephemeral: true
                     });
@@ -557,9 +566,9 @@ module.exports = {
                         const color = interaction.options.getString('color');
                         if (color.startsWith('#')) {
                             await specialRole.setColor(color);
-                            return await interaction.reply({content: 'Changed color to ' + color, ephemeral: true});
+                            return await interaction.editReply({content: 'Changed color to ' + color, ephemeral: true});
                         } else {
-                            return await interaction.reply({
+                            return await interaction.editReply({
                                 content: 'Invalid color. Please use the format #RRGGBB.',
                                 ephemeral: true
                             });
@@ -596,21 +605,26 @@ module.exports = {
                         const hexColor = colorMap[color];
 
                         if (!hexColor) {
-                            return await interaction.reply({content: 'Invalid color.', ephemeral: true});
+                            return await interaction.editReply({content: 'Invalid color.', ephemeral: true});
                         }
 
                         await specialRole.setColor(hexColor);
-                        return await interaction.reply({content: `Changed color to ${color} (${hexColor})`, ephemeral: true});
+                        return await interaction.editReply({content: `Changed color to ${color} (${hexColor})`, ephemeral: true});
                     } else if (subcommand === 'setname') {
                         const name = interaction.options.getString('name');
                         await specialRole.setName(name);
-                        return await interaction.reply({content: 'Changed name to ' + name, ephemeral: true});
+                        return await interaction.editReply({content: 'Changed name to ' + name, ephemeral: true});
                     } else if (subcommandGroup === 'setroleicon') {
                         let newIconURL;
 
                         switch (subcommand) {
                             case 'link':
                                 newIconURL = interaction.options.getString('icon');
+
+                                if (!(await checkFileSize(newIconURL))) {
+                                    return await interaction.reply({content: 'The file size must be under 2048KB.', ephemeral: true});
+                                }
+
                                 break;
                             case 'attachment':
                                 const attachment = interaction.options.getAttachment('icon');
@@ -619,6 +633,10 @@ module.exports = {
                                 // Check if the URL ends with .gif, .png, or .jpg
                                 if (!/\.(gif|png|jpg)$/i.test(attachmentURL)) {
                                     return await interaction.reply({content: 'Invalid image format. Please use a .gif, .png, or .jpg image.', ephemeral: true});
+                                }
+
+                                if (!(await checkFileSize(attachmentURL))) {
+                                    return await interaction.reply({content: 'The file size must be under 2048KB.', ephemeral: true});
                                 }
 
                                 newIconURL = attachmentURL;
@@ -650,7 +668,7 @@ module.exports = {
                                             }
 
                                             if (!newIconURL) {
-                                                return await interaction.reply({content: 'Unable to find the emoji\'s image ID.', ephemeral: true});
+                                                return await interaction.editReply({content: 'Unable to find the emoji\'s image ID.', ephemeral: true});
                                             }
                                         }
                                     } else {
@@ -663,25 +681,25 @@ module.exports = {
                         }
 
                         await specialRole.setIcon(newIconURL);
-                        return await interaction.reply({content: `Changed icon to: ${newIconURL}`, ephemeral: true});
+                        return await interaction.editReply({content: `Changed icon to: ${newIconURL}`, ephemeral: true});
                     }
                     else if (subcommand === 'help') {
-                        return await interaction.reply({
+                        return await interaction.editReply({
                             content: 'This feature is still in its early stages. Message testsnake if you have any issues',
                             ephemeral: true
                         });
                     } else if (subcommand === 'create') {
-                        await interaction.reply({content: 'You already have a custom booster role', ephemeral: true});
+                        await interaction.editReply({content: 'You already have a custom booster role', ephemeral: true});
                     } else if (subcommand === 'delete') {
                         await specialRole.delete();
-                        return await interaction.reply({content: 'Deleted your custom booster role', ephemeral: true});
+                        return await interaction.editReply({content: 'Deleted your custom booster role', ephemeral: true});
                     }
                 }
             }
 
         } catch (error) {
             console.log(error);
-            return await interaction.reply({content: 'An error occurred. Please try again later.', ephemeral: true});
+            return await interaction.editReply({content: 'An error occurred. Please try again later.', ephemeral: true});
         }
     }
 }

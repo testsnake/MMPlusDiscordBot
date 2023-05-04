@@ -1,1 +1,1 @@
-MikuBot 1.1.0
+MikuBot 1.1.1
