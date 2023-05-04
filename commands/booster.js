@@ -525,7 +525,9 @@ module.exports = {
 
     async execute(interaction) {
         try {
-            await interaction.deferReply();
+            await interaction.deferReply({
+                ephemeral: true
+            });
             if (!interaction.member.roles.cache.has('1092636310142980127') && !interaction.member.roles.cache.has('1093385832540405770')) {
                 return await interaction.editReply({content: 'You do not have a booster role.', ephemeral: true});
             } else {
