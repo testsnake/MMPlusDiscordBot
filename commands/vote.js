@@ -1,5 +1,6 @@
 const fs = require('fs');
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, SlashCommandSubcommandBuilder } = require('discord.js');
+
 
 // Functions to read and write the JSON file
 function readJSONFile(filePath) {
@@ -97,8 +98,7 @@ module.exports = {
                     { name: 'S20', value: 'S9520' },
                     { name: 'S21', value: 'S9521' },
                     { name: 'S22', value: 'S9522' },
-                )
-                .setRequired(true))
+                ))
         .addStringOption((option) =>
             option
                 .setName('addorremove')
@@ -109,9 +109,36 @@ module.exports = {
                 )
         ),
 
-    async execute(interaction) {const userId = interaction.user.id;
+    async execute(interaction) {
+        const userId = interaction.user.id;
         try {
             const vote = interaction.options.getString('chart');
+
+            if (!vote) {
+                // Return votes
+                const votes = await readJSONFile(votesFilePath);
+                if (!votes[userId]) {
+                    return await interaction.reply({
+                        content: 'You have not voted for any charts yet.',
+                        ephemeral: true,
+                    });
+                } else {
+                    const userVotes = votes[userId];
+                    const voteList = [];
+                    for (const prefix in userVotes) {
+                        if (userVotes[prefix].length > 0) {
+                            voteList.push(`${prefix}: ${userVotes[prefix].join(', ')}`);
+                        }
+                    }
+                    return await interaction.reply({
+                        content: `Your current votes are: ${voteList.join(' | ')}`,
+                        ephemeral: true,
+                    });
+                }
+
+            }
+
+
             const addorremove = interaction.options.getString('addorremove') || 'add';
 
             // Read votes from the JSON file
@@ -131,7 +158,7 @@ module.exports = {
             if (addorremove === 'add') {
                 if (userVotes[prefix].length >= 2) {
                     return await interaction.reply({
-                        content: `You have already voted for ${userVotes[prefix].join(', ')}.`,
+                        content: `You have already voted for ${userVotes[prefix].join(', ')}. You may only vote for 2 charts per category.`,
                         ephemeral: true,
                     });
                 }
