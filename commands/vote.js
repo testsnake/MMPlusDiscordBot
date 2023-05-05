@@ -6,13 +6,25 @@ function readJSONFile(filePath) {
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
-                reject(err);
+                if (err.code === 'ENOENT') {
+                    // Create an empty JSON file if it doesn't exist
+                    fs.writeFile(filePath, JSON.stringify({}), 'utf8', (err) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve({});
+                        }
+                    });
+                } else {
+                    reject(err);
+                }
             } else {
                 resolve(JSON.parse(data));
             }
         });
     });
 }
+
 
 function writeJSONFile(filePath, data) {
     return new Promise((resolve, reject) => {
@@ -97,60 +109,68 @@ module.exports = {
                 )
         ),
 
-    async execute(interaction) {
-        const userId = interaction.user.id;
-        const vote = interaction.options.getString('chart');
-        const addorremove = interaction.options.getString('addorremove') || 'add';
+    async execute(interaction) {const userId = interaction.user.id;
+        try {
+            const vote = interaction.options.getString('chart');
+            const addorremove = interaction.options.getString('addorremove') || 'add';
 
-        // Read votes from the JSON file
-        const votes = await readJSONFile(votesFilePath);
+            // Read votes from the JSON file
+            const votes = await readJSONFile(votesFilePath);
 
-        // Initialize user's votes if not already in the database
-        if (!votes[userId]) {
-            votes[userId] = {
-                M: [],
-                S: [],
-            };
-        }
-
-        const userVotes = votes[userId];
-        const prefix = vote[0];
-
-        if (addorremove === 'add') {
-            if (userVotes[prefix].length >= 2) {
-                return await interaction.reply({
-                    content: `You have already voted for ${userVotes[prefix].join(', ')}.`,
-                    ephemeral: true,
-                });
+            // Initialize user's votes if not already in the database
+            if (!votes[userId]) {
+                votes[userId] = {
+                    M: [],
+                    S: [],
+                };
             }
 
-            if (!userVotes[prefix].includes(vote)) {
-                userVotes[prefix].push(vote);
-            }
+            const userVotes = votes[userId];
+            const prefix = vote[0];
 
-            await interaction.reply({
-                content: `Your vote for ${vote} has been added.`,
-                ephemeral: true,
-            });
-        } else {
-            const index = userVotes[prefix].indexOf(vote);
+            if (addorremove === 'add') {
+                if (userVotes[prefix].length >= 2) {
+                    return await interaction.reply({
+                        content: `You have already voted for ${userVotes[prefix].join(', ')}.`,
+                        ephemeral: true,
+                    });
+                }
 
-            if (index !== -1) {
-                userVotes[prefix].splice(index, 1);
+                if (!userVotes[prefix].includes(vote)) {
+                    userVotes[prefix].push(vote);
+                }
+
                 await interaction.reply({
-                    content: `Your vote for ${vote} has been removed.`,
+                    content: `Your vote for ${vote} has been added.`,
                     ephemeral: true,
                 });
             } else {
-                await interaction.reply({
-                    content: `You haven't voted for ${vote}.`,
-                    ephemeral: true,
-                });
+                const index = userVotes[prefix].indexOf(vote);
+
+                if (index !== -1) {
+                    userVotes[prefix].splice(index, 1);
+                    await interaction.reply({
+                        content: `Your vote for ${vote} has been removed.`,
+                        ephemeral: true,
+                    });
+                } else {
+                    await interaction.reply({
+                        content: `You haven't voted for ${vote}.`,
+                        ephemeral: true,
+                    });
+                }
             }
+
+            // Save the updated votes to the JSON file
+            await writeJSONFile(votesFilePath, votes);
+        } catch (err) {
+            console.error(err);
+            await interaction.reply({
+                content: 'There was an error while executing this command!',
+                ephemeral: true,
+            });
         }
 
-        // Save the updated votes to the JSON file
-        await writeJSONFile(votesFilePath, votes);
     },
 };
 
