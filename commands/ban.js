@@ -1,11 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const banRequests = require('../banRequests');
-const { Client, Intents, ActivityType, ActionRow, ActionRowBuilder, ButtonBuilder} = require('discord.js');
+const { Client, Intents, ActivityType, ActionRow, ActionRowBuilder, ButtonBuilder, EmbedBuilder} = require('discord.js');
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
 const { MessageActionRow, MessageButton } = require('discord.js');
 const loggingChannel = '1087810388936114316';
+
 
 
 module.exports = {
@@ -113,6 +114,14 @@ module.exports = {
 
             if (isConfirmed) {
                 await interaction.reply({ content: `${user.tag} has been banned. Reason: ${reason}`, ephemeral: true });
+                const banEmbed = new EmbedBuilder()
+                    .setColor('#ff0000')
+                    .setTitle(`You have been banned from ${interaction.guild.name}`)
+                    .setAuthor(`${interaction.user.tag}`, `${interaction.user.displayAvatarURL({ dynamic: true })}`)
+                    .setDescription(`Reason: ${reason}`)
+                    .setTimestamp()
+                    .setFooter(`${mikuBotVer}`);
+                await user.send({ embeds: [banEmbed] });
                 await member.ban({ reason: reason });
 
             } else {

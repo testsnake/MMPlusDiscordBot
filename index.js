@@ -516,6 +516,20 @@ client.on(Events.InteractionCreate, async interaction => {
 			const targetUser = await client.users.fetch(targetUserId);
 			const targetMember = await message.guild.members.fetch(targetUser);
 			await interaction.update({ content: `Banning ${targetMember.nickname}. Requested by ${message.content}, confirmed by ${user.tag}.`, components: [] });
+			try {
+				const banEmbed = new EmbedBuilder()
+					.setColor(0xff0000)
+					.setAuthor({ name: targetUser.tag, iconUrl: targetUser.avatarURL() })
+					.setTimestamp(new Date())
+					.setFooter({ text: mikuBotVer, iconUrl: botAvatarURL })
+					.setDescription(`**${targetUser.tag} has been banned from ${message.guild.name}.`);
+				await targetMember.send({ embeds: [banEmbed] });
+			} catch(err) {
+				console.log("---- ERROR BAN DM ----");
+				console.log(err);
+				console.log("---- ERROR BAN DM ----");
+				await errMsg(err, "ban command", `guild: ${message.guild}, user: ${targetUser}`);
+			}
 			await targetMember.ban({ reason: `Banned by ${message.content}, Confirmed by ${user.tag}` });
 
 
