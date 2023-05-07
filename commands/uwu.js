@@ -51,7 +51,7 @@ module.exports = {
 		const text = interaction.options.getString('text');
 		const uwuText = uwuify.uwuifySentence(text);
 		if (uwuText.length > 2000) {
-			interaction.deferReply();
+			await interaction.deferReply();
 			let uwuTextArray = [];
 			for (let i = 0; i < uwuText.length; i += 2000) {
 				uwuTextArray.push(uwuText.substring(i, i + 2000));
