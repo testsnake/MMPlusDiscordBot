@@ -51,16 +51,22 @@ module.exports = {
 		const text = interaction.options.getString('text');
 		const uwuText = uwuify.uwuifySentence(text);
 		if (uwuText.length > 2000) {
+			interaction.deferReply();
 			let uwuTextArray = [];
 			for (let i = 0; i < uwuText.length; i += 2000) {
 				uwuTextArray.push(uwuText.substring(i, i + 2000));
 			}
 			for (let i = 0; i < uwuTextArray.length; i++) {
-				if (i % 4 === 0) {
+				if (i === 0) {
+					await interaction.editReply({content: uwuTextArray[i], allowedMentions: {repliedUser: false}});
+				} else if (i % 4 === 0) {
 					await interaction.channel.sendTyping();
 					await new Promise(r => setTimeout(r, 1000));
 				}
-				await interaction.followUp({ content: uwuTextArray[i], allowedMentions: { repliedUser: false  }});
+				if (i !== 0) {
+					await interaction.followUp({ content: uwuTextArray[i], allowedMentions: { repliedUser: false  }});
+				}
+
 			}
 		} else {
 			await interaction.reply({ content: uwuText, allowedMentions: { repliedUser: false  }});
