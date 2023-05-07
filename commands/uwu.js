@@ -50,6 +50,21 @@ module.exports = {
 		const uwuify = new Uwuifier();
 		const text = interaction.options.getString('text');
 		const uwuText = uwuify.uwuifySentence(text);
-		await interaction.reply({ content: uwuText, allowedMentions: { repliedUser: false  }});
+		if (uwuText.length > 2000) {
+			let uwuTextArray;
+			for (let i = 0; i < uwuText.length; i += 2000) {
+				uwuTextArray.push(uwuText.substring(i, i + 2000));
+			}
+			for (let i = 0; i < uwuTextArray.length; i++) {
+				if (i % 4 === 0) {
+					await interaction.channel.sendTyping();
+					await new Promise(r => setTimeout(r, 1000));
+				}
+				await interaction.followUp({ content: uwuTextArray[i], allowedMentions: { repliedUser: false  }});
+			}
+		} else {
+			await interaction.reply({ content: uwuText, allowedMentions: { repliedUser: false  }});
+		}
+
 	},
 };
