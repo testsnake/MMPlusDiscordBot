@@ -925,6 +925,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 			const starboardChannel = await client.channels.fetch('1092643863820251196');
 
 			console.log(reaction.message.content)
+			let extra = "";
 
 			// Create the embed
 			let starboardEmbed = new EmbedBuilder()
@@ -938,9 +939,17 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 			// Check if the message has attachments and add the first image
 			if (reaction.message.attachments.size > 0) {
-				const attachment = reaction.message.attachments.first();
-				if (attachment.contentType.startsWith('image/')) {
-					starboardEmbed.setImage(attachment.url);
+				if (reaction.message.attachments.size === 1) {
+					const attachment = reaction.message.attachments.first();
+					if (attachment.contentType.startsWith('image/')) {
+						starboardEmbed.setImage(attachment.url);
+					} else {
+						extra = `\n\n${attachment.url}`;
+					}
+				} else {
+					for (const attachment of reaction.message.attachments.values()) {
+						extra += `\n${attachment.url}`;
+					}
 				}
 			}
 
@@ -960,7 +969,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 			// Post the embed in the starboard channel
 			starboardChannel.send({embeds: [starboardEmbed], components: [row]});
-		} else if (reaction.emoji.name === '❌' && reaction.count === 3) {
+		} else if (reaction.emoji.name === '❌' && reaction.count === 1) {
 			console.log("---- DELETE ----");
 			// Get the starboard channel
 			const alertsChannel = await client.channels.fetch('1092866838918086666');
@@ -979,13 +988,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				starboardEmbed.setDescription(ts(message.content, 4095));
 			}
 
-			// Check if the message has attachments and add the first image
-			if (reaction.message.attachments.size > 0) {
-				const attachment = reaction.message.attachments.first();
-				if (attachment.contentType.startsWith('image/')) {
-					starboardEmbed.setImage(attachment.url);
-				}
-			}
+
+
 
 			console.log(reaction.message.attachments);
 
@@ -1003,7 +1007,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				)
 
 			// Post the embed in the starboard channel
-			alertsChannel.send({embeds: [starboardEmbed], components: [row]});
+			alertsChannel.send({embeds: [starboardEmbed], components: [row], content: `${extra}`});
 		}
 	} catch (err) {
 		console.log("---- ERROR MESSAGE REACTION ADD ----");
