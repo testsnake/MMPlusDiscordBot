@@ -4,6 +4,8 @@ config.json
 *.bat
 latestTimestamp.txt
 votes.json
+tokens.json
+.idea/
 
 # Logs
 logs
@@ -136,4 +138,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+package-lock.json
 package-lock.json
