@@ -1,4 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
+const pm2Metrics = require('../../pm2metrics.js');
+const { config } = require('../../config.json');
+const log = require('../../logger.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,6 +29,7 @@ module.exports = {
 			ko: '다운그레이드',
 		}),
 	async execute(interaction) {
+		pm2Metrics.actionsPerformed.inc();
 		await interaction.reply({ content: ' https://gamebanana.com/tuts/15371 '});
 	},
 };

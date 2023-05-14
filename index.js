@@ -11,8 +11,10 @@ const utils = require('./utils.js');
 const fetch = require('node-fetch');
 const botVersion = fs.readFileSync('./versionID.txt', 'utf8');
 const log = require('./logger.js');
+const pm2Metrics = require('./pm2metrics.js');
+const { checkGamebananaFeed } = require('./gamebanana.js');
 
-const io = require('@pm2/io')
+const {sendEmbed, getString} = require("./utils");
 
 function createBotClient() {
     return new Client({
@@ -48,46 +50,18 @@ const botArray = [
     {bot: tetoBot, name: 'teto'}
 ];
 
-const pm2Metrics = {
-    liveBots: io.counter({
-        name: 'Live Bots',
-        id: 'liveBots',
-    }),
-    messagesReceived: io.counter({
-        name: 'Messages Received',
-        id: 'messagesReceived',
-    }),
-    actionsPerformed: io.counter({
-        name: 'Actions Performed',
-        id: 'actionsPerformed',
-    }),
-    errors: io.counter({
-        name: 'Errors',
-        id: 'errors',
-    }),
-    commandsLoaded: io.counter({
-        name: 'Commands Loaded',
-        id: 'commandsLoaded',
 
-    }),
-    commandsErrored: io.counter({
-        name: 'Commands Errored',
-        id: 'commandsErrored',
-    }),
-    eventsLoaded: io.counter({
-        name: 'Events Loaded',
-        id: 'eventsLoaded',
-    }),
-    eventsErrored: io.counter({
-        name: 'Events Errored',
-        id: 'eventsErrored',
-    }),
-}
 
-// Sends an error message via Discord and pings the bot owner
+/*
+    * Error Alert
+    * Sends an error alert to the error channel
+    * @param {string} definedErrorMessage - The error message defined in the code
+    * @param {string} code - The error code
+    * @param {string} error - The error message
+    * @param {string} botName - The name of the bot that the error occurred in
+ */
 async function errorAlert(definedErrorMessage, code, error, botName) {
     try {
-        const loggingChannel = await mikuBot.channels.cache.get(config.loggingChannel);
 
         const errorEmbed = new EmbedBuilder()
             .setTitle(`[${botName}] Error ${definedErrorMessage} ${code}`)
@@ -95,14 +69,16 @@ async function errorAlert(definedErrorMessage, code, error, botName) {
             .setColor(0xFF0000)
             .setTimestamp();
 
-        await loggingChannel.send({embeds: [errorEmbed], content: `<@${config.ownerID}>`});
+        await sendEmbed(botArray[0], errorEmbed);
     } catch (error) {
         log.error(`[${botName}] Failed to send error alert: ${error}`);
     }
 
 }
 
-// Self-explanatory
+/*
+    * Load Commands and Events
+ */
 async function loadCommandsAndEvents() {
     const commandsPath = path.join(__dirname, 'commands');
 
@@ -122,12 +98,15 @@ async function loadCommandsAndEvents() {
                 log.info(`[${botName}] Loaded ${command.data.name} command in ${path.join(commandsPath, botName, file)}`);
                 if ('data' in command && 'execute' in command) {
                     bot.commands.set(command.data.name, command);
+                    pm2Metrics.commandsLoaded.inc();
 
                 } else {
                     log.error(`[${botName}] Failed to load ${command.data.name} command: missing data or execute`);
+                    pm2Metrics.commandsErrored.inc();
                 }
             } catch (error) {
                 log.error(`[${botName}] Failed to load ${file} command: ${error}`);
+                pm2Metrics.commandsErrored.inc();
             }
         }
     }
@@ -148,11 +127,14 @@ async function loadCommandsAndEvents() {
                 if ('name' in event && 'execute' in event) {
                     bot.on(event.name, (...args) => event.execute(...args, bot, botName));
                     log.info(`[${botName}] Loaded ${event.name} event in ${path.join(eventPath, file)}`);
+                    pm2Metrics.eventsLoaded.inc();
                 } else {
                     log.error(`[${botName}] Failed to load ${event.name} event: missing name or execute`);
+                    pm2Metrics.eventsErrored.inc();
                 }
             } catch (error) {
                 log.error(`[${botName}] Failed to load ${file} event: ${error}`);
+                pm2Metrics.eventsErrored.inc();
             }
         }
     }
@@ -169,10 +151,20 @@ async function startSystem() {
         try {
             await bot.login(tokens[botName]);
             log.info(`[${botName}] Logged in as ${bot.user.tag}`);
+            pm2Metrics.liveBots.inc();
+            const loginEmbed = new EmbedBuilder()
+                .setTitle(`[${botName}] Bot Started`)
+                .setDescription(`${getString(botName, 'botStarted')}`)
+                .setColor(0x00FF00)
+                .setTimestamp();
+            sendEmbed(bot, loginEmbed);
+
         } catch (error) {
             log.error(`[${botName}] Failed to login: ${error}`);
             // Remove bot from botArray to avoid further errors
             botArray.splice(botArray.indexOf(botObj), 1);
+            pm2Metrics.errors.inc();
+            await errorAlert('logging in', '000', error, botName);
         }
     })).then(async () => {
         log.info('All bots logged in');
@@ -185,6 +177,12 @@ async function startSystem() {
 
 (async () => {
     await startSystem();
+    setInterval(checkGamebananaFeed, 3 * 60 * 1000);
 })();
+
+module.exports = {
+    botArray,
+    errorAlert,e
+}
 
 

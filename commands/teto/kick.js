@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const kickRequests = require('../kickRequests');
+const kickRequests = require('../../kickRequests');
 const { Client, Intents, ActivityType, ActionRowBuilder, ButtonBuilder} = require('discord.js');
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');

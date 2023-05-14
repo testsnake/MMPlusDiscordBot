@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
+const pm2Metrics = require('../../pm2metrics.js');
+const config = require('../../config.json');
 
 const filePathU = './text/Utility.txt';
 const textUtility = fs.readFileSync(filePathU, 'utf8');
@@ -59,14 +61,14 @@ module.exports = {
 			)
 			.setFooter({ text: `${mikuBotVer}`})
 			.setTimestamp();
-		const boosterRole = interaction.member.roles.cache.has('1092636310142980127')
+		const boosterRole = interaction.member.roles.cache.has(`${config.boosterRole.global[0]}`)
 		if (boosterRole) {
 			helpEmbed.addFields(
 				{ name: 'Booster', value: textBooster}
 			)
 		}
-		const modRole = interaction.member.roles.cache.has('1087782913199833158')
-		const adminRole = interaction.member.roles.cache.has('1087782822879690772')
+		const modRole = interaction.member.roles.cache.has(`${config.modRoleID}`)
+		const adminRole = interaction.member.roles.cache.has(`${config.adminRoleID}`)
 		if (modRole || adminRole) {
 			helpEmbed.addFields(
 				{ name: 'Admin', value: textAdmin}

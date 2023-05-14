@@ -1,4 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
+const pm2Metrics = require('../../pm2metrics.js');
+const config = require('../../config.json');
+const log = require('../../logger.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -64,9 +67,10 @@ module.exports = {
         setTimeout(() => {
           replyMessage.delete().catch(console.error);
         }, 5000); // Delete the reply message after 5 seconds.
+          pm2Metrics.actionsPerformed.inc();
 
         // Send an embed message to the logging channel indicating the number of messages deleted.
-        const loggingChannel = interaction.client.channels.cache.get('1087810388936114316');
+        const loggingChannel = interaction.client.channels.cache.get(`${config.loggingChannelID}`);
         if (loggingChannel) {
           const loggingEmbed = {
             ...purgeEmbed,
@@ -75,12 +79,13 @@ module.exports = {
           await loggingChannel.send({ embeds: [loggingEmbed] });
         }
       } catch (error) {
-        console.error(error);
+          log.error(error);
         await interaction.reply({ content: 'There was an error purging messages. Please try again. C-01', ephemeral: true });
+        pm2Metrics.errors.inc();
         return await interaction.followUp({ content: `${error}`, ephemeral: true })
       }
     } catch (error) {
-        console.error(error);
+        log.error(error);
         await interaction.reply({ content: 'There was an error purging messages. Please try again. C-02', ephemeral: true });
         return await interaction.followUp({ content: `${error}`, ephemeral: true })
     }
