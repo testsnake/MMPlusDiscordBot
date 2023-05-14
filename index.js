@@ -1,6 +1,3 @@
-// This file will replace all of the code in index-old.js
-
-
 const fs = require('fs');
 const path = require('path');
 
