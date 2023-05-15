@@ -7,7 +7,7 @@ const logDirectory = path.join(__dirname, 'logs');
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
 
 const logger = winston.createLogger({
-    level: 'info', // Log only if info.level <= this level
+    level: 'debug', // Log only if info.level <= this level
     format: winston.format.json(), // Use JSON format
     transports: [
         // Write all logs to `logs.log`

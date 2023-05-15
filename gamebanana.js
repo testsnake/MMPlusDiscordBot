@@ -1,12 +1,14 @@
-import fs from "fs";
-import fetch from "node-fetch";
-import {addLog, getRecentLogs} from "./logManager";
-import {EmbedBuilder} from "discord.js";
-import {delay} from "./utils";
+const fs = require('fs');
+const fetch = require('node-fetch');
+const {addLog, getRecentLogs} = require('./logManager');
+const {EmbedBuilder} = require('discord.js');
+const {delay} = require('./utils');
 const {errorAlert} = require("./index.js");
 const {ts} = require("./utils");
-const {botArray} = require("./index");
-const client = botArray[0].bot;
+const { botArray, mikuBot} = require("./index.js");
+
+let client;
+
 const log = require('./logger.js');
 
 const timestampFile = 'latestTimestamp.txt';
@@ -23,6 +25,7 @@ let attemptsToReconnect = 0;
 let firstRun = true;
 
 async function checkGamebananaFeed() {
+    client = mikuBot;
     // Check Gamebanana feed for new items
     // This is probably a terrible way to do this, but it works.
     await checkGamebananaAPI('new').then(async (newItems) => {
@@ -54,7 +57,7 @@ async function checkGamebananaAPI(sort) {
             } else if (attemptsToReconnect === 10) {
                 addLog(`[Gamebanana error 001 at ${new Date()}]\n${ts(err, 1800)}...`);
                 addLog(`giving up on reconnecting to Gamebanana API`);
-                await errMsg
+                log.error("Error fetching Gamebanana API, giving up on reconnecting");
                 return 0;
 
             } else {
@@ -65,7 +68,7 @@ async function checkGamebananaAPI(sort) {
                     } catch (err) {
                         log.error("Error sending message about Gamebanana API error")
                         log.error(err);
-                        await errorAlert("Error sending message about Gamebanana API error", "040", err, `${client.user.username}`)
+                        await errorAlert("Error sending message about Gamebanana API error", "040", err, `GameBanana`)
                     }
                 });
             }
@@ -78,7 +81,7 @@ async function checkGamebananaAPI(sort) {
             log.error("Error parsing JSON");
             log.error(err);
             addLog(`[Gamebanana error 003 at ${new Date()}]\n${ts(JSON.stringify(response), 1800)}...`);
-            await errorAlert("Error parsing JSON", "003", err, `${client.user.username}`)
+            await errorAlert("Error parsing JSON", "003", err, `GameBanana`)
 
             return 0;
         }
@@ -117,7 +120,7 @@ async function checkGamebananaAPI(sort) {
 
     } catch (err) {
         log.error("Error checking Gamebanana API");
-        await errorAlert("Error checking Gamebanana API", "002", err, `${client.user.username}`)
+        await errorAlert("Error checking Gamebanana API", "002", err, `GameBanana`)
         const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
         await loggingChannel.send(`Error checking Gamebanana API:\n\`\`\`${err}\`\`\``);
         await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
@@ -153,7 +156,7 @@ async function processRecord(modInfo, isNew) {
         } catch (err) {
             log.error("Error getting feed channel")
             log.error(err);
-            await errorAlert("Error getting feed channel", "005", err, `${client.user.username}`)
+            await errorAlert("Error getting feed channel", "005", err, `GameBanana`)
         }
 
 
@@ -192,7 +195,7 @@ async function processRecord(modInfo, isNew) {
             } catch (err) {
                 log.error("Error getting changelog");
                 log.error(err);
-                await errorAlert("Error getting changelog", "006", err, `${client.user.username}`)
+                await errorAlert("Error getting changelog", "006", err, `GameBanana`)
             }
         }
 
@@ -208,7 +211,7 @@ async function processRecord(modInfo, isNew) {
 
             if (!feedChannel) {
                 log.error("Error getting feed channel");
-                await errorAlert("Error getting feed channel", "006", err, `${client.user.username}`)
+                await errorAlert("Error getting feed channel", "006", "Error getting field channel", `GameBanana`)
                 return
             }
             addLog(`[Feed channel at ${new Date()}] ${feedChannel}`);

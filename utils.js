@@ -1,4 +1,4 @@
-const { config } = require('./config.json');
+const config = require('./config.json');
 const log = require('./logger.js');
 
 /*
@@ -17,13 +17,26 @@ function rxt(reg, str) {
     * @param {number} maxLength - The maximum length of the string
     * @returns {string}
  */
-function ts(str, maxLength) {
+function ts(input, maxLength) {
+    let str;
+
+    if (typeof input === 'string') {
+        str = input;
+    } else if (input instanceof Error) {
+        str = input.message;
+    } else {
+        log.error('The input must be a string or an Error object.');
+        return;
+    }
+
     if (str.length <= maxLength) {
         return str;
     }
 
     return str.slice(0, maxLength);
 }
+
+
 
 let globalVars = {}
 

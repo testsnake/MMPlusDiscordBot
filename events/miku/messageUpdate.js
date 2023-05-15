@@ -1,5 +1,6 @@
-const { loggingChannelId, mikuBotVer, botAvatarURL } = require('../../config.json');
+const config = require('../../config.json');
 const log  = require('../../logger.js');
+const { botVer, botAvatarURL } = require('../../config.json');
 
 module.exports = {
     name: 'messageUpdate',
@@ -7,7 +8,7 @@ module.exports = {
         try {
             if(oldMessage.author.bot) return;
             if(oldMessage.content === newMessage.content) return;
-            const loggingChannel = await client.channels.fetch(loggingChannelId);
+            const loggingChannel = await client.channels.fetch(config.loggingChannelID);
             if (!loggingChannel) return;
 
             const embed = {
@@ -32,7 +33,7 @@ module.exports = {
                 ],
                 timestamp: new Date(),
                 footer: {
-                    text: mikuBotVer,
+                    text: botVer,
                     iconURL: botAvatarURL
                 }
             };
