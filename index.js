@@ -4,77 +4,18 @@ const path = require('path');
 const { Client, Collect, Events, GatewayIntents, EmbedBuilder, ActionRowBuilder, ButtonBuilder, GatewayIntentBits,
     ActivityType
 } = require('discord.js');
+const { botArray } = require('./bots.js');
 const { REST, Routes } = require('discord.js');
 const tokens = require('./tokens.json');
 const config = require('./config.json');
 const utils = require('./utils.js');
-const fetch = require('node-fetch');
-const botVersion = fs.readFileSync('./versionID.txt', 'utf8');
+const { errorAlert, rxt, ts } = utils;
 const log = require('./logger.js');
 const pm2Metrics = require('./pm2metrics.js');
 const { checkGamebananaFeed } = require('./gamebanana.js');
 
 const {sendEmbed, getString} = require("./utils");
 
-function createBotClient() {
-    return new Client({
-        intents: [
-            GatewayIntentBits.Guilds,
-            GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.GuildModeration,
-            GatewayIntentBits.GuildPresences,
-            GatewayIntentBits.GuildMessageReactions,
-            GatewayIntentBits.GuildMembers,
-            GatewayIntentBits.MessageContent,
-        ]
-    });
-}
-
-const mikuBot = createBotClient();
-const rinBot = createBotClient();
-const lenBot = createBotClient();
-const lukaBot = createBotClient();
-const kaitoBot = createBotClient();
-const meikoBot = createBotClient();
-const gumiBot = createBotClient();
-const tetoBot = createBotClient();
-
-const botArray = [
-    {bot: mikuBot, name: 'miku', color: 0x86CECB, clientID: '1087852383477977219', activities: {name: 'Hatsune Miku: Project DIVA Mega Mix+', type: 'Playing'} },
-    {bot: rinBot, name: 'rin', color: 0xFFCC11, clientID: '1105349186796408872', activities: {name: 'Spotify', type: 'Listening'} },
-    {bot: lenBot, name: 'len', color: 0xFFEE12, clientID: '1105351152687661086', activities: {name: 'Hatsune Miku: Project Mirai DX', type: 'Playing'}},
-    {bot: lukaBot, name: 'luka', color: 0xFFBACC, clientID: '1105347405395787887', activities: {name: 'Hatsune Miku Project DIVA: Mega Mix+', type: 'Playing'}},
-    {bot: kaitoBot, name: 'kaito', color: 0x3367cd, clientID: '1105354346520137768', activities: {name: 'you', type: 'Watching'}},
-    {bot: meikoBot, name: 'meiko', color: 0xDE4444, clientID:  '1105351576081670165', activities: {name: 'Spotify', type: 'Listening'}},
-    {bot: gumiBot, name: 'gumi', color: 0x56D029, clientID: '1105355273255792761', activities: {name: 'Megpoid the Music♯', type: 'Playing'}},
-    {bot: tetoBot, name: 'teto', color: 0xFF0045, clientID: '1105354732173803612', activities: {name: 'Hatsune Miku Project DIVA: Mega Mix+', type: 'Playing'}}
-];
-
-
-
-/*
-    * Error Alert
-    * Sends an error alert to the error channel
-    * @param {string} definedErrorMessage - The error message defined in the code
-    * @param {string} code - The error code
-    * @param {string} error - The error message
-    * @param {string} botName - The name of the bot that the error occurred in
- */
-async function errorAlert(definedErrorMessage, code, error, botName) {
-    try {
-
-        const errorEmbed = new EmbedBuilder()
-            .setTitle(`[${botName}] Error ${definedErrorMessage} ${code}`)
-            .setDescription(`${utils.ts(error, 2047)}`)
-            .setColor(0xFF0000)
-            .setTimestamp();
-
-        await sendEmbed(botArray[0].bot, errorEmbed);
-    } catch (error) {
-        log.error(`[${botName}] Failed to send error alert: ${error}`);
-    }
-
-}
 
 /*
     * Load Commands and Events
@@ -224,6 +165,9 @@ async function loadCommandsAndEvents() {
 
 // Start the system
 async function startSystem() {
+    await loadCommandsAndEvents();
+    log.info('Commands and events loaded');
+
     // Login to all bots
     await Promise.all(botArray.map(async (botObj) => {
         const bot = botObj.bot;
@@ -243,8 +187,7 @@ async function startSystem() {
                 .setDescription(`${await getString(botName, 'botStarted')}`)
                 .setColor(botColor)
                 .setTimestamp();
-            const logChannel = await bot.channels.fetch(config.loggingChannelID);
-            await logChannel.send({embeds: [loginEmbed]});
+
 
             const validActivityTypes = Object.keys(ActivityType).filter(key => isNaN(parseInt(key)));
             if (!validActivityTypes.includes(type)) {
@@ -267,8 +210,7 @@ async function startSystem() {
     })).then(async () => {
         log.info('All bots logged in');
         // Load commands and events
-        await loadCommandsAndEvents();
-        log.info('Commands and events loaded');
+
     });
 }
 
@@ -278,10 +220,6 @@ async function startSystem() {
     setInterval(checkGamebananaFeed, 3 * 60 * 1000);
 })();
 
-module.exports = {
-    botArray,
-    mikuBot,
-    errorAlert,
-}
+
 
 

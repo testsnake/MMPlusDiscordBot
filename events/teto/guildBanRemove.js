@@ -1,6 +1,7 @@
 const log = require('../../logger.js');
 const { loggingChannelID, mikuBotVer, botAvatarURL } = require('../../config.json');
 const { AuditLogEvent } = require('discord.js');
+const {sendEmbed} = require("../../utils");
 
 
 
@@ -8,8 +9,7 @@ module.exports = {
     name: 'guildBanRemove',
     async execute(guild, user, client) {
         try {
-            const loggingChannel = await client.channels.fetch(loggingChannelID);
-            if (!loggingChannel) return;
+
 
             // Loads the audit logs
             const auditLogs = await guild.fetchAuditLogs({
@@ -43,7 +43,7 @@ module.exports = {
                 }
             };
 
-            loggingChannel.send({ embeds: [embed] });
+            await sendEmbed(undefined, embed);
         } catch(err) {
             log.error(`Error in guildBanRemove event:\n${err}`);
         }

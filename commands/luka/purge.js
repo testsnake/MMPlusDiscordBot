@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const pm2Metrics = require('../../pm2metrics.js');
 const config = require('../../config.json');
 const log = require('../../logger.js');
+const {sendEmbed} = require("../../utils");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -70,14 +71,14 @@ module.exports = {
           pm2Metrics.actionsPerformed.inc();
 
         // Send an embed message to the logging channel indicating the number of messages deleted.
-        const loggingChannel = interaction.client.channels.cache.get(`${config.loggingChannelID}`);
-        if (loggingChannel) {
+
+
           const loggingEmbed = {
             ...purgeEmbed,
             description: `Deleted ${count} messages in ${channel.toString()}.`,
           };
-          await loggingChannel.send({ embeds: [loggingEmbed] });
-        }
+          await sendEmbed(undefined, loggingEmbed)
+
       } catch (error) {
           log.error(error);
         await interaction.reply({ content: 'There was an error purging messages. Please try again. C-01', ephemeral: true });

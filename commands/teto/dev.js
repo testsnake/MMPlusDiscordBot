@@ -5,6 +5,8 @@ const { Client, Intents, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBui
 const pm2Metrics = require('../../pm2metrics.js');
 const { config } = require('../../config.json');
 const log = require('../../logger.js');
+const {sendEmbed} = require("../../utils");
+const { getBotFromString } = require('../../bots.js');
 
 
 
@@ -21,7 +23,7 @@ function ts(str, maxLength) {
 }
 async function addMessageToStarboard(message, starboardChannelId) {
     try {
-        const starboardChannel = await message.client.channels.fetch(starboardChannelId);
+        const starboardChannel = await message.client.channels.fetch();
 
         let starboardEmbed = new EmbedBuilder()
             .setAuthor({name: 'Starred Message', iconURL: message.author.avatarURL({dynamic: true})})
@@ -52,7 +54,8 @@ async function addMessageToStarboard(message, starboardChannelId) {
             starboardEmbed.setDescription(ts(message.content, 2048));
         }
 
-        starboardChannel.send({embeds: [starboardEmbed], components: [row]});
+        // starboardChannel.send({embeds: [starboardEmbed], components: [row]});
+        await sendEmbed(await getBotFromString("luka"), starboardEmbed, starboardChannelId, [row]);
         pm2Metrics.actionsPerformed.inc();
 
     } catch (err) {

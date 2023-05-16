@@ -3,9 +3,9 @@ const fetch = require('node-fetch');
 const {addLog, getRecentLogs} = require('./logManager');
 const {EmbedBuilder} = require('discord.js');
 const {delay, sendMsg, sendAutoPublishEmbed} = require('./utils');
-const {errorAlert} = require("./index.js");
+const {errorAlert} = require("./utils.js");
 const {ts} = require("./utils");
-const { botArray, mikuBot} = require("./index.js");
+const { botArray} = require("./bots.js");
 const config = require('./config.json');
 
 // let client;

@@ -1,6 +1,9 @@
 const config = require('./config.json');
 const log = require('./logger.js');
-const {mikuBot} = require("./index");
+let {botArray} = require("./bots.js");
+const {EmbedBuilder} = require("discord.js");
+let clientZero = botArray[0].bot;
+
 
 /*
     * Test a regex against a string
@@ -10,6 +13,31 @@ const {mikuBot} = require("./index");
  */
 function rxt(reg, str) {
     return reg.test(str);
+}
+
+
+/*
+    * Error Alert
+    * Sends an error alert to the error channel
+    * @param {string} definedErrorMessage - The error message defined in the code
+    * @param {string} code - The error code
+    * @param {string} error - The error message
+    * @param {string} botName - The name of the bot that the error occurred in
+ */
+async function errorAlert(definedErrorMessage, code, error, botName) {
+    try {
+
+        const errorEmbed = new EmbedBuilder()
+            .setTitle(`[${botName}] Error ${definedErrorMessage} ${code}`)
+            .setDescription(`${ts(error, 2047)}`)
+            .setColor(0xFF0000)
+            .setTimestamp();
+
+        await sendEmbed(clientZero, errorEmbed);
+    } catch (error) {
+        log.error(`[${botName}] Failed to send error alert: ${error}`);
+    }
+
 }
 
 /*
@@ -51,7 +79,7 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
     * @param {Object} options - Options to pass to the send method
     * @returns {Promise<Message>}
  */
-async function sendMsg(client = mikuBot, content, channel = config.loggingChannelID, options = {}) {
+async function sendMsg(client = clientZero, content, channel = config.loggingChannelID, options = {}) {
     log.info(`Sending message to channel ${channel}`);
     const channelObj = await client.channels.cache.get(channel);
     return await channelObj.send(content, options);
@@ -65,7 +93,7 @@ async function sendMsg(client = mikuBot, content, channel = config.loggingChanne
     * @param {Object} options - Options to pass to the send method
     * @returns {Promise<Message>}
  */
-async function sendMsgToUser(client = mikuBot, content, user, options = {}) {
+async function sendMsgToUser(client = clientZero, content, user, options = {}) {
     log.info(`Sending message to user ${user}`);
     const userObj = await client.users.fetch(user);
     return await userObj.send(content, options);
@@ -79,16 +107,19 @@ async function sendMsgToUser(client = mikuBot, content, user, options = {}) {
     * @param {Object} options - Options to pass to the send method
     * @returns {Promise<Message>}
  */
-async function sendEmbed(client = mikuBot, embed, channel = config.loggingChannelID, options = {}) {
+async function sendEmbed(client = clientZero, embed, channel = config.loggingChannelID, options = {}) {
     log.info(`Sending embed to channel ${channel}`);
-    const channelObj = await client.channels.cache.get(channel);
-    return await channelObj.send({embeds: [embed], ...options});
+
+    const channelObj = await client.channels.cache.get(`${channel}`);
+    log.debug(`Channel object: ${channelObj}`)
+    return channelObj.send({embeds: [embed], ...options});
 }
 
-async function sendAutoPublishEmbed(client = mikuBot, embed, channel = config.loggingChannelID, options = {}) {
+async function sendAutoPublishEmbed(client = clientZero, embed, channel = config.loggingChannelID, options = {}) {
     log.info(`Sending embed to channel ${channel}`);
-    const channelObj = await client.channels.cache.get(channel);
-    return await channelObj.send({embeds: [embed], ...options}).then( async (msg) => {
+
+    const channelObj = await client.channels.cache.get(`${channel}`);
+    return channelObj.send({embeds: [embed], ...options}).then( async (msg) => {
         await msg.crosspost().then(() => {
             log.info(`Successfully auto-published embed to channel ${channel}`);
         }).catch((err) => {
@@ -119,6 +150,7 @@ module.exports = {
     sendMsgToUser,
     sendEmbed,
     getString,
-    sendAutoPublishEmbed
+    sendAutoPublishEmbed,
+    errorAlert
 
 }

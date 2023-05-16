@@ -1,13 +1,14 @@
 const { loggingChannelID, mikuBotVer, botAvatarURL } = require('../../config.json');
 const log  = require('../../logger.js');
 const {AuditLogEvent, Events} = require("discord.js");
+const {sendMsg, sendEmbed} = require("../../utils");
 
 module.exports = {
     name: 'guildMemberRemove',
     async execute(member, client, guild) {
         try {
-            const loggingChannel = await client.channels.fetch(loggingChannelID);
-            if (!loggingChannel) return;
+            // const loggingChannel = await client.channels.fetch(loggingChannelID);
+            // if (!loggingChannel) return;
 
             const auditLogs = await member.guild.fetchAuditLogs({
                 type: AuditLogEvent.guildMemberRemove,
@@ -31,12 +32,14 @@ module.exports = {
             };
 
             // checks if the user was kicked
-            if (auditLogs.entries.first().action === 'MEMBER_KICK') {
+            if (auditLogs.entries.first().action === AuditLogEvent.MemberKick) {
                 const { executor } = auditLogs.entries.first();
                 embed.description += `\nKicked by: ${executor.tag}`;
             }
 
-            loggingChannel.send({ embeds: [embed] });
+            log.info(`[LEAVE] ${member.user.tag} has left the server.`);
+            await sendEmbed(undefined, embed)
+
         } catch(err) {
             log.error(`Error in guildMemberRemove event:\n${err}`);
 
