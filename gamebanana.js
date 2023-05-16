@@ -207,7 +207,7 @@ async function processRecord(modInfo, isNew) {
         }
         addLog(`{ProcessRecord at ${new Date()}}\nisNew: ${isNew}\n${JSON.stringify(modInfo)}`);
 
-        await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
+        await client.channels.cache.get(`1087783783207534604`).then(async (feedChannel) => {
 
             if (!feedChannel) {
                 log.error("Error getting feed channel");
