@@ -1,5 +1,6 @@
 const config = require('./config.json');
 const log = require('./logger.js');
+const {mikuBot} = require("./index");
 
 /*
     * Test a regex against a string
@@ -50,7 +51,7 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
     * @param {Object} options - Options to pass to the send method
     * @returns {Promise<Message>}
  */
-async function sendMsg(client, content, channel = config.loggingChannelID, options = {}) {
+async function sendMsg(client = mikuBot, content, channel = config.loggingChannelID, options = {}) {
     log.info(`Sending message to channel ${channel}`);
     const channelObj = await client.channels.cache.get(channel);
     return await channelObj.send(content, options);
@@ -64,7 +65,7 @@ async function sendMsg(client, content, channel = config.loggingChannelID, optio
     * @param {Object} options - Options to pass to the send method
     * @returns {Promise<Message>}
  */
-async function sendMsgToUser(client, content, user, options = {}) {
+async function sendMsgToUser(client = mikuBot, content, user, options = {}) {
     log.info(`Sending message to user ${user}`);
     const userObj = await client.users.fetch(user);
     return await userObj.send(content, options);
@@ -78,10 +79,22 @@ async function sendMsgToUser(client, content, user, options = {}) {
     * @param {Object} options - Options to pass to the send method
     * @returns {Promise<Message>}
  */
-async function sendEmbed(client, embed, channel = config.loggingChannelID, options = {}) {
+async function sendEmbed(client = mikuBot, embed, channel = config.loggingChannelID, options = {}) {
     log.info(`Sending embed to channel ${channel}`);
     const channelObj = await client.channels.cache.get(channel);
     return await channelObj.send({embeds: [embed], ...options});
+}
+
+async function sendAutoPublishEmbed(client = mikuBot, embed, channel = config.loggingChannelID, options = {}) {
+    log.info(`Sending embed to channel ${channel}`);
+    const channelObj = await client.channels.cache.get(channel);
+    return await channelObj.send({embeds: [embed], ...options}).then( async (msg) => {
+        await msg.crosspost().then(() => {
+            log.info(`Successfully auto-published embed to channel ${channel}`);
+        }).catch((err) => {
+          log.error(`Error auto-publishing embed to channel ${channel}:\n${err.toString()}`)
+        })
+    });
 }
 
 /*
@@ -105,6 +118,7 @@ module.exports = {
     sendMsg,
     sendMsgToUser,
     sendEmbed,
-    getString
+    getString,
+    sendAutoPublishEmbed
 
 }

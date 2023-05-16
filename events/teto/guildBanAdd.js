@@ -1,5 +1,6 @@
 const log = require('../../logger.js');
 const { loggingChannelID, mikuBotVer, botAvatarURL } = require('../../config.json');
+const { AuditLogEvent } = require('discord.js');
 
 module.exports = {
     name: 'guildBanAdd',
@@ -8,21 +9,26 @@ module.exports = {
             const loggingChannel = await client.channels.fetch(loggingChannelID);
             if (!loggingChannel) return;
 
-            // let logEntry;
-            // try {
-            //     logEntry = auditLogs.entries.first()
-            // } catch(err) {
-            //     log.error(`Error getting audit log entry:\n${err}`)
-            // }
+            const auditLogs = await guild.fetchAuditLogs({
+                type: AuditLogEvent.guildBanAdd,
+                limit: 1
+            })
 
-            // let reason = 'unknown';
-            // if (logEntry) {
-            //     const { executor, reason: banReason } = logEntry;
-            //     if (executor) {
-            //         reason = banReason || 'unknown';
-            //         reason += `\nBanned by: ${executor.tag}`;
-            //     }
-            // }
+            let logEntry;
+            try {
+                logEntry = auditLogs.entries.first()
+            } catch(err) {
+                log.error(`Error getting audit log entry:\n${err}`)
+            }
+
+            let reason = 'unknown';
+            if (logEntry) {
+                const { executor, reason: banReason } = logEntry;
+                if (executor) {
+                    reason = banReason || 'unknown';
+                    reason += `\nBanned by: ${executor.tag}`;
+                }
+            }
 
             const embed = {
                 color: parseInt('ff0000', 16),
@@ -37,7 +43,7 @@ module.exports = {
                     iconURL: botAvatarURL
                 }
             };
-
+            log.info(`[BAN] ${user.tag} has been banned from the server.`);
             loggingChannel.send({ embeds: [embed] });
         } catch(err) {
             log.error(`Error in guildBanAdd event:\n${err}`);

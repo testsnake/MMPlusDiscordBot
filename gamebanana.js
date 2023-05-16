@@ -2,14 +2,16 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const {addLog, getRecentLogs} = require('./logManager');
 const {EmbedBuilder} = require('discord.js');
-const {delay} = require('./utils');
+const {delay, sendMsg, sendAutoPublishEmbed} = require('./utils');
 const {errorAlert} = require("./index.js");
 const {ts} = require("./utils");
 const { botArray, mikuBot} = require("./index.js");
+const config = require('./config.json');
 
-let client;
+// let client;
 
 const log = require('./logger.js');
+
 
 const timestampFile = 'latestTimestamp.txt';
 let latestTimestamp;
@@ -25,7 +27,7 @@ let attemptsToReconnect = 0;
 let firstRun = true;
 
 async function checkGamebananaFeed() {
-    client = mikuBot;
+    // client = mikuBot;
     // Check Gamebanana feed for new items
     // This is probably a terrible way to do this, but it works.
     await checkGamebananaAPI('new').then(async (newItems) => {
@@ -62,15 +64,16 @@ async function checkGamebananaAPI(sort) {
 
             } else {
                 attemptsToReconnect++;
-                await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
-                    try {
-                        await feedChannel.send(`An error occurred while fetching the Gamebanana API. Mods may not appear in the feed until this is resolved. (<@$201460040564080651>)`);
-                    } catch (err) {
-                        log.error("Error sending message about Gamebanana API error")
-                        log.error(err);
-                        await errorAlert("Error sending message about Gamebanana API error", "040", err, `GameBanana`)
-                    }
-                });
+                // await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
+                //     try {
+                //         await feedChannel.send(`An error occurred while fetching the Gamebanana API. Mods may not appear in the feed until this is resolved. (<@$201460040564080651>)`);
+                //     } catch (err) {
+                //         log.error("Error sending message about Gamebanana API error")
+                //         log.error(err);
+                //         await errorAlert("Error sending message about Gamebanana API error", "040", err, `GameBanana`)
+                //     }
+                // });
+                await sendMsg(undefined, `An error occurred while fetching the Gamebanana API. Mods may not appear in the feed until this is resolved. (<@201460040564080651>)`, `${config.feedChannelID}`);
             }
         }
 
@@ -120,21 +123,7 @@ async function checkGamebananaAPI(sort) {
 
     } catch (err) {
         log.error("Error checking Gamebanana API");
-        await errorAlert("Error checking Gamebanana API", "002", err, `GameBanana`)
-        const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
-        await loggingChannel.send(`Error checking Gamebanana API:\n\`\`\`${err}\`\`\``);
-        await loggingChannel.send(`\`\`\`${JSON.stringify(err)}\`\`\``);
-        await loggingChannel.send(`\`\`\`${JSON.stringify(err.stack)}\`\`\``);
-        await loggingChannel.send(`\`\`\`${JSON.stringify(err.message)}\`\`\``)
-        await loggingChannel.send(`<@201460040564080651> pls halp`);
-        await delay(1000);
-        let i = 1;
-        const lastLogs = getRecentLogs(10)
-        for (const log of lastLogs) {
-            await loggingChannel.send(`Log ${i}\`\`\`${log}\`\`\``);
-            await delay(1000);
-            i++;
-        }
+        await errorAlert("Error checking Gamebanana API", "000", err, `GameBanana`)
 
     }
 }
@@ -148,16 +137,16 @@ async function processRecord(modInfo, isNew) {
         if (subType === "WiP") {
             subType = "Wip";
         }
-        try {
-            await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
-
-            });
-
-        } catch (err) {
-            log.error("Error getting feed channel")
-            log.error(err);
-            await errorAlert("Error getting feed channel", "005", err, `GameBanana`)
-        }
+        // try {
+        //     await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
+        //
+        //     });
+        //
+        // } catch (err) {
+        //     log.error("Error getting feed channel")
+        //     log.error(err);
+        //     await errorAlert("Error getting feed channel", "005", err, `GameBanana`)
+        // }
 
 
         modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
@@ -201,20 +190,20 @@ async function processRecord(modInfo, isNew) {
 
         await new Promise(r => setTimeout(r, 1000));
         log.info(`Processing record: ${modInfo._sName}`)
-        while (!client.channels.cache.get(`1087783783207534604`)) {
-            log.info("Waiting for feed channel to be ready")
-            await new Promise(r => setTimeout(r, 1000));
-        }
+        // while (!client.channels.cache.get(`1087783783207534604`)) {
+        //     log.info("Waiting for feed channel to be ready")
+        //     await new Promise(r => setTimeout(r, 1000));
+        // }
         addLog(`{ProcessRecord at ${new Date()}}\nisNew: ${isNew}\n${JSON.stringify(modInfo)}`);
 
-        await client.channels.cache.get(`1087783783207534604`).then(async (feedChannel) => {
-
-            if (!feedChannel) {
-                log.error("Error getting feed channel");
-                await errorAlert("Error getting feed channel", "006", "Error getting field channel", `GameBanana`)
-                return
-            }
-            addLog(`[Feed channel at ${new Date()}] ${feedChannel}`);
+        // await client.channels.cache.get(`1087783783207534604`).then(async (feedChannel) => {
+        //
+        //     if (!feedChannel) {
+        //         log.error("Error getting feed channel");
+        //         await errorAlert("Error getting feed channel", "006", "Error getting field channel", `GameBanana`)
+        //         return
+        //     }
+        //     addLog(`[Feed channel at ${new Date()}] ${feedChannel}`);
             let embed;
             const pathname = new URL(modInfo._sProfileUrl).pathname;
             const modsSection = pathname.split("/")[1];
@@ -328,23 +317,16 @@ async function processRecord(modInfo, isNew) {
             await new Promise(resolve => setTimeout(resolve, 2000));
             log.info(`[${modInfo._sName}] Sending embed: ${modInfo._sName}}`)
             try {
-                feedChannel.send({embeds: [embed]}).then(message => {
-                    message.crosspost()
-                        .then(() => log.info("Message auto-published."))
-                        .catch(console.error);
-                });
+                sendAutoPublishEmbed(undefined, embed, config.feedChannelID)
             } catch (err) {
                 log.error(`[${modInfo._sName}] Error while sending embed: ${modInfo._sName}}`);
                 log.error(err);
-                const loggingChannel = await client.channels.cache.get(`1087810388936114316`);
-                loggingChannel.send(`<@201460040564080651> error when posting GameBanana Post: ${modInfo._sName}`);
-                loggingChannel.send(`<@201460040564080651> ${err}`);
-                loggingChannel.send(`${modInfo}`);
+                await errorAlert("Error while sending embed", "009", err, "Gamebanana")
 
 
             }
 
-        })
+        // })
     } catch (err) {
         log.error(`Error while checking GameBanana feed: ${err}`)
     }
