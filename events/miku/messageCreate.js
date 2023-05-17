@@ -2,6 +2,7 @@ const log = require('../../logger.js');
 
 // module that logs each message received
 const {addLog} = require("../../logManager");
+const {EmbedBuilder} = require("discord.js");
 module.exports = {
     name: 'messageCreate',
     async execute(message) {
@@ -53,6 +54,32 @@ module.exports = {
                     } else {
                         log.error('Role not found.');
                     }
+                } else {
+                    log.info(`${message.author.username} sent a message without media in channel ${message.channel.name}.`);
+                    addLog(`${message.author.username} sent a message without media in channel ${message.channel.name}.`);
+
+                    const deniedEmbed = new EmbedBuilder()
+                        .setColor('#ff0000')
+                        .setTitle('Message Denied')
+                        .setDescription('You did not read the rules. Please read the rules and try again.' +
+                            '\nIf you believe this is a mistake, please contact a staff member.\n\n' +
+                            'あなたはルールを読んでいません。ルールを読み、再試行してください。\n' +
+                            'これが誤りだと思われる場合は、スタッフに連絡してください。\n\n' +
+                            'No has leído las reglas. Por favor, lee las reglas e inténtalo de nuevo.\n' +
+                            'Si crees que esto es un error, por favor contacta a un miembro del personal.\n\n' +
+                            'Ви не прочитали правила. Будь ласка, прочитайте правила та спробуйте знову.\n' +
+                            'Якщо ви вважаєте, що це помилка, будь ласка, зверніться до члена персоналу.\n\n' +
+                            '你没有阅读规则。请阅读规则后再试一次。\n' +
+                            '如果你认为这是一个错误，请联系工作人员。\n\n' +
+                            '你沒有閱讀規則。請閱讀規則後再試一次。\n' +
+                            '如果你認為這是一個錯誤，請聯繫工作人員。\n\n' +
+                            'Você não leu as regras. Por favor, leia as regras e tente novamente.\n' +
+                            'Se acredita que isto é um erro, por favor contacte um membro da equipa.'
+
+                        )
+                        .setTimestamp()
+
+                    await message.author.send({embeds: [deniedEmbed]})
                 }
             }
 

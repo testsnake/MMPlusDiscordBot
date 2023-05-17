@@ -230,7 +230,7 @@ async function processRecord(modInfo, isNew) {
                         inline: true
                     },
                 )
-                .setFooter({text: `${mikuBotVer}`})
+                .setFooter({text: `${config.botVer}`})
             if (modInfo._sDescription !== undefined) {
                 embed.setDescription(`${ts(modInfo._sDescription, 4095)}`);
                 log.verbose(`[${modInfo._sName}] Description: ${modInfo._sDescription}`);

@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { Client, Intents, ActivityType } = require('discord.js');
+const { Client, Intents, ActivityType, PermissionFlagsBits } = require('discord.js');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,6 +10,7 @@ module.exports = {
             option.setName('status')
                 .setDescription('The new status for the bot')
                 .setRequired(true))
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
         .addStringOption(option =>
             option.setName('type')
                 .setDescription('Type of the status (PLAYING, WATCHING, LISTENING, STREAMING, COMPETING)')
