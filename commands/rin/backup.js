@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const pm2Metrics = require('../../pm2metrics.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -30,6 +31,7 @@ module.exports = {
 			ko: 'M39+ 저장 데이터 백업에 대한 튜토리얼 (영어만 가능)',
 		}),
 	async execute(interaction) {
+		pm2Metrics.actionsPerformed.inc();
 		await interaction.reply({ content: 'https://gamebanana.com/tuts/15701'});
 	},
 };

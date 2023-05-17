@@ -1,7 +1,13 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { getRecentLogs } = require('../logManager.js');
-const { addLog } = require('../logManager');
+const { getRecentLogs } = require('../../logManager.js');
+const { addLog } = require('../../logManager');
 const { Client, Intents, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBuilder} = require("discord.js");
+const pm2Metrics = require('../../pm2metrics.js');
+const { config } = require('../../config.json');
+const log = require('../../logger.js');
+const {sendEmbed} = require("../../utils");
+const { getBotFromString } = require('../../bots.js');
+
 
 
 function ts(str, maxLength) {
@@ -17,7 +23,7 @@ function ts(str, maxLength) {
 }
 async function addMessageToStarboard(message, starboardChannelId) {
     try {
-        const starboardChannel = await message.client.channels.fetch(starboardChannelId);
+        const starboardChannel = await message.client.channels.fetch();
 
         let starboardEmbed = new EmbedBuilder()
             .setAuthor({name: 'Starred Message', iconURL: message.author.avatarURL({dynamic: true})})
@@ -48,9 +54,13 @@ async function addMessageToStarboard(message, starboardChannelId) {
             starboardEmbed.setDescription(ts(message.content, 2048));
         }
 
-        starboardChannel.send({embeds: [starboardEmbed], components: [row]});
+        // starboardChannel.send({embeds: [starboardEmbed], components: [row]});
+        await sendEmbed(await getBotFromString("luka"), starboardEmbed, starboardChannelId, [row]);
+        pm2Metrics.actionsPerformed.inc();
+
     } catch (err) {
-        console.error("Error adding message to starboard:", err);
+        log.error("Error adding message to starboard:", err);
+        pm2Metrics.errors.inc();
     }
 }
 
@@ -143,7 +153,7 @@ module.exports = {
         } else if (subcommand === 'addtostarboard') {
             const channelId = interaction.options.getChannel('channel').id;
             const messageId = interaction.options.getString('message_id');
-            const starboardChannelId = '1092643863820251196';
+            const starboardChannelId = `${config.starboardChannelId}`;
 
             const channel = await interaction.client.channels.fetch(channelId);
             const message = await channel.messages.fetch(messageId);
@@ -172,7 +182,7 @@ module.exports = {
 
                 return await interaction.reply(`The role ${targetRole} has been given to all users.`);
             } catch (error) {
-                console.error(error);
+                log.error(error);
                 return await interaction.reply({ content: 'There was an error giving the role to all users. Please try again.', ephemeral: true });
             }
         } else if (subcommand === 'setstatus') {
