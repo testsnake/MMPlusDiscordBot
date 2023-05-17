@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, discord } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -63,7 +63,9 @@ module.exports = {
                     { name: 'Modeler', value: "1102667173022937159"},
                     { name: 'Programmer', value: "1102667447611424778"}
                 ),
-        ),
+        )
+        .setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+        .setDMPermission(false),
     async execute(interaction) {
         try {
             const role = interaction.options.getString('role');

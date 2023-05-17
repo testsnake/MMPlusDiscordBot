@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const pm2Metrics = require('../../pm2metrics.js');
 const config = require('../../config.json');
 const log = require('../../logger.js');
@@ -36,7 +36,8 @@ module.exports = {
 
 
         })
-    .addIntegerOption(option => option.setName('count').setDescription('The number of messages to delete (max 100).').setRequired(true)),
+    .addIntegerOption(option => option.setName('count').setDescription('The number of messages to delete (max 100).').setRequired(true))
+    .setDefaultMemberPermissions(PermissionFlagsBits.MANAGE_MESSAGES),
   async execute(interaction) {
     try {
       // Check if the command user has permission to manage messages in the channel.

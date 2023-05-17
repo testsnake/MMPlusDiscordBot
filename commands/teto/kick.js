@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const kickRequests = require('../../kickRequests');
-const { Client, Intents, ActivityType, ActionRowBuilder, ButtonBuilder} = require('discord.js');
+const { Client, Intents, ActivityType, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits} = require('discord.js');
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
@@ -37,6 +37,8 @@ module.exports = {
             'zh-TW': '從伺服器中踢出用戶。',
             ko: '사용자를 서버에서 킥합니다.',
         })
+        .setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS)
+        .setDMPermission(false)
         .addUserOption(option => option.setName('user').setDescription('The user to kick.').setRequired(true))
         .addStringOption(option => option.setName('reason').setDescription('The reason for the kick.').setRequired(false)),
     async execute(interaction) {

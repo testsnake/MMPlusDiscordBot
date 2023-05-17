@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
@@ -60,7 +60,9 @@ module.exports = {
                     'zh-TW': '要獲取頭像的用戶。',
                     ko: '아바타를 가져올 사용자.',
                 })
-                .setRequired(true)),
+                .setRequired(true))
+        .setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
+        .setDMPermission(true),
 
   async execute(interaction) {
     const user = interaction.options.getUser('user');

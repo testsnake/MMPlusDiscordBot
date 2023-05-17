@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 const pm2Metrics = require('../../pm2metrics.js');
 const { config } = require('../../config.json');
 const log = require('../../logger.js');
@@ -27,7 +27,9 @@ module.exports = {
 			ja: 'ダウングレード',
 			'zh-TW': '降級',
 			ko: '다운그레이드',
-		}),
+		})
+		.setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
+		.setDMPermission(true),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
 		await interaction.reply({ content: ' https://gamebanana.com/tuts/15371 '});

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,7 +16,9 @@ module.exports = {
             ja: 'Miku Miku Modelへのリンク',
             'zh-TW': '鏈接到Miku Miku Model',
             ko: 'Miku Miku Model 링크',
-        }),
+        })
+        .setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+        .setDMPermission(true),
     async execute(interaction) {
         await interaction.reply({ content: 'https://github.com/blueskythlikesclouds/MikuMikuLibrary/releases'});
     },

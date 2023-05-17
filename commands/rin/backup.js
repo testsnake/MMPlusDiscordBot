@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 const pm2Metrics = require('../../pm2metrics.js');
 
 module.exports = {
@@ -29,7 +29,9 @@ module.exports = {
 			ja: 'M39+セーブデータのバックアップに関するチュートリアル（英語のみ）',
 			'zh-TW': 'M39+存檔數據備份教程（僅英文）',
 			ko: 'M39+ 저장 데이터 백업에 대한 튜토리얼 (영어만 가능)',
-		}),
+		})
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(true),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
 		await interaction.reply({ content: 'https://gamebanana.com/tuts/15701'});

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, GatewayIntentBits } = require('discord.js');
 const { Client, Intents, ActivityType, PermissionFlagsBits } = require('discord.js');
 
 
@@ -21,7 +21,8 @@ module.exports = {
                     {name: 'Listening', value: 'Listening'},
                     {name: 'Streaming', value: 'Streaming'},
                     {name: 'Competing', value: 'Competing'}
-                )),
+                ))
+        .setDMPermission(false),
     async execute(interaction) {
         // Check if the user has the Administrator permission
         if (!interaction.member.permissions.has('ADMINISTRATOR')) {

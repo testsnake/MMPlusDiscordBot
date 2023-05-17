@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -30,7 +30,9 @@ module.exports = {
 			nl: 'ping',
 
 
-		}),
+		})
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.reply({ content: 'Pong!', ephemeral: true });
 	},

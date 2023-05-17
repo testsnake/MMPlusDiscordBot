@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const pm2Metrics = require('../../pm2metrics.js');
 
 module.exports = {
@@ -12,6 +12,8 @@ module.exports = {
             'zh-CN': 'dml链接',
 
         })
+        .setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
+        .setDMPermission(true)
         .setDescriptionLocalizations({
             de: 'Diva Mod Loader Link',
             'en-GB': 'Diva Mod Loader link',

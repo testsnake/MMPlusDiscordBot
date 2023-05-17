@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
@@ -47,7 +47,9 @@ module.exports = {
 			'zh-TW': '幫助',
 			ko: '도움말',
 			"es-ES": "ayuda"
-		}),
+		})
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(false),
 	async execute(interaction) {
 		let helpEmbed = new EmbedBuilder()
 			.setColor(0x86cecb)

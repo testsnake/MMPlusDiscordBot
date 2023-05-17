@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 const pm2Metrics = require('../../pm2metrics.js');
 
 module.exports = {
@@ -51,7 +51,9 @@ module.exports = {
 						ko: '박수를 추가하려는 텍스트입니다.',
 					})
 
-					.setRequired(true)),
+					.setRequired(true))
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(true),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
 		const text = interaction.options.getString('text');

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 const Uwuifier = require('uwuifier').default;
 const pm2Metrics = require('../../pm2metrics');
 const log = require('../../logger.js');
@@ -46,7 +46,9 @@ module.exports = {
 					'zh-TW': '您想要Uwu化的文本。 (目前僅支持拉丁字符)',
 					ko: 'Uwu-ify하려는 텍스트. (현재는 라틴 문자만 지원됩니다)',
 				})
-				.setRequired(true)),
+				.setRequired(true))
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(true),
 	async execute(interaction) {
 		try {
 

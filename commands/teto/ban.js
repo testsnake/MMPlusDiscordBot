@@ -4,7 +4,7 @@ const { Client, Intents, ActivityType, ActionRow, ActionRowBuilder, ButtonBuilde
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
-const { MessageActionRow, MessageButton } = require('discord.js');
+const { MessageActionRow, MessageButton, PermissionFlagsBits } = require('discord.js');
 const loggingChannel = '1087810388936114316';
 
 
@@ -80,7 +80,9 @@ module.exports = {
             ja: 'BANの理由。',
             'zh-TW': '封禁的原因。',
             ko: '밴 사유.',
-        }).setRequired(false)),
+        }).setRequired(false))
+        .setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS)
+        .setDMPermission(false),
     async execute(interaction) {
         const user = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason') || 'No reason provided';

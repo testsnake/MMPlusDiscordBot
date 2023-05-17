@@ -524,7 +524,9 @@ module.exports = {
                     ko: '삭제',
 
                 })
-        ),
+        )
+        .setDefaultMemberPermissions(false)
+        .setDMPermission(false),
 
     async execute(interaction) {
         try {

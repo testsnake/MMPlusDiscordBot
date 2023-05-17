@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -23,7 +23,9 @@ module.exports = {
 			ja: 'ExPatchダウンロードリンク',
 			'zh-TW': 'ExPatch 下載連結',
 			ko: 'ExPatch 다운로드 링크',
-		}),
+		})
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.reply({ content: 'https://gamebanana.com/mods/388083'});
 	},

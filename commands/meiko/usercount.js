@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
@@ -35,7 +35,9 @@ module.exports = {
 			ja: 'サーバー内のユーザー数',
 			'zh-TW': '伺服器中的用戶數',
 			ko: '서버의 사용자 수',
-		}),
+		})
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(false),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
 		const guild = interaction.guild;

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits  } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const fetch = require('node-fetch');
 const fs = require('fs');
@@ -46,7 +46,9 @@ module.exports = {
                     'zh-TW': '要搜尋的模組名稱或提交 ID',
                     ko: '검색할 모드 이름 또는 제출 ID',
                 })
-                .setRequired(true)),
+                .setRequired(true))
+        .setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+        .setDMPermission(true),
     async execute(interaction) {
         const query = interaction.options.getString('query');
         await interaction.deferReply();

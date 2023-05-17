@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Discord, EmbedBuilder, ButtonBuilder, ActionRowBuilder} = require('discord.js');
+const { SlashCommandBuilder, Discord, EmbedBuilder, ButtonBuilder, ActionRowBuilder, PermissionFlagsBits} = require('discord.js');
 
 
 
@@ -58,7 +58,9 @@ module.exports = {
             ja: '警告の理由。',
             'zh-TW': '警告的原因。',
             ko: '경고 사유.',
-        }).setRequired(true)),
+        }).setRequired(true))
+        .setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS)
+        .setDMPermission(false),
     async execute(interaction) {
         try {
             const user = interaction.options.getUser('user');

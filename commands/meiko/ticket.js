@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { ChannelType, PermissionsBitField } = require('discord.js');
 
 module.exports = {
@@ -31,7 +31,9 @@ module.exports = {
             "en-GB": "ticket",
             de: "ticket",
 
-        }),
+        })
+        .setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+        .setDMPermission(false),
     async execute(interaction) {
         const categoryName = 'TICKETS';
         const channelName = `ticket-${Math.floor(Math.random() * 10000)}`;

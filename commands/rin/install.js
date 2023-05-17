@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 const pm2Metrics = require('../../pm2metrics.js');
 
 module.exports = {
@@ -23,7 +23,9 @@ module.exports = {
 			ko: '설치',
 			'zh-TW': '安裝',
 			'zh-CN': '安装',
-		}),
+		})
+		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
+		.setDMPermission(false),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
 		await interaction.reply({ content: 'https://gamebanana.com/tuts/15379'});

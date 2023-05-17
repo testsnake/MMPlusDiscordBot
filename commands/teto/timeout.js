@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Client, Intents, ActivityType } = require('discord.js');
+const { Client, Intents, ActivityType, PermissionFlagsBits} = require('discord.js');
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
@@ -91,7 +91,9 @@ module.exports = {
             ja: 'タイムアウトの理由。',
             'zh-TW': '超時的原因。',
             ko: '타임아웃의 이유.',
-        })),
+        }))
+        .setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS)
+        .setDMPermission(false),
     async execute(interaction) {
         const user = interaction.options.getUser('user');
         const duration = interaction.options.getString('duration');

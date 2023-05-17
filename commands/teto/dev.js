@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { getRecentLogs } = require('../../logManager.js');
 const { addLog } = require('../../logManager');
-const { Client, Intents, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBuilder} = require("discord.js");
+const { Client, Intents, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits} = require("discord.js");
 const pm2Metrics = require('../../pm2metrics.js');
 const { config } = require('../../config.json');
 const log = require('../../logger.js');
@@ -108,7 +108,9 @@ module.exports = {
                             {name: 'Listening', value: 'Listening'},
                             {name: 'Streaming', value: 'Streaming'},
                             {name: 'Competing', value: 'Competing'}
-                        ))),
+                        )))
+        .setDefaultMemberPermissions(PermissionFlagsBits.ADMINISTRATOR)
+        .setDMPermission(false),
     async execute(interaction) {
         const allowedUserId = '201460040564080651';
         if (interaction.user.id !== allowedUserId) {
