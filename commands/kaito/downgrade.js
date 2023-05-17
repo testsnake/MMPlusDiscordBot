@@ -27,9 +27,7 @@ module.exports = {
 			ja: 'ダウングレード',
 			'zh-TW': '降級',
 			ko: '다운그레이드',
-		})
-		.setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
-		.setDMPermission(true),
+		}),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
 		await interaction.reply({ content: ' https://gamebanana.com/tuts/15371 '});

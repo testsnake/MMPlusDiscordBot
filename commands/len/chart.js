@@ -22,9 +22,7 @@ module.exports = {
 			ja: 'Comfy 譜面マニュアル',
 			'zh-TW': 'Comfy 繪圖手冊',
 			ko: 'Comfy 차팅 매뉴얼',
-		})
-		.setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
-		.setDMPermission(true),
+		}),
 	async execute(interaction) {
 		await interaction.reply({ content: 'https://cdn.discordapp.com/attachments/603835223691624451/1038680701668696105/image.png'});
 	},

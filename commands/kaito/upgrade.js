@@ -30,9 +30,7 @@ module.exports = {
 			ja: 'M39+のチュートリアルを更新する',
 			'zh-TW': '更新 M39+ 教程',
 			ko: 'MM+ 튜토리얼 업데이트',
-		})
-		.setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
-		.setDMPermission(true),
+		}),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
 		await interaction.reply({ content: ' https://gamebanana.com/tuts/15371 '});

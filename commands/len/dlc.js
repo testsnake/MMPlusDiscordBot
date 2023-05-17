@@ -22,9 +22,7 @@ module.exports = {
 			ja: 'DLCリンク',
 			'zh-TW': 'DLC連結',
 			ko: 'DLC 링크',
-		})
-		.setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
-		.setDMPermission(true),
+		}),
 	async execute(interaction) {
 		await interaction.reply({ content: 'https://store.steampowered.com/app/1887030/Hatsune_Miku_Project_DIVA_Mega_Mix_Extra_Song_Pack/'});
 	},

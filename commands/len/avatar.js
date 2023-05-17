@@ -60,9 +60,7 @@ module.exports = {
                     'zh-TW': '要獲取頭像的用戶。',
                     ko: '아바타를 가져올 사용자.',
                 })
-                .setRequired(true))
-        .setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
-        .setDMPermission(true),
+                .setRequired(true)),
 
   async execute(interaction) {
     const user = interaction.options.getUser('user');

@@ -46,9 +46,7 @@ module.exports = {
 					'zh-TW': '您想要Uwu化的文本。 (目前僅支持拉丁字符)',
 					ko: 'Uwu-ify하려는 텍스트. (현재는 라틴 문자만 지원됩니다)',
 				})
-				.setRequired(true))
-		.setDefaultMemberPermissions([PermissionFlagsBits.SEND_MESSAGES])
-		.setDMPermission(true),
+				.setRequired(true)),
 	async execute(interaction) {
 		try {
 
