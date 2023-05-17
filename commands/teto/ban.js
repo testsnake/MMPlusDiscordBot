@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const banRequests = require('../banRequests');
+const banRequests = require('../../banRequests');
 const { Client, Intents, ActivityType, ActionRow, ActionRowBuilder, ButtonBuilder, EmbedBuilder} = require('discord.js');
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');

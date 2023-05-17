@@ -3,6 +3,9 @@ const { EmbedBuilder } = require('discord.js');
 const fetch = require('node-fetch');
 const fs = require('fs');
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
+const pm2Metrics = require('../../pm2metrics.js');
+const { config } = require('../../config.json');
+const log = require('../../logger.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -127,8 +130,8 @@ module.exports = {
                         }
                     }
                 }
-                console.log(contentWarnings);
-                console.log(modInfo._aContentRatings);
+                log.info(contentWarnings);
+                log.info(modInfo._aContentRatings);
 
                 embed.addFields({name: 'Content Warnings', value: `${contentWarnings}`, inline: true});
             }

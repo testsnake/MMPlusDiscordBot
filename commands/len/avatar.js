@@ -2,6 +2,9 @@ const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const fs = require("fs");
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
+const pm2Metrics = require('../../pm2metrics.js');
+const { config } = require('../../config.json');
+const log = require('../../logger.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -66,6 +69,7 @@ module.exports = {
       .setTitle(`${user.tag}'s Avatar`)
       .setImage(user.displayAvatarURL({ dynamic: true, size: 4096 }))
         .setFooter({ text: `${mikuBotVer}`});
+    pm2Metrics.actionsPerformed.inc();
     await interaction.reply({ embeds: [avatarEmbed] });
   },
 };

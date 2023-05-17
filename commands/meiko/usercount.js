@@ -2,6 +2,9 @@ const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
+const pm2Metrics = require('../../pm2metrics.js');
+const { config } = require('../../config.json');
+const log = require('../../logger.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,6 +37,7 @@ module.exports = {
 			ko: '서버의 사용자 수',
 		}),
 	async execute(interaction) {
+		pm2Metrics.actionsPerformed.inc();
 		const guild = interaction.guild;
   		const memberCount = guild.memberCount;
 		const helpEmbed = new EmbedBuilder()

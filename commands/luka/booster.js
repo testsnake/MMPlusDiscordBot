@@ -1,5 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const fetch = require('node-fetch');
+const pm2Metrics = require('../../pm2metrics.js');
+const { config } = require('../../config.json');
+const log = require('../../logger.js');
 
 async function grabSpecialRole(member, lowerBoundId, upperBoundId) {
     const lowerBoundRole = await member.guild.roles.cache.get(lowerBoundId);
@@ -528,12 +531,13 @@ module.exports = {
             await interaction.deferReply({
                 ephemeral: true
             });
-            if (!interaction.member.roles.cache.has('1092636310142980127') && !interaction.member.roles.cache.has('1093385832540405770')) {
+            pm2Metrics.actionsPerformed.inc();
+            if (!interaction.member.roles.cache.has(`${config.boosterRole.global[0]}`) && !interaction.member.roles.cache.has(`${config.boosterRole.global[1]} `)) {
                 return await interaction.editReply({content: 'You do not have a booster role.', ephemeral: true});
             } else {
                 const subcommand = interaction.options.getSubcommand();
                 const subcommandGroup = interaction.options.getSubcommandGroup();
-                const specialRole = await grabSpecialRole(interaction.member, '1093246448566550579', '1093246368077840424');
+                const specialRole = await grabSpecialRole(interaction.member, `${config.boosterRole.lower}`, `${config.boosterRole.upper}`);
                 if (!specialRole) {
                     if (subcommand === 'help') {
                         return await interaction.editReply({
@@ -541,7 +545,7 @@ module.exports = {
                             ephemeral: true
                         });
                     } else if (subcommand === 'create') {
-                        const boosterRolePosition = await interaction.guild.roles.cache.get('1093246448566550579').position;
+                        const boosterRolePosition = await interaction.guild.roles.cache.get(`${config.boosterRole.lower}`).position;
                         const boosterRolePos = boosterRolePosition + 1;
                         const boosterRole = await interaction.guild.roles.create({
 
@@ -700,7 +704,8 @@ module.exports = {
             }
 
         } catch (error) {
-            console.log(error);
+            log.error(error)
+            pm2Metrics.commandsErrored.inc();
             return await interaction.editReply({content: 'An error occurred. Please try again later.', ephemeral: true});
         }
     }

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const pm2Metrics = require('../../pm2metrics.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -52,6 +53,7 @@ module.exports = {
 
 					.setRequired(true)),
 	async execute(interaction) {
+		pm2Metrics.actionsPerformed.inc();
 		const text = interaction.options.getString('text');
 		const clapText = text.replace(/ /g, ' 👏 ')
 		await interaction.reply({ content: clapText, allowedMentions: { repliedUser: false  }});

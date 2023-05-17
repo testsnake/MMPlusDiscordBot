@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const pm2Metrics = require('../../pm2metrics.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,6 +27,7 @@ module.exports = {
         }),
 
     async execute(interaction) {
+        pm2Metrics.actionsPerformed.inc();
         await interaction.reply({ content: 'https://github.com/blueskythlikesclouds/DivaModLoader/releases'});
     },
 };

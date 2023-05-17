@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const Uwuifier = require('uwuifier').default;
+const pm2Metrics = require('../../pm2metrics');
+const log = require('../../logger.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -46,30 +48,37 @@ module.exports = {
 				})
 				.setRequired(true)),
 	async execute(interaction) {
+		try {
 
-		const uwuify = new Uwuifier();
-		const text = interaction.options.getString('text');
-		const uwuText = uwuify.uwuifySentence(text);
-		if (uwuText.length > 2000) {
-			await interaction.deferReply();
-			let uwuTextArray = [];
-			for (let i = 0; i < uwuText.length; i += 2000) {
-				uwuTextArray.push(uwuText.substring(i, i + 2000));
-			}
-			for (let i = 0; i < uwuTextArray.length; i++) {
-				if (i === 0) {
-					await interaction.editReply({content: uwuTextArray[i], allowedMentions: {repliedUser: false}});
-				} else if (i % 4 === 0) {
-					await interaction.channel.sendTyping();
-					await new Promise(r => setTimeout(r, 1000));
+			const uwuify = new Uwuifier();
+			const text = interaction.options.getString('text');
+			const uwuText = uwuify.uwuifySentence(text);
+			if (uwuText.length > 2000) {
+				await interaction.deferReply();
+				let uwuTextArray = [];
+				for (let i = 0; i < uwuText.length; i += 2000) {
+					uwuTextArray.push(uwuText.substring(i, i + 2000));
 				}
-				if (i !== 0) {
-					await interaction.followUp({ content: uwuTextArray[i], allowedMentions: { repliedUser: false  }});
-				}
+				for (let i = 0; i < uwuTextArray.length; i++) {
+					if (i === 0) {
+						await interaction.editReply({content: uwuTextArray[i], allowedMentions: {repliedUser: false}});
+					} else if (i % 4 === 0) {
+						await interaction.channel.sendTyping();
+						await new Promise(r => setTimeout(r, 1000));
+					}
+					if (i !== 0) {
+						await interaction.followUp({content: uwuTextArray[i], allowedMentions: {repliedUser: false}});
+					}
 
+				}
+			} else {
+				await interaction.reply({content: uwuText, allowedMentions: {repliedUser: false}});
 			}
-		} else {
-			await interaction.reply({ content: uwuText, allowedMentions: { repliedUser: false  }});
+		} catch (error) {
+			log.error(error);
+			pm2Metrics.commandsErrored.inc();
+			await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
+
 		}
 
 	},
