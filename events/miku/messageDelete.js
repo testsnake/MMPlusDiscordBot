@@ -68,7 +68,7 @@ module.exports = {
                 .setTimestamp(new Date())
                 .addFields({name: "Author", value: `${message.author.toString()}`, inline: true})
                 .addFields({name: "MessageID", value: `${message.id}`, inline: true})
-                .addFields({name: "Deleted by", value: `${executor.toString()}`, inline: true})
+                // .addFields({name: "Deleted by", value: `${executor.toString()}`, inline: true})
 
                 .setFooter({text: `${botVer}`, iconURL: `${botAvatarURL}`});
 
