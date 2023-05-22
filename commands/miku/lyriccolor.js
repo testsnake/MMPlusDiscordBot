@@ -29,9 +29,10 @@ function rearrangeAndConvert(hex) {
 
     // Convert to signed decimal
     let decimal = parseInt(rearranged, 16);
-    if (decimal > Math.pow(2, 31)) {
-        decimal -= Math.pow(2, 32);
+    if ((decimal & 0x80000000) !== 0) {
+        decimal = -(~decimal + 1);
     }
+
 
     return decimal;
 }
