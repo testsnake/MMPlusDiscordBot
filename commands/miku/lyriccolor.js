@@ -18,29 +18,25 @@ function rearrangeAndConvert(hex) {
         hex += 'FF'
     }
 
-
     // Ensure the input is 8 characters long (32 bits)
     if (hex.length !== 8) {
         throw new Error("Invalid hex color input");
     }
 
-    // Rearrange from AARRGGBB into BBGGRRAA
-    let rearranged = hex.substring(6, 8) + hex.substring(4, 6) + hex.substring(2, 4) + hex.substring(0, 2);
+    // Rearrange from RRGGBBAA into AABBGGRR
+    let rearranged = hex.substring(6, 8) + hex.substring(4, 6) + hex.substring(0, 2) + hex.substring(2, 4);
 
-    // Convert to signed decimal
+    // Convert to unsigned decimal
     let decimal = parseInt(rearranged, 16);
-    if ((decimal & 0x80000000) !== 0) {
-        decimal = -(~decimal + 1);
-    }
-
 
     return decimal;
 }
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('lyriccolour')
-        .setDescription('Converts AARRBBGG to decimal for use in Script Editor')
+        .setDescription('Converts RRGGBBAA to decimal for use in Script Editor')
         .setNameLocalizations({
             'en-GB': 'lyriccolour',
             'en-US': 'lyriccolor',
@@ -62,10 +58,10 @@ module.exports = {
         } catch (error) {
             log.error(error);
             const locales = {
-                'en-GB': 'Enter a valid Hex Colour',
-                'en-US': 'Enter a valid Hex Color',
+                'en-GB': 'Enter a valid Hex Colour\nFormat RRGGBBAA',
+                'en-US': 'Enter a valid Hex Color\nFormat RRGGBBAA',
             }
-            await interaction.reply({content: locales[interaction.locale] ?? 'Enter a valid Hex Colour\nFormat AARRGGBB', ephemeral: true});
+            await interaction.reply({content: locales[interaction.locale] ?? 'Enter a valid Hex Colour\nFormat RRGGBBAA', ephemeral: true});
             pm2Metrics.errors.inc();
         }
     }
