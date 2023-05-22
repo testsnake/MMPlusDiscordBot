@@ -7,20 +7,24 @@ function rearrangeAndConvert(hex) {
     if (hex.startsWith('#')) {
         hex = hex.substring(1);
     }
-    // Sets Alpha to FF if it doesn't exist
-    if (hex.length === 6) {
-        hex = 'FF' + hex
-    }
+    
     // Removes 0x if it exists
     if (hex.startsWith('0x')) {
         hex = hex.substring(2);
     }
+
+    // Sets Alpha to FF if it doesn't exist
+    if (hex.length === 6) {
+        hex = 'FF' + hex
+    }
+
+
     // Ensure the input is 8 characters long (32 bits)
     if (hex.length !== 8) {
         throw new Error("Invalid hex color input");
     }
 
-    // Rearrange into BBGGRRAA
+    // Rearrange from AARRGGBB into BBGGRRAA
     let rearranged = hex.substring(6, 8) + hex.substring(4, 6) + hex.substring(2, 4) + hex.substring(0, 2);
 
     // Convert to signed decimal
