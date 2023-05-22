@@ -11,3 +11,4 @@
 /upgrade /downgrade - Upgrade/downgrade guide for mm+
 /usercount - user count
 /ping - Pong!
+/lyriccolor / /lyriccolor - Converts RRGGBBAA for use with Script Editor
