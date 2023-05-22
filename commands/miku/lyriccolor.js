@@ -26,11 +26,15 @@ function rearrangeAndConvert(hex) {
     // Rearrange from RRGGBBAA into AABBGGRR
     let rearranged = hex.substring(6, 8) + hex.substring(4, 6) + hex.substring(0, 2) + hex.substring(2, 4);
 
-    // Convert to unsigned decimal
+    // Convert to signed decimal
     let decimal = parseInt(rearranged, 16);
+    if ((decimal & 0x80000000) !== 0) {
+        decimal = -(~decimal + 1);
+    }
 
     return decimal;
 }
+
 
 
 module.exports = {
