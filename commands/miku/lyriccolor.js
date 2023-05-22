@@ -23,8 +23,8 @@ function rearrangeAndConvert(hex) {
         throw new Error("Invalid hex color input");
     }
 
-    // Rearrange from RRGGBBAA into BBGGRRAA
-    let rearranged = hex.substring(2, 4) + hex.substring(4, 6) + hex.substring(6, 8) + hex.substring(0, 2);
+    // Rearrange from RRGGBBAA into AARRGGBB
+    let rearranged = hex.substring(6, 8) + hex.substring(0, 6);
 
     // Convert to signed decimal
     let decimal = parseInt(rearranged, 16);
