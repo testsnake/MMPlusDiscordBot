@@ -21,7 +21,7 @@ function rearrangeAndConvert(hex) {
     }
 
     // Rearrange into BBGGRRAA
-    let rearranged =  hex.substring(4, 6) + hex.substring(2, 4) + hex.substring(0, 2) + hex.substring(6, 8);
+    let rearranged = hex.substring(6, 8) + hex.substring(4, 6) + hex.substring(2, 4) + hex.substring(0, 2);
 
     // Convert to signed decimal
     let decimal = parseInt(rearranged, 16);
@@ -35,7 +35,7 @@ function rearrangeAndConvert(hex) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('lyriccolour')
-        .setDescription('Converts RRBBGGAA to decimal for use in Script Editor')
+        .setDescription('Converts AARRBBGG to decimal for use in Script Editor')
         .setNameLocalizations({
             'en-GB': 'lyriccolour',
             'en-US': 'lyriccolor',
@@ -60,7 +60,7 @@ module.exports = {
                 'en-GB': 'Enter a valid Hex Colour',
                 'en-US': 'Enter a valid Hex Color',
             }
-            await interaction.reply({content: locales[interaction.locale] ?? 'Enter a valid Hex Colour\nFormat RRGGBBAA', ephemeral: true});
+            await interaction.reply({content: locales[interaction.locale] ?? 'Enter a valid Hex Colour\nFormat AARRGGBB', ephemeral: true});
             pm2Metrics.errors.inc();
         }
     }
