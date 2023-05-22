@@ -7,7 +7,7 @@ function rearrangeAndConvert(hex) {
     if (hex.startsWith('#')) {
         hex = hex.substring(1);
     }
-    
+
     // Removes 0x if it exists
     if (hex.startsWith('0x')) {
         hex = hex.substring(2);
@@ -15,7 +15,7 @@ function rearrangeAndConvert(hex) {
 
     // Sets Alpha to FF if it doesn't exist
     if (hex.length === 6) {
-        hex = 'FF' + hex
+        hex += 'FF'
     }
 
 
