@@ -24,7 +24,7 @@ function rearrangeAndConvert(hex) {
     }
 
     // Rearrange from AARRGGBB into BBGGRRAA
-    let rearranged = hex.substring(6, 8) + hex.substring(4, 6) + hex.substring(2, 4) + hex.substring(0, 2);
+    let rearranged = hex.substring(6, 8) + hex.substring(0, 2) + hex.substring(2, 4) + hex.substring(4, 6);
 
     // Convert to signed decimal
     let decimal = parseInt(rearranged, 16);
