@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const fetch = require('node-fetch');
 const pm2Metrics = require('../../pm2metrics.js');
-const { config } = require('../../config.json');
+const config = require('../../config.json');
 const log = require('../../logger.js');
 
 async function grabSpecialRole(member, lowerBoundId, upperBoundId) {
@@ -528,6 +528,7 @@ module.exports = {
 
     async execute(interaction) {
         try {
+            log.debug(config.boosterRole.global[0]);
             await interaction.deferReply({
                 ephemeral: true
             });
@@ -704,9 +705,9 @@ module.exports = {
             }
 
         } catch (error) {
-            log.error(error)
+            log.error(`${error}`)
             pm2Metrics.commandsErrored.inc();
-            return await interaction.editReply({content: 'An error occurred. Please try again later.', ephemeral: true});
+            return await interaction.editReply({content: `An error occurred. Please try again later.\n\`\`\`${error}\`\`\``, ephemeral: true});
         }
     }
 }
