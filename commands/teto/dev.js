@@ -7,6 +7,7 @@ const { config } = require('../../config.json');
 const log = require('../../logger.js');
 const {sendEmbed} = require("../../utils");
 const { getBotFromString } = require('../../bots.js');
+const { getTimestamp, setFeedTimestamp, toggleFeed} = require('../../gamebanana.js')
 
 
 
@@ -109,6 +110,27 @@ module.exports = {
                             {name: 'Streaming', value: 'Streaming'},
                             {name: 'Competing', value: 'Competing'}
                         )))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('gamebanana')
+                .setDescription('toggles the Gamebanana Feed'))
+
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('settimestamp')
+                .setDescription('Sets the timestamp of the Gamebanana Feed')
+                .addIntegerOption(option =>
+                    option.setName('timestamp')
+                        .setDescription('The timestamp to set the Gamebanana Feed to, defaults to current timestamp')
+                        .setRequired(false)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('gettimestamp')
+                .setDescription('Gets the timestamp of the Gamebanana Feed'))
+
+
+
+
         .setDefaultMemberPermissions(PermissionFlagsBits.ADMINISTRATOR)
         .setDMPermission(false),
     async execute(interaction) {
@@ -202,8 +224,21 @@ module.exports = {
 
             await interaction.client.user.setPresence({ activities: [{ name: `${status}`, type: ActivityType[activityType] }], status: 'online' });
             await interaction.reply({ content: `Status updated to: ${type}`, ephemeral: true });
-        } else {
-            await interaction.reply({ content: 'Invalid subcommand.', ephemeral: true });
+        } else if (subcommand === 'gamebanana') {
+            const feedStatus = await toggleFeed();
+            await interaction.reply({ content: `The Gamebanana feed is now: ${feedStatus}`, ephemeral: true });
+        } else if (subcommand === 'settimestamp') {
+            const timestamp = interaction.options.getInteger('timestamp') || Math.floor(Date.now() / 1000);
+            const setTimestamp = await setFeedTimestamp(timestamp);
+            await interaction.reply({ content: `The timestamp has been set to: ${setTimestamp}`, ephemeral: true });
+        } else if (subcommand === 'gettimestamp') {
+            const timestamp = await getTimestamp();
+
+            await interaction.reply({ content: `The current timestamp is: ${timestamp}, \<\t\:${timestamp}\:\F\>`, ephemeral: true });
+        }
+
+        else {
+            await interaction.reply({ content: 'Invalid subcommand. Congrats on managing to do that, it shouldn\'t even be possible', ephemeral: true });
         }
     },
 };

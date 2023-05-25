@@ -14,6 +14,7 @@ const log = require('./logger.js');
 
 
 const timestampFile = 'latestTimestamp.txt';
+let feedEnabled = true;
 let latestTimestamp;
 let latestTimestampTemp;
 try {
@@ -31,20 +32,23 @@ async function checkGamebananaFeed() {
     // Check Gamebanana feed for new items
     // This is probably a terrible way to do this, but it works.
 
-    // if latest timestamp is undefined, null, in the future, or more than 1 hour ago, set it to 1 hour ago
-    if (latestTimestamp === undefined || latestTimestamp === null || latestTimestamp > (new Date().getTime() / 1000) || latestTimestamp < (new Date().getTime() / 1000) - 3600) {
-        latestTimestamp = (new Date().getTime() / 1000) - 3600;
-        fs.writeFileSync(timestampFile, latestTimestamp.toString());
-    }
-
-
-    await checkGamebananaAPI('new').then(async (newItems) => {
-        await checkGamebananaAPI('updated').then(async (updatedItems) => {
-            latestTimestamp = Math.max(newItems, updatedItems);
+    if (feedEnabled) {
+        // if latest timestamp is undefined, null, in the future, or more than 1 hour ago, set it to 1 hour ago
+        if (latestTimestamp === undefined || latestTimestamp === null || latestTimestamp > (new Date().getTime() / 1000) || latestTimestamp < (new Date().getTime() / 1000) - 3600) {
+            latestTimestamp = (new Date().getTime() / 1000) - 3600;
             fs.writeFileSync(timestampFile, latestTimestamp.toString());
-        });
-    });
+        }
 
+
+        await checkGamebananaAPI('new').then(async (newItems) => {
+            await checkGamebananaAPI('updated').then(async (updatedItems) => {
+                latestTimestamp = Math.max(newItems, updatedItems);
+                fs.writeFileSync(timestampFile, latestTimestamp.toString());
+            });
+        });
+    } else {
+        log.info("Gamebanana feed is disabled");
+    }
 }
 
 async function checkGamebananaAPI(sort) {
@@ -183,7 +187,7 @@ async function processRecord(modInfo, isNew) {
                 updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => {
                     if (res.status !== 200) {
                         log.error(`Gamebanana API returned status code ${res.status}`);
-                        
+
                         throw new Error(`Gamebanana API returned status code ${res.status}`);
                     }
                     res.json()
@@ -357,6 +361,36 @@ async function processRecord(modInfo, isNew) {
     }
 }
 
+async function setFeedTimestamp(timestamp = -1) {
+    try {
+        latestTimestamp = timestamp;
+        fs.writeFileSync(timestampFile, latestTimestamp.toString());
+        return latestTimestamp;
+    } catch (err) {
+        log.error(`Error while setting timestamp: ${err}`)
+        return -1;
+    }
+
+}
+
+async function getTimestamp() {
+    try {
+        return latestTimestamp;
+    } catch (err) {
+        log.error(`Error while reading timestamp: ${err}`)
+        return -1;
+    }
+}
+
+async function toggleFeed() {
+    feedEnabled = !feedEnabled;
+    log.info(feedEnabled);
+    return feedEnabled;
+}
+
 module.exports = {
     checkGamebananaFeed: checkGamebananaFeed,
+    setFeedTimestamp: setFeedTimestamp,
+    getTimestamp: getTimestamp,
+    toggleFeed: toggleFeed
 }
