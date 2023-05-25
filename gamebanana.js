@@ -182,6 +182,8 @@ async function processRecord(modInfo, isNew) {
             try {
                 updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => {
                     if (res.status !== 200) {
+                        log.error(`Gamebanana API returned status code ${res.status}`);
+                        
                         throw new Error(`Gamebanana API returned status code ${res.status}`);
                     }
                     res.json()
@@ -264,7 +266,7 @@ async function processRecord(modInfo, isNew) {
                     log.verbose(`[${modInfo._sName}] Version: ${modInfo._aAdditionalInfo._sVersion}`);
                 }
             } catch (err) {
-                console.log(`[${modInfo._sName}] Version: undefined`);
+                log.error(`[${modInfo._sName}] Version: undefined`);
                 addLog(`[${modInfo._sName}] Version: could not be found and caused an error`);
             }
 
