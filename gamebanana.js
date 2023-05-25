@@ -30,6 +30,14 @@ async function checkGamebananaFeed() {
     // client = mikuBot;
     // Check Gamebanana feed for new items
     // This is probably a terrible way to do this, but it works.
+
+    // if latest timestamp is undefined, null, in the future, or more than 1 hour ago, set it to 1 hour ago
+    if (latestTimestamp === undefined || latestTimestamp === null || latestTimestamp > (new Date().getTime() / 1000) || latestTimestamp < (new Date().getTime() / 1000) - 3600) {
+        latestTimestamp = (new Date().getTime() / 1000) - 3600;
+        fs.writeFileSync(timestampFile, latestTimestamp.toString());
+    }
+
+
     await checkGamebananaAPI('new').then(async (newItems) => {
         await checkGamebananaAPI('updated').then(async (updatedItems) => {
             latestTimestamp = Math.max(newItems, updatedItems);
@@ -47,6 +55,9 @@ async function checkGamebananaAPI(sort) {
         let response
         try {
             response = await fetch(`https://gamebanana.com/apiv10/Game/16522/Subfeed?_nPage=1&_nPerpage=10&_sSort=${sort}`);
+            if (response.status !== 200) {
+                throw new Error(`Gamebanana API returned status code ${response.status}`);
+            }
             attemptsToReconnect = 0;
         } catch (err) {
             addLog(`[Gamebanana error 002 at ${new Date()}]\n${ts(err, 1800)}...`);
@@ -149,7 +160,14 @@ async function processRecord(modInfo, isNew) {
         // }
 
 
-        modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => res.json());
+        modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => {
+            if (res.status !== 200) {
+                throw new Error(`Gamebanana API returned status code ${res.status}`);
+            }
+            res.json()
+        });
+
+
 
         if (modInfo._nUpdatesCount > 0) {
             isNew = false;
@@ -162,7 +180,12 @@ async function processRecord(modInfo, isNew) {
         let changeLogDescription = "";
         if (!isNew) {
             try {
-                updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => res.json());
+                updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => {
+                    if (res.status !== 200) {
+                        throw new Error(`Gamebanana API returned status code ${res.status}`);
+                    }
+                    res.json()
+                });
                 let changeLog1;
                 if (updateInfo._aRecords[0]._aChangeLog) {
                     changeLog1 = updateInfo._aRecords[0]._aChangeLog.map(entry => `**${entry.cat}** - ${entry.text}`);
