@@ -270,7 +270,7 @@ module.exports = {
             const isNew = interaction.options.getBoolean('isnew');
             const subtype = interaction.options.getString('subtype');
             const status = await manuallyProcessRecord(subtype, id, isNew);
-            await interaction.editReply({ content: status });
+            await interaction.editReply({ content: `${status}` });
 
         }
 

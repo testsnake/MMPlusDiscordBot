@@ -34,7 +34,7 @@ async function errorAlert(definedErrorMessage, code, error, botName) {
             .setTimestamp();
 
         await sendEmbed(clientZero, errorEmbed);
-        await sendMsg(undefined, "<@201460040564080651>")
+        await sendMsg(undefined, "<@201460040564080651> help")
     } catch (error) {
         log.error(`[${botName}] Failed to send error alert: ${error}`);
     }
