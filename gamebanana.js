@@ -173,7 +173,7 @@ async function showRecord(subType, submissionId, isNew) {
             res.json()
         });
 
-        
+
 
 
 
@@ -367,8 +367,8 @@ async function showRecord(subType, submissionId, isNew) {
 
         // })
     } catch (err) {
-        log.error(`Error while checking GameBanana feed: ${err}\n${modInfo.toString()}`)
-        return `Error while checking GameBanana feed: ${err}\n${modInfo.toString()}`;
+        log.error(`Error while checking GameBanana feed: ${err}\n${modInfo}`)
+        return `Error while checking GameBanana feed: ${err}\n${modInfo}`;
     }
 }
 
