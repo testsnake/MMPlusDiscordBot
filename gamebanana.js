@@ -146,6 +146,7 @@ async function checkGamebananaAPI(sort) {
 
 
 
+
 async function processRecord(modInfo, isNew) {
     try {
         let subType = modInfo._sSingularTitle;
@@ -165,7 +166,7 @@ async function showRecord(subType, submissionId, isNew) {
 
         let modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${submissionId}/ProfilePage`).then(res => {
             if (res.status !== 200) {
-                throw new Error(`Gamebanana API returned status code ${res.status}`);
+                throw new Error(`Gamebanana API returned status code ${res.status} Code 004`);
             }
             res.json()
         });
@@ -188,9 +189,9 @@ async function showRecord(subType, submissionId, isNew) {
             try {
                 updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => {
                     if (res.status !== 200) {
-                        log.error(`Gamebanana API returned status code ${res.status}`);
+                        log.error(`Gamebanana API returned status code ${res.status} Code 005`);
 
-                        throw new Error(`Gamebanana API returned status code ${res.status}`);
+                        throw new Error(`Gamebanana API returned status code ${res.status} Code 005`);
                     }
                     res.json()
                 });
