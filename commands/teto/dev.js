@@ -136,15 +136,15 @@ module.exports = {
                     .setDescription('The type of post to add to the feed')
                     .setRequired(true)
                     .addChoices(
-                        {name: 'mods', value: 'mods'},
-                        {name: 'requests', value: 'requests'},
+                        {name: 'mods', value: 'Mods'},
+                        {name: 'requests', value: 'Requests'},
                         {name: 'wips', value: 'Wips'},
-                        {name: 'sounds', value: 'sounds'},
-                        {name: 'questions', value: 'questions'},
-                        {name: 'tutorial', value: 'tuts'},
-                        {name: 'tools', value: 'tools'},
-                        {name: 'threads', value: 'threads'},
-                        {name: 'projects', value: 'projects'})
+                        {name: 'sounds', value: 'Sounds'},
+                        {name: 'questions', value: 'Questions'},
+                        {name: 'tutorial', value: 'Tuts'},
+                        {name: 'tools', value: 'Tools'},
+                        {name: 'threads', value: 'Threads'},
+                        {name: 'projects', value: 'Projects'})
                 )
                 .addIntegerOption(option =>
                     option.setName('id')
