@@ -177,7 +177,7 @@ async function showRecord(subType, submissionId, isNew) {
                 isNew = false;
             }
         } catch (err) {
-            isNew = false;
+            isNew = true;
         }
 
         let updateInfo;
