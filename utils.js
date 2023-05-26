@@ -158,7 +158,7 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
         const attachments = starboardMessage.attachments;
         const author = starboardMessage.author;
         const avatar = starboardMessage.author.avatarURL();
-        const channelName = starboardMessage.channel.name;
+        const channelName = starboardMessage.channel.toString();
         const content = starboardMessage.content;
         const timestamp = starboardMessage.createdTimestamp;
         const messageUrl = starboardMessage.url;
@@ -167,14 +167,18 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
 
         let messageContent = "";
 
+        let embedArrayArray = [];
+
         let embedArray = [];
 
         const starboardEmbed = new EmbedBuilder()
             .setTitle(`Starboard Embed`)
             .setURL(`${messageUrl}`)
             .setAuthor({name: `${author.username}`, iconURL: `${avatar}`})
-            .addFields({name: `Channel`, value: `${channelName}`})
-            .setTimestamp(timestamp);
+            .addFields({name: "Author", value: `${author.toString()}`, inline: true},{name: `Channel`, value: `${channelName}`, inline: true})
+            .setFooter({text: `${config.botVer}`})
+            .setTimestamp(timestamp)
+            .setColor(0xd9c65b);
 
         log.debug(`Starboard embed created`)
 
@@ -199,11 +203,28 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
         })
 
 
+        if (embedDesc !== "") {
+            starboardEmbed.setDescription(embedDesc);
+        }
+
+
+        messageContent = ts(messageContent, 2000);
+        log.debug(`Message content added to message content string\n${messageContent}`)
+
+        embedArray.push(starboardEmbed);
+
+        // Adds the non-image attachments to message in order to hopefully show all message content
+        for (let i = 0; i < nonImageArray.length; i++) {
+            messageContent += `${nonImageArray[i]}\n`;
+
+        }
+
         // By having 4 embeds, discord will automatically combine them into one message
         if (imageLinkArray.length > 0) {
             starboardEmbed.setImage(imageLinkArray[0]);
+            log.debug(`array length ${imageLinkArray.length }`);
 
-            for (let i = 1; i < Math.min(imageLinkArray.length - 1, 3) ; i++) {
+            for (let i = 1; i < Math.min(imageLinkArray.length, 10); i++) {
 
                 const multiEmbed = new EmbedBuilder()
                     .setURL(`${messageUrl}`)
@@ -212,21 +233,17 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
                 log.debug(`Multi-embed added to embed array`)
 
             }
-        }
 
-        if (embedDesc !== "") {
-            starboardEmbed.setDescription(embedDesc);
-        }
-
-        // Adds the non-image attachments to message in order to hopefully show all message content
-        for (let i = 0; i < nonImageArray.length; i++) {
-            messageContent += `${nonImageArray[i]}\n`;
 
         }
-        messageContent = ts(messageContent, 2000);
-        log.debug(`Message content added to message content string\n${messageContent}`)
 
-        embedArray.push(starboardEmbed);
+
+
+
+
+
+
+
 
         const buttonLink = new ButtonBuilder()
             .setLabel(`Link to Original Message`)
@@ -242,16 +259,17 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
 
         log.debug(`Starboard channel object fetched`)
 
-
+        // Discord Moment
         if (messageContent !== "") {
-            starboardChannelObj.send({embeds: embedArray, content: messageContent, components: [row]}).then((msg) => {
+            starboardChannelObj.send({embeds: embedArray, content: messageContent, components: [row], allowedMentions: { "users" : []}   }).then((msg) => {
               log.info(`Successfully sent starboard embed to channel ${starboardChannel}`)
             })
         } else {
-            starboardChannelObj.send({embeds: embedArray, components: [row]}).then((msg) => {
+            starboardChannelObj.send({embeds: embedArray, components: [row], allowedMentions: { "users" : []}  }).then((msg) => {
                 log.info(`Successfully sent starboard embed to channel ${starboardChannel}`)
             })
         }
+
         return true;
     } catch (err) {
         log.error(`Error sending starboard embed:\n${err.toString()}`)
