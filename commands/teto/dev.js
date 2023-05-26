@@ -5,65 +5,12 @@ const { Client, Intents, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBui
 const pm2Metrics = require('../../pm2metrics.js');
 const { config } = require('../../config.json');
 const log = require('../../logger.js');
-const {sendEmbed, sendStarboardEmbed} = require("../../utils");
+const {sendEmbed, sendStarboardEmbed, ts} = require("../../utils");
 const { getBotFromString } = require('../../bots.js');
 const { getTimestamp, setFeedTimestamp, toggleFeed, manuallyProcessRecord} = require('../../gamebanana.js')
 
 
 
-function ts(str, maxLength) {
-    if (maxLength < 0 || typeof maxLength !== 'number') {
-        throw new Error('maxLength must be a non-negative number');
-    }
-
-    if (str.length <= maxLength) {
-        return str;
-    }
-
-    return str.slice(0, maxLength);
-}
-async function addMessageToStarboard(message, starboardChannelId) {
-    try {
-        const starboardChannel = await message.client.channels.fetch();
-
-        let starboardEmbed = new EmbedBuilder()
-            .setAuthor({name: 'Starred Message', iconURL: message.author.avatarURL({dynamic: true})})
-
-            .addFields(
-                {name: 'Author', value: `${message.author.toString()}`, inline: true},
-                {name: 'Channel', value: `<#${message.channel.id}>`, inline: true}
-            )
-            .setColor(0xd9c65b)
-            .setTimestamp(message.createdAt);
-
-        if (message.attachments.size > 0) {
-            const attachment = message.attachments.first();
-            if (attachment.contentType.startsWith('image/')) {
-                starboardEmbed.setImage(attachment.url);
-            }
-        }
-
-        const row = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setLabel('Link to original message')
-                    .setStyle('Link')
-                    .setURL(message.url)
-            );
-
-        if (message.content.length > 0) {
-            starboardEmbed.setDescription(ts(message.content, 2048));
-        }
-
-        // starboardChannel.send({embeds: [starboardEmbed], components: [row]});
-        await sendEmbed(await getBotFromString("luka"), starboardEmbed, starboardChannelId, [row]);
-
-
-    } catch (err) {
-        log.error("Error adding message to starboard:", err);
-        pm2Metrics.errors.inc();
-    }
-}
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -208,7 +155,7 @@ module.exports = {
                 const channelId = interaction.options.getChannel('channel').id;
                 const messageId = interaction.options.getString('message_id');
 
-                await addMessageToStarboard(messageId, channelId);
+                await sendStarboardEmbed(messageId, channelId);
                 await interaction.reply({ content: `Added message to starboard.`, ephemeral: true });
             } catch (error) {
                 await interaction.reply({ content: `Error: ${error.message}`, ephemeral: true });

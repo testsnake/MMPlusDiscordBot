@@ -149,8 +149,11 @@ async function getString(botName, stringName) {
 
 async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId, starboardChannel = config.starboardChannelID, client = clientZero) {
     try {
+        log.debug(`Sending starboard embed for message ${starboardMessageId} in channel ${starboardMessageChannelId} to channel ${starboardChannel}`)
         const starboardMessageChannel = await client.channels.cache.get(starboardMessageChannelId);
         const starboardMessage = await starboardMessageChannel.messages.fetch(starboardMessageId);
+
+        log.debug(`Starboard message fetched`)
 
         const attachments = starboardMessage.attachments;
         const author = starboardMessage.author;
@@ -173,12 +176,13 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
             .addFields({name: `Channel`, value: `${channelName}`})
             .setTimestamp(timestamp);
 
-
+        log.debug(`Starboard embed created`)
 
 
 
         if (content && content !== "") {
             embedDesc += ts(content, 4096);
+            log.debug(`Content added to embed description`)
         }
 
         let imageLinkArray = [];
@@ -187,8 +191,10 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
         attachments.forEach((attachment) => {
             if (attachment.contentType.includes("image/png") || attachment.contentType.includes("image/jpeg") || attachment.contentType.includes("image/gif") || attachment.contentType.includes("image/webp")) {
                 imageLinkArray.push(attachment.url);
+                log.debug(`Image added to image array`)
             } else {
                 nonImageArray.push(attachment.url);
+                log.debug(`Attachment added to non-image array`)
             }
         })
 
@@ -203,6 +209,7 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
                     .setURL(`${messageUrl}`)
                     .setImage(`${imageLinkArray[i]}`);
                 embedArray.push(multiEmbed);
+                log.debug(`Multi-embed added to embed array`)
 
             }
         }
@@ -214,8 +221,10 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
         // Adds the non-image attachments to message in order to hopefully show all message content
         for (let i = 0; i < nonImageArray.length; i++) {
             messageContent += `${nonImageArray[i]}\n`;
+
         }
         messageContent = ts(messageContent, 2000);
+        log.debug(`Message content added to message content string\n${messageContent}`)
 
         embedArray.push(starboardEmbed);
 
@@ -226,12 +235,12 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
 
         const row = new ActionRowBuilder().addComponents(buttonLink);
 
-
+        log.debug(`Button added to row`)
 
 
         const starboardChannelObj = await client.channels.cache.get(starboardChannel);
 
-
+        log.debug(`Starboard channel object fetched`)
 
 
         if (messageContent !== "") {
