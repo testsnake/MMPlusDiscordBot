@@ -171,8 +171,11 @@ async function showRecord(subType, submissionId, isNew) {
         });
 
 
-
-        if (modInfo._nUpdatesCount > 0) {
+        try {
+            if (modInfo._nUpdatesCount > 0) {
+                isNew = false;
+            }
+        } catch (err) {
             isNew = false;
         }
 
