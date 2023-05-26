@@ -154,6 +154,7 @@ async function processRecord(modInfo, isNew) {
             subType = "Wip";
         }
 
+        await showRecord(subType, modInfo._idRow, isNew)
 
     } catch (err) {
         log.error("Error processing record");
@@ -171,6 +172,8 @@ async function showRecord(subType, submissionId, isNew) {
             }
             res.json()
         });
+
+        
 
 
 
