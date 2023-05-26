@@ -1,7 +1,7 @@
 const config = require('./config.json');
 const log = require('./logger.js');
 let {botArray} = require("./bots.js");
-const {EmbedBuilder} = require("discord.js");
+const {EmbedBuilder, ButtonBuilder, ActionRowBuilder} = require("discord.js");
 let clientZero = botArray[0].bot;
 
 
@@ -142,6 +142,115 @@ async function getString(botName, stringName) {
     return strings[stringName];
 }
 
+/*
+    * Sends an embed to the starboard channel
+    *
+ */
+
+async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId, starboardChannel = config.starboardChannelID, client = clientZero) {
+    try {
+        const starboardMessageChannel = await client.channels.cache.get(starboardMessageChannelId);
+        const starboardMessage = await starboardMessageChannel.messages.fetch(starboardMessageId);
+
+        const attachments = starboardMessage.attachments;
+        const author = starboardMessage.author;
+        const avatar = starboardMessage.author.avatarURL();
+        const channelName = starboardMessage.channel.name;
+        const content = starboardMessage.content;
+        const timestamp = starboardMessage.createdTimestamp;
+        const messageUrl = starboardMessage.url;
+
+        let embedDesc = "";
+
+        let messageContent = "";
+
+        let embedArray = [];
+
+        const starboardEmbed = new EmbedBuilder()
+            .setTitle(`Starboard Embed`)
+            .setURL(`${messageUrl}`)
+            .setAuthor({name: `${author.username}`, iconURL: `${avatar}`})
+            .addFields({name: `Channel`, value: `${channelName}`})
+            .setTimestamp(timestamp);
+
+
+
+
+
+        if (content && content !== "") {
+            embedDesc += ts(content, 4096);
+        }
+
+        let imageLinkArray = [];
+        let nonImageArray = [];
+
+        attachments.forEach((attachment) => {
+            if (attachment.contentType.includes("image/png") || attachment.contentType.includes("image/jpeg") || attachment.contentType.includes("image/gif") || attachment.contentType.includes("image/webp")) {
+                imageLinkArray.push(attachment.url);
+            } else {
+                nonImageArray.push(attachment.url);
+            }
+        })
+
+
+        // By having 4 embeds, discord will automatically combine them into one message
+        if (imageLinkArray.length > 0) {
+            starboardEmbed.setImage(imageLinkArray[0]);
+
+            for (let i = 1; i < Math.min(imageLinkArray.length - 1, 3) ; i++) {
+
+                const multiEmbed = new EmbedBuilder()
+                    .setURL(`${messageUrl}`)
+                    .setImage(`${imageLinkArray[i]}`);
+                embedArray.push(multiEmbed);
+
+            }
+        }
+
+        if (embedDesc !== "") {
+            starboardEmbed.setDescription(embedDesc);
+        }
+
+        // Adds the non-image attachments to message in order to hopefully show all message content
+        for (let i = 0; i < nonImageArray.length; i++) {
+            messageContent += `${nonImageArray[i]}\n`;
+        }
+        messageContent = ts(messageContent, 2000);
+
+        embedArray.push(starboardEmbed);
+
+        const buttonLink = new ButtonBuilder()
+            .setLabel(`Link to Original Message`)
+            .setStyle("Link")
+            .setURL(`${messageUrl}`);
+
+        const row = new ActionRowBuilder().addComponents(buttonLink);
+
+
+
+
+        const starboardChannelObj = await client.channels.cache.get(starboardChannel);
+
+
+
+
+        if (messageContent !== "") {
+            starboardChannelObj.send({embeds: embedArray, content: messageContent, components: [row]}).then((msg) => {
+              log.info(`Successfully sent starboard embed to channel ${starboardChannel}`)
+            })
+        } else {
+            starboardChannelObj.send({embeds: embedArray, components: [row]}).then((msg) => {
+                log.info(`Successfully sent starboard embed to channel ${starboardChannel}`)
+            })
+        }
+        return true;
+    } catch (err) {
+        log.error(`Error sending starboard embed:\n${err.toString()}`)
+        return false;
+    }
+
+}
+
 
 
 module.exports = {
@@ -154,6 +263,7 @@ module.exports = {
     sendEmbed,
     getString,
     sendAutoPublishEmbed,
-    errorAlert
+    errorAlert,
+    sendStarboardEmbed
 
 }

@@ -5,7 +5,7 @@ const { Client, Intents, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBui
 const pm2Metrics = require('../../pm2metrics.js');
 const { config } = require('../../config.json');
 const log = require('../../logger.js');
-const {sendEmbed} = require("../../utils");
+const {sendEmbed, sendStarboardEmbed} = require("../../utils");
 const { getBotFromString } = require('../../bots.js');
 const { getTimestamp, setFeedTimestamp, toggleFeed, manuallyProcessRecord} = require('../../gamebanana.js')
 
@@ -57,7 +57,7 @@ async function addMessageToStarboard(message, starboardChannelId) {
 
         // starboardChannel.send({embeds: [starboardEmbed], components: [row]});
         await sendEmbed(await getBotFromString("luka"), starboardEmbed, starboardChannelId, [row]);
-        pm2Metrics.actionsPerformed.inc();
+
 
     } catch (err) {
         log.error("Error adding message to starboard:", err);
@@ -206,13 +206,11 @@ module.exports = {
         } else if (subcommand === 'addtostarboard') {
             const channelId = interaction.options.getChannel('channel').id;
             const messageId = interaction.options.getString('message_id');
-            const starboardChannelId = `${config.starboardChannelId}`;
 
-            const channel = await interaction.client.channels.fetch(channelId);
-            const message = await channel.messages.fetch(messageId);
-            await addMessageToStarboard(message, starboardChannelId);
+            await addMessageToStarboard(messageId, channelId);
 
-            await interaction.reply({ content: 'Message successfully added to the starboard.', ephemeral: true });
+
+
         } else if (subcommand === 'giveallrole') {
             const targetRole = interaction.options.getRole('role');
             const guild = interaction.guild;
