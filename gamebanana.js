@@ -187,7 +187,7 @@ async function showRecord(subType, submissionId, isNew) {
         let changeLogDescription = "";
         if (!isNew) {
             try {
-                updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/Updates`).then(res => {
+                updateInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${submissionId}/Updates`).then(res => {
                     if (res.status !== 200) {
                         log.error(`Gamebanana API returned status code ${res.status} Code 005`);
 
