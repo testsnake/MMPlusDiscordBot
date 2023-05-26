@@ -191,7 +191,7 @@ async function showRecord(subType, submissionId, isNew) {
                     if (res.status !== 200) {
                         log.error(`Gamebanana API returned status code ${res.status} Code 005\nhttps://gamebanana.com/apiv10/${subType}/${submissionId}/Updates`);
 
-                        throw new Error(`Gamebanana API returned status code ${res.status} Code 005`);
+                        throw new Error(`Gamebanana API returned status code ${res.status} Code 005\nhttps://gamebanana.com/apiv10/${subType}/${submissionId}/Updates`);
                     }
                     res.json()
                 });
