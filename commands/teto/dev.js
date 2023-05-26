@@ -204,10 +204,15 @@ module.exports = {
             }
             addLog(`Sent ${logs.length} logs to ${interaction.user.tag} (${interaction.user.id})`);
         } else if (subcommand === 'addtostarboard') {
-            const channelId = interaction.options.getChannel('channel').id;
-            const messageId = interaction.options.getString('message_id');
+            try {
+                const channelId = interaction.options.getChannel('channel').id;
+                const messageId = interaction.options.getString('message_id');
 
-            await addMessageToStarboard(messageId, channelId);
+                await addMessageToStarboard(messageId, channelId);
+                await interaction.reply({ content: `Added message to starboard.`, ephemeral: true });
+            } catch (error) {
+                await interaction.reply({ content: `Error: ${error.message}`, ephemeral: true });
+            }
 
 
 
