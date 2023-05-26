@@ -152,19 +152,18 @@ async function processRecord(modInfo, isNew) {
         if (subType === "WiP") {
             subType = "Wip";
         }
-        // try {
-        //     await client.channels.fetch(`1087783783207534604`).then(async (feedChannel) => {
-        //
-        //     });
-        //
-        // } catch (err) {
-        //     log.error("Error getting feed channel")
-        //     log.error(err);
-        //     await errorAlert("Error getting feed channel", "005", err, `GameBanana`)
-        // }
 
 
-        modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${modInfo._idRow}/ProfilePage`).then(res => {
+    } catch (err) {
+        log.error("Error processing record");
+    }
+}
+
+async function showRecord(subType, submissionId, isNew) {
+    try {
+
+
+        let modInfo = await fetch(`https://gamebanana.com/apiv10/${subType}/${submissionId}/ProfilePage`).then(res => {
             if (res.status !== 200) {
                 throw new Error(`Gamebanana API returned status code ${res.status}`);
             }
@@ -278,7 +277,7 @@ async function processRecord(modInfo, isNew) {
                 embed.setThumbnail(`${modInfo._aPreviewMedia._aImages[0]._sBaseUrl}/${modInfo._aPreviewMedia._aImages[0]._sFile}`)
             }
 
-            var contentWarnings;
+            let contentWarnings;
 
             if (modInfo._aContentRatings !== undefined) {
                 log.verbose(`[${modInfo._sName}] Content Ratings: ${modInfo._aContentRatings}`)
@@ -346,11 +345,12 @@ async function processRecord(modInfo, isNew) {
             await new Promise(resolve => setTimeout(resolve, 2000));
             log.info(`[${modInfo._sName}] Sending embed: ${modInfo._sName}}`)
             try {
-                sendAutoPublishEmbed(undefined, embed, config.feedChannelID)
+                return await sendAutoPublishEmbed(undefined, embed, config.feedChannelID)
             } catch (err) {
                 log.error(`[${modInfo._sName}] Error while sending embed: ${modInfo._sName}}`);
                 log.error(err);
                 await errorAlert("Error while sending embed", "009", err, "Gamebanana")
+                return err;
 
 
             }
@@ -358,6 +358,7 @@ async function processRecord(modInfo, isNew) {
         // })
     } catch (err) {
         log.error(`Error while checking GameBanana feed: ${err}`)
+        return err;
     }
 }
 
@@ -388,9 +389,14 @@ async function toggleFeed() {
     return feedEnabled;
 }
 
+async function manuallyProcessRecord(subType, modId, isNew) {
+    return await showRecord(subType, modId, isNew);
+}
+
 module.exports = {
     checkGamebananaFeed: checkGamebananaFeed,
     setFeedTimestamp: setFeedTimestamp,
     getTimestamp: getTimestamp,
-    toggleFeed: toggleFeed
+    toggleFeed: toggleFeed,
+    manuallyProcessRecord: manuallyProcessRecord
 }

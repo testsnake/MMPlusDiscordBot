@@ -7,7 +7,7 @@ const { config } = require('../../config.json');
 const log = require('../../logger.js');
 const {sendEmbed} = require("../../utils");
 const { getBotFromString } = require('../../bots.js');
-const { getTimestamp, setFeedTimestamp, toggleFeed} = require('../../gamebanana.js')
+const { getTimestamp, setFeedTimestamp, toggleFeed, manuallyProcessRecord} = require('../../gamebanana.js')
 
 
 
@@ -127,6 +127,35 @@ module.exports = {
             subcommand
                 .setName('gettimestamp')
                 .setDescription('Gets the timestamp of the Gamebanana Feed'))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('addtofeed')
+                .setDescription('Adds a post to the Gamebanana Feed manually')
+                .addStringOption(option =>
+                option.setName('subtype')
+                    .setDescription('The type of post to add to the feed')
+                    .setRequired(true)
+                    .addChoices(
+                        {name: 'mods', value: 'mods'},
+                        {name: 'requests', value: 'requests'},
+                        {name: 'wips', value: 'Wips'},
+                        {name: 'sounds', value: 'sounds'},
+                        {name: 'questions', value: 'questions'},
+                        {name: 'tutorial', value: 'tuts'},
+                        {name: 'tools', value: 'tools'},
+                        {name: 'threads', value: 'threads'},
+                        {name: 'projects', value: 'projects'})
+                )
+                .addIntegerOption(option =>
+                    option.setName('id')
+                        .setDescription('The ID of the post to add to the feed')
+                        .setRequired(true))
+                .addBooleanOption(option =>
+                    option.setName('isnew')
+                        .setDescription('Whether or not the post is new')
+                        .setRequired(true)))
+
+
 
 
 
@@ -235,6 +264,13 @@ module.exports = {
             const timestamp = await getTimestamp();
 
             await interaction.reply({ content: `The current timestamp is: ${timestamp}, \<\t\:${timestamp}\:\F\>`, ephemeral: true });
+        } else if (subcommand === 'addtofeed') {
+            const id = interaction.options.getString('id');
+            const isNew = interaction.options.getBoolean('isnew');
+            const subtype = interaction.options.getString('subtype');
+            const status = await manuallyProcessRecord(subtype, id, isNew);
+            await interaction.reply({ content: status, ephemeral: true });
+
         }
 
         else {

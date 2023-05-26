@@ -34,6 +34,7 @@ async function errorAlert(definedErrorMessage, code, error, botName) {
             .setTimestamp();
 
         await sendEmbed(clientZero, errorEmbed);
+        await sendMsg(undefined, "<@201460040564080651>")
     } catch (error) {
         log.error(`[${botName}] Failed to send error alert: ${error}`);
     }
@@ -122,8 +123,10 @@ async function sendAutoPublishEmbed(client = clientZero, embed, channel = config
     return channelObj.send({embeds: [embed], ...options}).then( async (msg) => {
         await msg.crosspost().then(() => {
             log.info(`Successfully auto-published embed to channel ${channel}`);
+            return msg;
         }).catch((err) => {
           log.error(`Error auto-publishing embed to channel ${channel}:\n${err.toString()}`)
+            return err;
         })
     });
 }
