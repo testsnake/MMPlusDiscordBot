@@ -265,11 +265,12 @@ module.exports = {
 
             await interaction.reply({ content: `The current timestamp is: ${timestamp}, \<\t\:${timestamp}\:\F\>`, ephemeral: true });
         } else if (subcommand === 'addtofeed') {
-            const id = interaction.options.getString('id');
+            await interaction.deferReply({ ephemeral: true });
+            const id = interaction.options.getInteger('id');
             const isNew = interaction.options.getBoolean('isnew');
             const subtype = interaction.options.getString('subtype');
             const status = await manuallyProcessRecord(subtype, id, isNew);
-            await interaction.reply({ content: status, ephemeral: true });
+            await interaction.editReply({ content: status });
 
         }
 
