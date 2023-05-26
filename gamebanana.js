@@ -170,7 +170,7 @@ async function showRecord(subType, submissionId, isNew) {
             if (res.status !== 200) {
                 throw new Error(`Gamebanana API returned status code ${res.status} Code 004\nhttps://gamebanana.com/apiv10/${subType}/${submissionId}/ProfilePage`);
             }
-            res.json()
+            return res.json()
         });
 
 
@@ -199,7 +199,7 @@ async function showRecord(subType, submissionId, isNew) {
 
                         throw new Error(`Gamebanana API returned status code ${res.status} Code 005\nhttps://gamebanana.com/apiv10/${subType}/${submissionId}/Updates`);
                     }
-                    res.json()
+                    return res.json()
                 });
                 let changeLog1;
                 if (updateInfo._aRecords[0]._aChangeLog) {
