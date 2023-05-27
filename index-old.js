@@ -8,8 +8,8 @@ const { token } = require('./config.json');
 const fetch = require("node-fetch");  // Needs to be added for bot use
 const mikuBotVer = fs.readFileSync('./versionID.txt', 'utf8');
 const botAvatarURL = fs.readFileSync('./botAvatar.txt', 'utf8');
-const { addLog } = require('./logManager.js');
-const {getLogs, getRecentLogs} = require("./logManager");
+const { addLog } = require('./utils/logManager.js');
+const {getLogs, getRecentLogs} = require("./utils/logManager");
 
 // const youtube = require('discord-bot-youtube-notifications');
 

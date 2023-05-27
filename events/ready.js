@@ -1,9 +1,9 @@
-const log = require('../logger.js');
+const log = require('../utils/logger.js');
 const config = require('../config.json');
 const { botVer, botAvatarURL } = require('../config.json');
 const { EmbedBuilder } = require('discord.js');
-const { botArray } = require('../bots.js');
-const {getString, sendEmbed} = require("../utils");
+const { botArray } = require('../utils/bots.js');
+const {getString, sendEmbed} = require("../utils/utils");
 
 // sends ready message on Event 'ready'
 module.exports = {

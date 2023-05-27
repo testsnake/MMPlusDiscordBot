@@ -10,6 +10,9 @@ function createBotClient() {
             GatewayIntentBits.GuildMessageReactions,
             GatewayIntentBits.GuildMembers,
             GatewayIntentBits.MessageContent,
+            GatewayIntentBits.DirectMessages,
+            GatewayIntentBits.DirectMessageReactions,
+            GatewayIntentBits.GuildVoiceStates,
         ]
     });
 }

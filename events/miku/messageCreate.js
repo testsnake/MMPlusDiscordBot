@@ -1,7 +1,7 @@
-const log = require('../../logger.js');
+const log = require('../../utils/logger.js');
 
 // module that logs each message received
-const {addLog} = require("../../logManager");
+const {addLog} = require("../../utils/logManager");
 const {EmbedBuilder} = require("discord.js");
 module.exports = {
     name: 'messageCreate',

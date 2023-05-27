@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
-const pm2Metrics = require('../../pm2metrics.js');
+const pm2Metrics = require('../../utils/pm2metrics.js');
 const { config } = require('../../config.json');
-const log = require('../../logger.js');
+const log = require('../../utils/logger.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

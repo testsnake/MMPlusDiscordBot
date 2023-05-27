@@ -1,7 +1,7 @@
 const { loggingChannelID, mikuBotVer, botAvatarURL } = require('../../config.json');
-const log  = require('../../logger.js');
+const log  = require('../../utils/logger.js');
 const {AuditLogEvent, Events} = require("discord.js");
-const {sendMsg, sendEmbed} = require("../../utils");
+const {sendMsg, sendEmbed} = require("../../utils/utils");
 
 module.exports = {
     name: 'guildMemberRemove',

@@ -1,13 +1,13 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { getRecentLogs } = require('../../logManager.js');
-const { addLog } = require('../../logManager');
+const { getRecentLogs } = require('../../utils/logManager.js');
+const { addLog } = require('../../utils/logManager');
 const { Client, Intents, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits} = require("discord.js");
-const pm2Metrics = require('../../pm2metrics.js');
+const pm2Metrics = require('../../utils/pm2metrics.js');
 const { config } = require('../../config.json');
-const log = require('../../logger.js');
-const {sendEmbed, sendStarboardEmbed, ts} = require("../../utils");
-const { getBotFromString } = require('../../bots.js');
-const { getTimestamp, setFeedTimestamp, toggleFeed, manuallyProcessRecord} = require('../../gamebanana.js')
+const log = require('../../utils/logger.js');
+const {sendEmbed, sendStarboardEmbed, ts} = require("../../utils/utils");
+const { getBotFromString } = require('../../utils/bots.js');
+const { getTimestamp, setFeedTimestamp, toggleFeed, manuallyProcessRecord} = require('../../utils/gamebanana.js')
 
 
 

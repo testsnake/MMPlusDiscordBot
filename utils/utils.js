@@ -1,4 +1,4 @@
-const config = require('./config.json');
+const config = require('../config.json');
 const log = require('./logger.js');
 let {botArray} = require("./bots.js");
 const {EmbedBuilder, ButtonBuilder, ActionRowBuilder} = require("discord.js");
@@ -138,7 +138,7 @@ async function sendAutoPublishEmbed(client = clientZero, embed, channel = config
  */
 async function getString(botName, stringName) {
     log.info(`Getting string ${stringName} from ${botName}`)
-    const strings = await require(`./text/strings/${botName}.json`);
+    const strings = await require(`../text/strings/${botName}.json`);
     return strings[stringName];
 }
 

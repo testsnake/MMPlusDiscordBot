@@ -1,6 +1,6 @@
 const {SlashCommandBuilder} = require('discord.js');
-const pm2Metrics = require('../../pm2metrics.js');
-const log = require('../../logger.js');
+const pm2Metrics = require('../../utils/pm2metrics.js');
+const log = require('../../utils/logger.js');
 
 function rearrangeAndConvert(hex) {
     // Removes a leading # if it exists

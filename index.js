@@ -4,17 +4,17 @@ const path = require('path');
 const { Client, Collect, Events, GatewayIntents, EmbedBuilder, ActionRowBuilder, ButtonBuilder, GatewayIntentBits,
     ActivityType
 } = require('discord.js');
-const { botArray } = require('./bots.js');
+const { botArray } = require('./utils/bots.js');
 const { REST, Routes } = require('discord.js');
 const tokens = require('./tokens.json');
 const config = require('./config.json');
-const utils = require('./utils.js');
+const utils = require('./utils/utils.js');
 const { errorAlert, rxt, ts } = utils;
-const log = require('./logger.js');
-const pm2Metrics = require('./pm2metrics.js');
-const { checkGamebananaFeed } = require('./gamebanana.js');
+const log = require('./utils/logger.js');
+const pm2Metrics = require('./utils/pm2metrics.js');
+const { checkGamebananaFeed } = require('./utils/gamebanana.js');
 
-const {sendEmbed, getString} = require("./utils");
+const {sendEmbed, getString} = require("./utils/utils");
 
 
 /*

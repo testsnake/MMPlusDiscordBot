@@ -1,7 +1,7 @@
 const { loggingChannelID, botVer, botAvatarURL } = require('../../config.json');
-const log = require('../../logger.js');
+const log = require('../../utils/logger.js');
 const { EmbedBuilder } = require('discord.js');
-const { sendEmbed } = require('../../utils.js');
+const { sendEmbed } = require('../../utils/utils.js');
 
 
 module.exports = {

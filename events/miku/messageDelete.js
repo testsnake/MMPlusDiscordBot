@@ -1,5 +1,5 @@
-const {addLog} = require("../../logManager");
-const log = require('../../logger.js');
+const {addLog} = require("../../utils/logManager");
+const log = require('../../utils/logger.js');
 const config = require('../../config.json');
 const { botVer, botAvatarURL } = require('../../config.json');
 const { AuditLogEvent, Events, EmbedBuilder} = require('discord.js');

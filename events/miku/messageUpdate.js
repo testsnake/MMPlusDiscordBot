@@ -1,5 +1,5 @@
 const config = require('../../config.json');
-const log  = require('../../logger.js');
+const log  = require('../../utils/logger.js');
 const { botVer, botAvatarURL } = require('../../config.json');
 
 module.exports = {

@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const fetch = require('node-fetch');
-const pm2Metrics = require('../../pm2metrics.js');
+const pm2Metrics = require('../../utils/pm2metrics.js');
 const config = require('../../config.json');
-const log = require('../../logger.js');
+const log = require('../../utils/logger.js');
 
 async function grabSpecialRole(member, lowerBoundId, upperBoundId) {
     const lowerBoundRole = await member.guild.roles.cache.get(lowerBoundId);

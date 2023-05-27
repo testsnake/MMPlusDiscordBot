@@ -1,4 +1,4 @@
-const log = require('../../logger.js');
+const log = require('../../utils/logger.js');
 const { loggingChannelID, mikuBotVer, botAvatarURL } = require('../../config.json');
 const { AuditLogEvent } = require('discord.js');
 

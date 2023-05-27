@@ -6,7 +6,7 @@ const {delay, sendMsg, sendAutoPublishEmbed} = require('./utils');
 const {errorAlert} = require("./utils.js");
 const {ts} = require("./utils");
 const { botArray} = require("./bots.js");
-const config = require('./config.json');
+const config = require('../config.json');
 
 // let client;
 

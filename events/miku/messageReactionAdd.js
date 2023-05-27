@@ -1,5 +1,5 @@
 
-const { sendStarboardEmbed } = require('../../utils.js');
+const { sendStarboardEmbed } = require('../../utils/utils.js');
 
 module.exports = {
     name: 'messageReactionAdd',
