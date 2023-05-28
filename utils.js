@@ -172,7 +172,7 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
         let embedArray = [];
 
         const starboardEmbed = new EmbedBuilder()
-            .setTitle(`Starboard Embed`)
+            .setTitle(`Starboard Message`)
             .setURL(`${messageUrl}`)
             .setAuthor({name: `${author.username}`, iconURL: `${avatar}`})
             .addFields({name: "Author", value: `${author.toString()}`, inline: true},{name: `Channel`, value: `${channelName}`, inline: true})
