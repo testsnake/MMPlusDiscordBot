@@ -63,7 +63,7 @@ module.exports = {
                     { name: 'Modeler', value: "1102667173022937159"},
                     { name: 'Programmer', value: "1102667447611424778"},
                     { name: 'VC Ping', value: "1112491477566771282"},
-                    { name: 'Line in VC Ping', value: "1112491540577796166"},
+                    { name: 'Live in VC Ping', value: "1112491540577796166"},
 
                 ),
         )
