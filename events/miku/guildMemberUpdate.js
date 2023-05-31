@@ -98,6 +98,9 @@ module.exports = {
                 .setFooter({text: `${config.botVer}`, iconURL: `${config.botAvatarURL}`});
             // Send embed to log channel
             await utils.sendEmbed(client, embed);
+        } else {
+            if (oldMember.premiumSince === newMember.premiumSince) return;
+            await utils.sendMsg(client, `Uncaptured guildMemberUpdate event for ${newMember.user.tag}\n**Old Data:**\n${JSON.stringify(oldMember)}\n**New Data:**\n${JSON.stringify(newMember)}`);
         }
     }
 
