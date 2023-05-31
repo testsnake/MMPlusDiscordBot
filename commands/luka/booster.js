@@ -3,35 +3,9 @@ const fetch = require('node-fetch');
 const pm2Metrics = require('../../pm2metrics.js');
 const config = require('../../config.json');
 const log = require('../../logger.js');
+const { grabSpecialRole, checkFileSize } = require('../../utils.js');
 
-async function grabSpecialRole(member, lowerBoundId, upperBoundId) {
-    const lowerBoundRole = await member.guild.roles.cache.get(lowerBoundId);
-    const upperBoundRole = await member.guild.roles.cache.get(upperBoundId);
 
-    if (!lowerBoundRole || !upperBoundRole) return null;
-
-    const eligibleRoles = await member.roles.cache.filter(role => {
-        const lowerComparison = role.comparePositionTo(lowerBoundRole);
-        const upperComparison = role.comparePositionTo(upperBoundRole);
-        return lowerComparison > 0 && upperComparison < 0;
-    });
-
-    if (eligibleRoles.size > 0) {
-        // Find the role with the highest position
-        return eligibleRoles.reduce((highestRole, currentRole) => {
-            return currentRole.comparePositionTo(highestRole) > 0 ? currentRole : highestRole;
-        });
-    } else {
-        return null;
-    }
-}
-
-async function checkFileSize(url) {
-    const response = await fetch(url);
-    const buffer = await response.buffer();
-    const sizeInKB = buffer.length / 1024;
-    return sizeInKB <= 2048;
-}
 
 
 module.exports = {

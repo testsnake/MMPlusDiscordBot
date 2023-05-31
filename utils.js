@@ -2,6 +2,7 @@ const config = require('./config.json');
 const log = require('./logger.js');
 let {botArray} = require("./bots.js");
 const {EmbedBuilder, ButtonBuilder, ActionRowBuilder} = require("discord.js");
+const fetch = require("node-fetch");
 let clientZero = botArray[0].bot;
 
 
@@ -129,6 +130,15 @@ async function sendAutoPublishEmbed(client = clientZero, embed, channel = config
             return err;
         })
     });
+}
+
+/*
+    * Send an embed to a user
+ */
+async function sendEmbedToUser(client = clientZero, embed, user, options = {}) {
+    log.info(`Sending embed to user ${user}`);
+    const userObj = await client.users.fetch(user);
+    return await userObj.send({embeds: [embed], ...options});
 }
 
 /*
@@ -278,6 +288,35 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
 
 }
 
+async function grabSpecialRole(member, lowerBoundId = `${config.boosterRole.lower}`, upperBoundId = `${config.boosterRole.upper}`) {
+    const lowerBoundRole = await member.guild.roles.cache.get(lowerBoundId);
+    const upperBoundRole = await member.guild.roles.cache.get(upperBoundId);
+
+    if (!lowerBoundRole || !upperBoundRole) return null;
+
+    const eligibleRoles = await member.roles.cache.filter(role => {
+        const lowerComparison = role.comparePositionTo(lowerBoundRole);
+        const upperComparison = role.comparePositionTo(upperBoundRole);
+        return lowerComparison > 0 && upperComparison < 0;
+    });
+
+    if (eligibleRoles.size > 0) {
+        // Find the role with the highest position
+        return eligibleRoles.reduce((highestRole, currentRole) => {
+            return currentRole.comparePositionTo(highestRole) > 0 ? currentRole : highestRole;
+        });
+    } else {
+        return null;
+    }
+}
+
+async function checkFileSize(url) {
+    const response = await fetch(url);
+    const buffer = await response.buffer();
+    const sizeInKB = buffer.length / 1024;
+    return sizeInKB <= 2048;
+}
+
 
 
 module.exports = {
@@ -291,6 +330,9 @@ module.exports = {
     getString,
     sendAutoPublishEmbed,
     errorAlert,
-    sendStarboardEmbed
+    sendStarboardEmbed,
+    grabSpecialRole,
+    checkFileSize,
+    sendEmbedToUser
 
 }
