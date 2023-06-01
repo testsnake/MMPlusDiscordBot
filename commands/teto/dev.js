@@ -101,6 +101,19 @@ module.exports = {
                     option.setName('isnew')
                         .setDescription('Whether or not the post is new')
                         .setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('viewmessagedetails')
+                .setDescription('Gets the details of a message')
+                .addChannelOption(option =>
+                    option.setName('channel')
+                        .setDescription('The channel where the message is located')
+                        .setRequired(true))
+                .addStringOption(option =>
+                    option.setName('message_id')
+                        .setDescription('The ID of the message to get details for')
+                        .setRequired(true)))
+
 
 
 
@@ -221,6 +234,49 @@ module.exports = {
             const subtype = interaction.options.getString('subtype');
             const status = await manuallyProcessRecord(subtype, id, isNew);
             await interaction.editReply({ content: `${status}` });
+
+        } else if (subcommand === 'viewmessagedetails') {
+            const messageId = interaction.options.getString('message_id');
+            const channel = interaction.options.getChannel('channel');
+            const message = await channel.messages.fetch(messageId);
+            const embed = new MessageEmbed()
+                .setTitle(`Message Details`)
+                .setDescription(`Message ID: ${message.id}\nChannel: ${message.channel}\nAuthor: ${message.author}\nContent: ${message.content}`)
+                .setColor(0x000000)
+                .setTimestamp();
+            // Puts every attachment link into a single field
+            let attachments = '';
+            message.attachments.forEach(attachment => {
+                attachments += `${attachment.url}\n`;
+            })
+            if (attachments !== '') {
+                embed.addField('Attachments', attachments);
+            }
+            if (message.editedAt) {
+                embed.addField('Edited At', message.editedAt.toString());
+            }
+            if (message.flags.toArray().length > 0) {
+                embed.addField('Flags', message.flags.toArray().join(', '));
+            }
+            if (message.applicationId) {
+                embed.addField('Application ID', message.applicationId.toString());
+            }
+            if (message.activity) {
+                embed.addField('Activity', message.activity.toString());
+            }
+            if (message.roleSubscriptionData) {
+                embed.addField('Role Subscription Data', message.roleSubscriptionData.toString());
+            }
+            if (message.type) {
+                embed.addField('Type', message.type.toString());
+            }
+            if (message.webhookId) {
+                embed.addField('Webhook ID', message.webhookId.toString());
+            }
+
+            await interaction.reply({ embeds: [embed], ephemeral: true });
+
+
 
         }
 
