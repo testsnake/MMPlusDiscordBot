@@ -71,12 +71,12 @@ module.exports = {
                 })
 
             if (rule) {
-                reportEmbed.addField('Rule', rule);
+                reportEmbed.addFields({name: 'Rule', value: `${rule}`});
             }
             let deleteMessageButton;
             let actionRow;
             if (msg) {
-                reportEmbed.addField('Message', msg.url);
+                reportEmbed.addFields({name: 'Message', value: `${msg.url}`});
                 const buttonID = `deleteMessage-${msg.id}`
                 deleteMessageButton = new ButtonBuilder()
                     .setCustomId(buttonID)
@@ -116,7 +116,7 @@ module.exports = {
 
             }
             if (context) {
-                reportEmbed.addField('Context', context);
+                reportEmbed.addFields({name: 'Context', value: `${context}`});
             }
             reportEmbed.setTimestamp(new Date())
                 .setFooter({text: `${config.botVer}`, iconURL: `${config.botAvatarURL}`});
