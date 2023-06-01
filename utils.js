@@ -4,7 +4,7 @@ let {botArray} = require("./bots.js");
 const {EmbedBuilder, ButtonBuilder, ActionRowBuilder} = require("discord.js");
 const fetch = require("node-fetch");
 let clientZero = botArray[0].bot;
-let buttons;
+let buttons = {};
 
 /*
     * Test a regex against a string
