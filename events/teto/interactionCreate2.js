@@ -7,7 +7,9 @@ module.exports = {
         if (!interaction.isButton()) return;
         log.info(`[INTERACTION] ${interaction.user.tag} clicked button ${interaction.customId} in ${interaction.channel.name} in ${interaction.guild.name}`);
 
-        const button = interaction.client.buttons.get(interaction.customId);
+
+
+        const button = utils.getButton(interaction.customId);
 
         if (!button) {
             log.error(`No button matching ${interaction.customId} was found.`);

@@ -64,9 +64,9 @@ module.exports = {
 
             const reportEmbed = new EmbedBuilder()
                 .setColor(0xFF0000)
-                .setTitle(`Report for ${user.toString()}`)
+                .setTitle(`Report for ${user.tag}`)
                 .setAuthor({
-                    name: `${reportingUser.toString()}`,
+                    name: `${reportingUser.tag}`,
                     iconURL: `${reportingUser.avatarURL()}`
                 })
 
@@ -79,7 +79,7 @@ module.exports = {
                 const buttonID = `deleteMessage-${msg.id}`
                 const deleteMessageButton = new ButtonBuilder()
                     .setCustomId(`${buttonID}`)
-                    .setLabel('Delete Message')
+                    .setLabel('Delete Message (WIP)')
                     .setStyle(ButtonStyle.Danger)
                     .setEmoji('🗑️')
 
