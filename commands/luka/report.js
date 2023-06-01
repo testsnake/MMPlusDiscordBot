@@ -73,13 +73,12 @@ module.exports = {
             if (rule) {
                 reportEmbed.addFields({name: 'Rule', value: `${rule}`});
             }
-            let deleteMessageButton;
             let actionRow;
             if (msg) {
                 reportEmbed.addFields({name: 'Message', value: `${msg.url}`});
                 const buttonID = `deleteMessage-${msg.id}`
-                deleteMessageButton = new ButtonBuilder()
-                    .setCustomId(buttonID)
+                const deleteMessageButton = new ButtonBuilder()
+                    .setCustomId(`${buttonID}`)
                     .setLabel('Delete Message')
                     .setStyle(ButtonStyle.Danger)
                     .setEmoji('🗑️')
