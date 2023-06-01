@@ -57,6 +57,7 @@ async function loadCommandsAndEvents() {
                 }
             } catch (error) {
                 log.error(`[${botName}] Failed to load ${file} command: ${error}`);
+                log.error(error.stack);
                 pm2Metrics.commandsErrored.inc();
             }
         }
