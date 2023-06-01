@@ -4,7 +4,7 @@ let {botArray} = require("./bots.js");
 const {EmbedBuilder, ButtonBuilder, ActionRowBuilder} = require("discord.js");
 const fetch = require("node-fetch");
 let clientZero = botArray[0].bot;
-
+let buttons;
 
 /*
     * Test a regex against a string
@@ -317,6 +317,24 @@ async function checkFileSize(url) {
     return sizeInKB <= 2048;
 }
 
+function addButton(id, callback) {
+    buttons[id] = callback;
+}
+
+function removeButton(id) {
+    delete buttons[id];
+}
+
+function getButton(id) {
+    return buttons[id];
+}
+
+function runButton(id, ...args) {
+    buttons[id](...args);
+}
+
+
+
 
 
 module.exports = {
@@ -333,6 +351,10 @@ module.exports = {
     sendStarboardEmbed,
     grabSpecialRole,
     checkFileSize,
-    sendEmbedToUser
+    sendEmbedToUser,
+    addButton,
+    removeButton,
+    getButton,
+    runButton
 
 }
