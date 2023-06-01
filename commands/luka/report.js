@@ -127,7 +127,7 @@ module.exports = {
 
 
         } catch (err) {
-            log.error(`Error in report command:\n${err}`);
+            log.error(`Error in report command:\n${err}\n${err.stack}`);
             interaction.reply({content: 'There was an error in the report command. Please use /ticket or DM a moderator', ephemeral: true});
         }
 
