@@ -249,30 +249,39 @@ module.exports = {
             message.attachments.forEach(attachment => {
                 attachments += `${attachment.url}\n`;
             })
+
             if (attachments !== '') {
-                embed.addField('Attachments', attachments);
+                embed.addFields({ name: 'Attachments', value: attachments });
             }
+
             if (message.editedAt) {
-                embed.addField('Edited At', message.editedAt.toString());
+                embed.addFields({ name: 'Edited At', value: message.editedAt.toString() });
             }
+
             if (message.flags.toArray().length > 0) {
-                embed.addField('Flags', message.flags.toArray().join(', '));
+                embed.addFields({ name: 'Flags', value: message.flags.toArray().join(', ') });
             }
+
             if (message.applicationId) {
-                embed.addField('Application ID', message.applicationId.toString());
+                embed.addFields({ name: 'Application ID', value: message.applicationId.toString() });
             }
+
             if (message.activity) {
-                embed.addField('Activity', message.activity.toString());
+                embed.addFields({ name: 'Activity', value: message.activity.toString() });
             }
+
             if (message.roleSubscriptionData) {
-                embed.addField('Role Subscription Data', message.roleSubscriptionData.toString());
+                embed.addFields({ name: 'Role Subscription Data', value: message.roleSubscriptionData.toString() });
             }
+
             if (message.type) {
-                embed.addField('Type', message.type.toString());
+                embed.addFields({ name: 'Type', value: message.type.toString() });
             }
+
             if (message.webhookId) {
-                embed.addField('Webhook ID', message.webhookId.toString());
+                embed.addFields({ name: 'Webhook ID', value: message.webhookId.toString() });
             }
+
 
             await interaction.reply({ embeds: [embed], ephemeral: true });
 
