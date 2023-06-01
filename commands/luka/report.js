@@ -1,7 +1,7 @@
 const utils = require('../../utils.js');
 const log = require('../../logger.js');
 const config = require('../../config.json');
-const { EmbedBuilder, SlashCommandBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const util = require("util");
 
 module.exports = {
@@ -74,6 +74,7 @@ module.exports = {
                 reportEmbed.addField('Rule', rule);
             }
             let deleteMessageButton;
+            let actionRow;
             if (msg) {
                 reportEmbed.addField('Message', msg.url);
                 const buttonID = `deleteMessage-${msg.id}`
@@ -96,12 +97,36 @@ module.exports = {
                     }
                 })
 
+                const linkToMessageButton = new ButtonBuilder()
+                    .setLabel('Link to Message')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL(msg.url)
+                    .setEmoji('🔗')
+
+                actionRow = new ActionRowBuilder()
+                    .addComponents(deleteMessageButton)
+                    .addComponents(linkToMessageButton)
+
+
+
+
+
+
 
 
             }
             if (context) {
                 reportEmbed.addField('Context', context);
             }
+            reportEmbed.setTimestamp(new Date())
+                .setFooter({text: `${config.botVer}`, iconURL: `${config.botAvatarURL}`});
+
+            const reportChannel = interaction.guild.channels.cache.get(config.reportChannelID);
+
+            await reportChannel.send({embeds: [reportEmbed], components: [actionRow]});
+            await interaction.reply({content: 'Report sent', ephemeral: true});
+
+
         } catch (err) {
             log.error(`Error in report command:\n${err}`);
             interaction.reply({content: 'There was an error in the report command. Please use /ticket or DM a moderator', ephemeral: true});
