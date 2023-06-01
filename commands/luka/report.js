@@ -30,7 +30,7 @@ module.exports = {
                 .setRequired(true)
         )
         .addStringOption(option =>
-            option.setName('Message')
+            option.setName('message')
                 .setDescription('Message ID or link to message')
                 .setRequired(false)
         )
