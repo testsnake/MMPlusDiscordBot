@@ -239,7 +239,7 @@ module.exports = {
             const messageId = interaction.options.getString('message_id');
             const channel = interaction.options.getChannel('channel');
             const message = await channel.messages.fetch(messageId);
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTitle(`Message Details`)
                 .setDescription(`Message ID: ${message.id}\nChannel: ${message.channel}\nAuthor: ${message.author}\nContent: ${message.content}`)
                 .setColor(0x000000)
