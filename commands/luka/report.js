@@ -76,7 +76,7 @@ module.exports = {
             let actionRow;
             if (msg) {
                 reportEmbed.addFields({name: 'Message', value: `${msg.url}`});
-                const buttonID = `deleteMessage-${msg.id}`
+                const buttonID = `deleteMessage-${msg.id}-${msg.channel.id}`
                 const deleteMessageButton = new ButtonBuilder()
                     .setCustomId(`${buttonID}`)
                     .setLabel('Delete Message (WIP)')
@@ -85,16 +85,7 @@ module.exports = {
 
 
 
-                utils.addButton(buttonID, async (interaction) => {
-                    await interaction.deferUpdate();
-                    try {
-                        await msg.delete();
-                        await interaction.editReply({content: 'Message deleted', components: []});
-                    } catch (err) {
-                        log.error(`Error deleting message:\n${err}`);
-                        await interaction.editReply({content: 'There was an error deleting the message', components: []});
-                    }
-                })
+                utils.addButton(buttonID, utils.deleteMessage(`${msg.id}`, `${msg.channel.id}`));
 
                 const linkToMessageButton = new ButtonBuilder()
                     .setLabel('Link to Message')

@@ -333,6 +333,11 @@ function runButton(id, ...args) {
     buttons[id](...args);
 }
 
+async function deleteMessage(messageId, channelId) {
+    const channel = await client.channels.cache.get(channelId);
+    const message = await channel.messages.fetch(messageId);
+    await message.delete();
+}
 
 
 
@@ -355,6 +360,7 @@ module.exports = {
     addButton,
     removeButton,
     getButton,
-    runButton
+    runButton,
+    deleteMessage
 
 }
