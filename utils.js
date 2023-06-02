@@ -185,7 +185,7 @@ async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId,
             .setTitle(`${starboardMessage.member.displayName}`)
             .setAuthor({name: `${starboardMessage.author.username}`, iconURL: `${avatar}` })
             .setURL(`${messageUrl}`)
-            .setThumbnail(`${starboardMessage.author.displayAvatarURL()}`)
+            .setThumbnail(`${starboardMessage.member.displayAvatarURL()}`)
             .addFields({name: "Author", value: `${author.toString()}`, inline: true},{name: `Channel`, value: `${channelName}`, inline: true})
             .setFooter({text: `${config.botVer}`})
             .setTimestamp(timestamp)
