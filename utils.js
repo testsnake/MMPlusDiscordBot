@@ -333,7 +333,7 @@ function runButton(id, ...args) {
     buttons[id](...args);
 }
 
-async function deleteMessage(messageId, channelId) {
+async function deleteMessage(messageId, channelId, client = clientZero) {
     const channel = await client.channels.cache.get(channelId);
     const message = await channel.messages.fetch(messageId);
     await message.delete();
