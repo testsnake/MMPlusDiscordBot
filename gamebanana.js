@@ -42,6 +42,7 @@ async function checkGamebananaFeed() {
 
         await checkGamebananaAPI('new').then(async (newItems) => {
             await checkGamebananaAPI('updated').then(async (updatedItems) => {
+
                 latestTimestamp = Math.max(newItems, updatedItems);
                 fs.writeFileSync(timestampFile, latestTimestamp.toString());
             });
@@ -139,7 +140,7 @@ async function checkGamebananaAPI(sort) {
     } catch (err) {
         log.error("Error checking Gamebanana API");
         await errorAlert("Error checking Gamebanana API", "000", err, `GameBanana`)
-
+        return 0;
     }
 }
 
