@@ -34,7 +34,7 @@ async function checkGamebananaFeed() {
 
     if (feedEnabled) {
         // if latest timestamp is undefined, null, in the future, or more than 1 hour ago, set it to 1 hour ago
-        if (latestTimestamp === undefined || latestTimestamp === null || latestTimestamp > (new Date().getTime() / 1000) || latestTimestamp < (new Date().getTime() / 1000) - 3600) {
+        if (latestTimestamp === undefined || latestTimestamp === null || latestTimestamp > (new Date().getTime() / 1000) || latestTimestamp < (new Date().getTime() / 1000) - 3600 || typeof latestTimestamp != 'number') {
             latestTimestamp = (new Date().getTime() / 1000) - 3600;
             fs.writeFileSync(timestampFile, latestTimestamp.toString());
         }
