@@ -165,7 +165,7 @@ module.exports = {
             addLog(`Sent ${logs.length} logs to ${interaction.user.tag} (${interaction.user.id})`);
         } else if (subcommand === 'addtostarboard') {
             try {
-                const channelId = interaction.options.getChannel('channel').id;
+                const channelId = interaction.options.getChannel('channel');
                 const messageId = interaction.options.getString('message_id');
 
                 await sendStarboardEmbed(messageId, channelId);

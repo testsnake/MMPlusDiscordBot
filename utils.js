@@ -157,10 +157,9 @@ async function getString(botName, stringName) {
     *
  */
 
-async function sendStarboardEmbed(starboardMessageId, starboardMessageChannelId, starboardChannel = config.starboardChannelID, client = clientZero) {
+async function sendStarboardEmbed(starboardMessageId, starboardMessageChannel, starboardChannel = config.starboardChannelID, client = clientZero) {
     try {
-        log.debug(`Sending starboard embed for message ${starboardMessageId} in channel ${starboardMessageChannelId} to channel ${starboardChannel}`)
-        const starboardMessageChannel = await client.channels.cache.get(starboardMessageChannelId);
+        log.debug(`Sending starboard embed for message ${starboardMessageId} in channel ${starboardMessageChannel.name} to channel ${starboardChannel}`)
         const starboardMessage = await starboardMessageChannel.messages.fetch(starboardMessageId);
 
         log.debug(`Starboard message fetched`)
