@@ -8,7 +8,7 @@ module.exports = {
         if (message.channel.id === config.starboardChannelID) return;
 
         if (reaction.emoji.name === '⭐' && reaction.count === 4) {
-            await sendStarboardEmbed(reaction.message.id, reaction.message.channel.id);
+            await sendStarboardEmbed(reaction.message.id, reaction.message.channel);
         }
     }
 }
