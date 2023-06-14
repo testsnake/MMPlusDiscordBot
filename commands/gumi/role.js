@@ -66,6 +66,13 @@ module.exports = {
                     { name: 'Live in VC Ping', value: "1112491540577796166"},
                     { name: 'Gartic Phone', value: "1118329199229407292"},
                     { name: 'Game Night', value: "1118329956368392222"},
+                    { name: 'Duels (10☆)', value: "1118331060946731130"},
+                    { name: 'Duels (8-9☆)', value: "1118331176038436965"},
+                    { name: 'Duels (5-7☆)', value: "1118331343949025350"},
+                    { name: 'Duels (Any)', value: "1118331457828569118"},
+                    { name: 'Mario Kart 8 DX', value: "1118332990645346325"},
+                    { name: 'Mario Kart Wii', value: "1118333092034269226"},
+
 
                 ),
         )
