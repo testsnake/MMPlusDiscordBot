@@ -12,19 +12,6 @@ const loggingChannel = '1087810388936114316';
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ban')
-        .setNameLocalizations({
-            de: 'ban',
-            'en-GB': 'ban',
-            'en-US': 'ban',
-            'es-ES': 'prohibir',
-            fr: 'bannir',
-            nl: 'ban',
-            'pt-BR': 'banir',
-            'zh-CN': '禁止',
-            ja: '禁止',
-            'zh-TW': '禁止',
-            ko: '금지',
-        })
         .setDescription('Ban a user from the server.')
         .setDescriptionLocalizations({
             de: 'Bannt einen Benutzer vom Server.',

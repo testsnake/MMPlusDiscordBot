@@ -11,19 +11,6 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
         .setDescription('Kick a user from the server.')
-        .setNameLocalizations({
-            de: 'kick',
-            'en-GB': 'kick',
-            'en-US': 'kick',
-            'es-ES': 'expulsar',
-            fr: 'expulser',
-            nl: 'schop',
-            'pt-BR': 'expulsar',
-            'zh-CN': '踢',
-            ja: 'キック',
-            'zh-TW': '踢',
-            ko: '킥',
-        })
         .setDescriptionLocalizations({
             de: 'Kickt einen Benutzer vom Server.',
             'en-GB': 'Kick a user from the server.',

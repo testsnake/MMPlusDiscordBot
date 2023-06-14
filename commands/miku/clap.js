@@ -5,12 +5,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('clap')
 		.setDescription('Adds 👏 Clap 👏 Emoji 👏 in 👏 between 👏 each 👏 word.')
-		.setNameLocalizations({
-			'zh-CN': '鼓掌',
-			ja: '拍手',
-			'zh-TW': '鼓掌',
-			ko: '박수',
-		})
 		.setDescriptionLocalizations({
 			de: 'Fügt 👏 Klatsch-Emoji 👏 zwischen 👏 jedes 👏 Wort 👏 ein.',
 			'en-GB': 'Adds 👏 Clap 👏 Emoji 👏 in 👏 between 👏 each 👏 word.',

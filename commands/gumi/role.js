@@ -17,30 +17,8 @@ module.exports = {
             'zh-TW': '給你一個角色',
             ko: '역할을 부여합니다',
         })
-        .setNameLocalizations({
-            de: 'rolle',
-            'es-ES': 'rol',
-            fr: 'rôle',
-            nl: 'rol',
-            'pt-BR': 'papel',
-            'zh-CN': '角色',
-            ja: '役割',
-            'zh-TW': '角色',
-            ko: '역할',
-        })
         .addStringOption(option =>
             option.setName('role')
-                .setNameLocalizations({
-                    de: 'rolle',
-                    'es-ES': 'rol',
-                    fr: 'rôle',
-                    nl: 'rol',
-                    'pt-BR': 'papel',
-                    'zh-CN': '角色',
-                    ja: '役割',
-                    'zh-TW': '角色',
-                    ko: '역할',
-                })
                 .setDescription('The role you want to give yourself')
                 .setDescriptionLocalizations({
                     de: 'Die Rolle, die Sie sich selbst geben möchten',

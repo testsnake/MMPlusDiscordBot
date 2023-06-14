@@ -9,19 +9,6 @@ const log = require('../../logger.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('usercount')
-		.setNameLocalizations({
-			de: 'benutzerzahl',
-			'en-GB': 'usercount',
-			'en-US': 'usercount',
-			'es-ES': 'número-de-usuarios',
-			fr: 'nombre-d-utilisateurs',
-			nl: 'aantal-gebruikers',
-			'pt-BR': 'número-de-usuários',
-			'zh-CN': '用户数',
-			ja: 'ユーザー数',
-			'zh-TW': '用戶數',
-			ko: '사용자-수',
-		})
 		.setDescription('Number of users in server')
 		.setDescriptionLocalizations({
 			de: 'Anzahl der Benutzer im Server',

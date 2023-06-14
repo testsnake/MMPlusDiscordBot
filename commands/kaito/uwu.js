@@ -22,16 +22,6 @@ module.exports = {
 		})
 		.addStringOption(option =>
 			option.setName('text')
-				.setNameLocalizations({
-					'es-ES': 'texto',
-					fr: 'texte',
-					nl: 'tekst',
-					'pt-BR': 'texto',
-					'zh-CN': '文本',
-					ja: 'テキスト',
-					'zh-TW': '文本',
-					ko: '텍스트',
-				})
 				.setDescription('The text you want to uwu-ify.')
 				.setDescriptionLocalizations({
 					de: 'Der Text, den du Uwu-ig machen möchtest.',

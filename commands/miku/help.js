@@ -35,19 +35,6 @@ module.exports = {
 			ko: '사용 가능한 명령 목록을 제공합니다. (영어)',
 			"es-ES": "Proporciona una lista de comandos disponibles. (Inglés)"
 		})
-		.setNameLocalizations({
-			de: 'hilfe',
-			'en-GB': 'help',
-			'en-US': 'help',
-			fr: 'aide',
-			nl: 'help',
-			'pt-BR': 'ajuda',
-			'zh-CN': '帮助',
-			ja: 'ヘルプ',
-			'zh-TW': '幫助',
-			ko: '도움말',
-			"es-ES": "ayuda"
-		})
 		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
 		.setDMPermission(false),
 	async execute(interaction) {

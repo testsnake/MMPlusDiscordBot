@@ -4,19 +4,6 @@ const pm2Metrics = require('../../pm2metrics.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('upgrade')
-		.setNameLocalizations({
-			de: 'aktualisieren',
-			'en-GB': 'upgrade',
-			'en-US': 'upgrade',
-			'es-ES': 'actualizar',
-			fr: 'mise-à-jour',
-			nl: 'upgraden',
-			'pt-BR': 'atualizar',
-			'zh-CN': '升级',
-			ja: 'アップグレード',
-			'zh-TW': '升級',
-			ko: '업그레이드',
-		})
 		.setDescription('Updating MM+ Tutorial')
 		.setDescriptionLocalizations({
 			de: 'Aktualisiere das MM+ Tutorial',

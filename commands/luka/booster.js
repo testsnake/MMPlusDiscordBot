@@ -11,21 +11,6 @@ const { grabSpecialRole, checkFileSize } = require('../../utils.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('booster')
-        .setNameLocalizations({
-            de: 'booster',
-            'en-GB': 'booster',
-            'en-US': 'booster',
-            'es-ES': 'impluso',
-            it: 'potenziamento',
-            fr: 'booster',
-            nl: 'booster',
-            'pt-BR': 'impulsionador',
-            'zh-CN': '助推器',
-            ja: 'ブースター',
-            'zh-TW': '助推器',
-            ko: '부스터',
-
-        })
         .setDescription('Manages your booster role.')
         .setDescriptionLocalizations({
             de: 'Verwalte deine Booster-Rolle.',

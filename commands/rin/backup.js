@@ -4,18 +4,6 @@ const pm2Metrics = require('../../pm2metrics.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('backup')
-		.setNameLocalizations({
-			de: 'sicherung',
-			'en-GB': 'backup',
-			'en-US': 'backup',
-			fr: 'sauvegarde',
-			nl: 'back-up',
-			'pt-BR': 'cópia-de-segurança',
-			'zh-CN': '备份',
-			ja: 'バックアップ',
-			'zh-TW': '備份',
-			ko: '백업',
-		})
 		.setDescription('Tutorial on backing up MM+ save data')
 		.setDescriptionLocalizations({
 			de: 'Tutorial zur Sicherung von MM+ Speicherdaten (English only)',

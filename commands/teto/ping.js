@@ -17,20 +17,6 @@ module.exports = {
 			'zh-TW': '回覆 Pong!',
 			ko: 'Pong!으로 응답',
 		})
-		.setNameLocalizations({
-			ja: 'ピン',
-			ko: '핑',
-			'zh-TW': '平',
-			'zh-CN': '平',
-			de: 'ping',
-			'en-GB': 'ping',
-			'en-US': 'ping',
-			'es-ES': 'ping',
-			fr: 'ping',
-			nl: 'ping',
-
-
-		})
 		.setDefaultMemberPermissions(PermissionFlagsBits.SEND_MESSAGES)
 		.setDMPermission(true),
 	async execute(interaction) {

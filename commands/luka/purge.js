@@ -21,21 +21,6 @@ module.exports = {
         'zh-TW': '刪除頻道中的最後 X 條消息。',
         ko: '채널에서 마지막 X 개의 메시지를 삭제합니다.',
       })
-    .setNameLocalizations({
-        ja: '削除',
-        ko: '삭제',
-        'zh-TW': '刪除',
-        'zh-CN': '删除',
-        de: 'löschen',
-        'es-ES': 'borrar',
-        fr: 'supprimer',
-        nl: 'verwijderen',
-        'pt-BR': 'excluir',
-        'en-GB': 'massdelete',
-        'en-US': 'purge',
-
-
-        })
     .addIntegerOption(option => option.setName('count').setDescription('The number of messages to delete (max 100).').setRequired(true))
     .setDefaultMemberPermissions(PermissionFlagsBits.MANAGE_MESSAGES),
   async execute(interaction) {

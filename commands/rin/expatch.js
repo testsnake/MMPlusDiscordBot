@@ -3,13 +3,6 @@ const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('expatch')
-		.setNameLocalizations({
-			ja: 'expatchダウンロードリンク',
-			ko: 'expatch다운로드링크',
-			'zh-TW': 'expatch下載連結',
-			'zh-CN': 'expatch下载链接',
-
-			})
 		.setDescription('ExPatch Download Link')
 		.setDescriptionLocalizations({
 			de: 'ExPatch Download-Link',

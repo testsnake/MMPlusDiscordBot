@@ -4,12 +4,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('dlc')
 		.setDescription('dlc link')
-		.setNameLocalizations({
-			ja: 'dlcリンク',
-			ko: 'dlc링크',
-			'zh-TW': 'dlc連結',
-			'zh-CN': 'dlc链接',
-		})
 		.setDescriptionLocalizations({
 			de: 'DLC-Link',
 			'en-GB': 'DLC link',
