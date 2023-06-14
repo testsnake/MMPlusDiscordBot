@@ -70,7 +70,7 @@ module.exports = {
                 }
 
             } else {
-                await utils.errorAlert(`Error in guildMemberUpdate event for ${newMember.user.tag}:\n${err}`, "701", "Error in guildMemberUpdate event", "Miku");
+                await utils.errorAlert(`Error in guildMemberUpdate event for ${newMember.user.tag}`, "701", "Error in guildMemberUpdate event", "Miku");
             }
         }
         // logs nickname changes
