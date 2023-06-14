@@ -65,6 +65,7 @@ module.exports = {
                     { name: 'VC Ping', value: "1112491477566771282"},
                     { name: 'Live in VC Ping', value: "1112491540577796166"},
                     { name: 'Gartic Phone', value: "1118329199229407292"},
+                    { name: 'Game Night', value: "1118329956368392222"},
 
                 ),
         )
