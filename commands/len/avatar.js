@@ -9,13 +9,6 @@ const log = require('../../logger.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('avatar')
-        .setNameLocalizations({
-            'zh-CN': '头像',
-            ja: 'アバター',
-            'zh-TW': '頭像',
-            ko: '아바타',
-
-        })
         .setDescription('Get the avatar of a user.')
         .setDescriptionLocalizations({
             de: 'Holen Sie sich den Avatar eines Benutzers.',

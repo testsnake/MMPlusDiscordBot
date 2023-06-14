@@ -19,14 +19,6 @@ module.exports = {
 			ja: 'M39+ダウングレードチュートリアル',
 			'zh-TW': 'M39+降級教程',
 			ko: 'M39+ 다운그레이드 튜토리얼',
-		})
-		.setNameLocalizations({
-			'es-ES': 'degradar',
-			fr: 'rétrograder',
-			'zh-CN': '降级',
-			ja: 'ダウングレード',
-			'zh-TW': '降級',
-			ko: '다운그레이드',
 		}),
 	async execute(interaction) {
 		pm2Metrics.actionsPerformed.inc();
