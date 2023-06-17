@@ -67,12 +67,12 @@ module.exports = {
                 .setChoices(
                     { name: '[M23] what is this world that we live in.', value: 'M9523' },
                     { name: '[M24] Teto Pipe Bomb', value: 'M9524' },
-                    { name: '[M25] インパクトパイモンぬいぐるみランチブレイク人形ピロぬいぐるみピローひなまつりアニメ周辺オープンコスプレ小道具ピローギフトバースデー超やわらかいぬいぐるみ小さな人形クッションゲームの周りぬいぐるみコスプレ人形少女少年アニメファンクリスマスプレゼント', value: 'M9525' },
+                    { name: '[M25] インパクトパイモンぬいぐるみランチブレイク...', value: 'M9525' },
                     { name: '[M26] Shout Out To The Gays', value: 'M9526' },
                     { name: '[M27] Blend W', value: 'M9527' },
                     { name: '[M28] 強風オールバック / Kyoufuu All Back', value: 'M9528' },
                     { name: '[M29] Whatsapp drip car', value: 'M9529' },
-                    { name: '[M30] We Are Number One But Hatsune Miku Sings EVERYTHING (with added CRUNCH)', value: 'M9530' },
+                    { name: '[M30] We Are Number One But Hatsune Miku Sings EVERYTHING', value: 'M9530' },
                     { name: '[M31] Axel F', value: 'M9531' },
                     { name: '[M32] miku walks to burger king', value: 'M9532' },
                     { name: '[M33] I Squeezed Out the Baby, Yet I Have No Idea Who the Father Is', value: 'S9533' },
@@ -88,7 +88,7 @@ module.exports = {
                     { name: '[P43] 冬のはなし / Fuyu No Hanashi', value: 'S9543' },
                     { name: '[P44] ドキドキ☆百合学園 / Heart-throbbing☆Yuri Academy', value: 'S9544' },
                     { name: '[P45] ヴィラン / Villain', value: 'S9545' },
-                    { name: '[P46] Games', value: 'S9546' },
+                    { name: '[P46] Games', value: 'S9546' }
                 ))
         .addStringOption((option) =>
             option
