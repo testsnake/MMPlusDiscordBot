@@ -46,16 +46,6 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('vote')
         .setDescription('vote for the current event')
-        .setNameLocalizations({
-            'es-ES': 'votar',
-            fr: 'voter',
-            nl: 'stemmen',
-            'pt-BR': 'votar',
-            'zh-CN': '投票',
-            ja: '投票',
-            'zh-TW': '投票',
-            ko: '투표',
-        })
         .setDescription('vote for the current event')
         .setDescriptionLocalizations({
             de: 'Stimmen Sie für das aktuelle Ereignis ab',
@@ -75,29 +65,30 @@ module.exports = {
                 .setName('chart')
                 .setDescription('the chart you want to vote on')
                 .setChoices(
-                    { name: 'M00', value: 'M9500' },
-                    { name: 'M01', value: 'M9501' },
-                    { name: 'M02', value: 'M9502' },
-                    { name: 'M03', value: 'M9503' },
-                    { name: 'M04', value: 'M9504' },
-                    { name: 'M05', value: 'M9505' },
-                    { name: 'M06', value: 'M9506' },
-                    { name: 'M07', value: 'M9507' },
-                    { name: 'M08', value: 'M9508' },
-                    { name: 'M09', value: 'M9509' },
-                    { name: 'S10', value: 'S9510' },
-                    { name: 'S11', value: 'S9511' },
-                    { name: 'S12', value: 'S9512' },
-                    { name: 'S13', value: 'S9513' },
-                    { name: 'S14', value: 'S9514' },
-                    { name: 'S15', value: 'S9515' },
-                    { name: 'S16', value: 'S9516' },
-                    { name: 'S17', value: 'S9517' },
-                    { name: 'S18', value: 'S9518' },
-                    { name: 'S19', value: 'S9519' },
-                    { name: 'S20', value: 'S9520' },
-                    { name: 'S21', value: 'S9521' },
-                    { name: 'S22', value: 'S9522' },
+                    { name: '[M23] what is this world that we live in.', value: 'M9523' },
+                    { name: '[M24] Teto Pipe Bomb', value: 'M9524' },
+                    { name: '[M25] インパクトパイモンぬいぐるみランチブレイク人形ピロぬいぐるみピローひなまつりアニメ周辺オープンコスプレ小道具ピローギフトバースデー超やわらかいぬいぐるみ小さな人形クッションゲームの周りぬいぐるみコスプレ人形少女少年アニメファンクリスマスプレゼント', value: 'M9525' },
+                    { name: '[M26] Shout Out To The Gays', value: 'M9526' },
+                    { name: '[M27] Blend W', value: 'M9527' },
+                    { name: '[M28] 強風オールバック / Kyoufuu All Back', value: 'M9528' },
+                    { name: '[M29] Whatsapp drip car', value: 'M9529' },
+                    { name: '[M30] We Are Number One But Hatsune Miku Sings EVERYTHING (with added CRUNCH)', value: 'M9530' },
+                    { name: '[M31] Axel F', value: 'M9531' },
+                    { name: '[M32] miku walks to burger king', value: 'M9532' },
+                    { name: '[M33] I Squeezed Out the Baby, Yet I Have No Idea Who the Father Is', value: 'S9533' },
+                    { name: '[P34] Games', value: 'S9534' },
+                    { name: '[P35] アネモネ / Anemone', value: 'S9535' },
+                    { name: '[P36] All the Things She Said', value: 'S9536' },
+                    { name: '[P37] 少女ケシゴム / Girl eraser', value: 'S9537' },
+                    { name: '[P38] ロウワー / Lower One\'s Eyes', value: 'S9538' },
+                    { name: '[P39] Sissy That Walk', value: 'S9539' },
+                    { name: '[P40] ガールフレンド・イン・ブルー / Girlfriend in Blue', value: 'S9540' },
+                    { name: '[P41] 威風堂々 / Ifuudoudou', value: 'S9541' },
+                    { name: '[P42] 女の子になりたい / I Wanna Be A Girl', value: 'S9542' },
+                    { name: '[P43] 冬のはなし / Fuyu No Hanashi', value: 'S9543' },
+                    { name: '[P44] ドキドキ☆百合学園 / Heart-throbbing☆Yuri Academy', value: 'S9544' },
+                    { name: '[P45] ヴィラン / Villain', value: 'S9545' },
+                    { name: '[P46] Games', value: 'S9546' },
                 ))
         .addStringOption((option) =>
             option
