@@ -40,7 +40,7 @@ function writeJSONFile(filePath, data) {
 }
 
 // Define the votes file path
-const votesFilePath = './votes.json';
+const votesFilePath = '../../votes.json';
 
 module.exports = {
     data: new SlashCommandBuilder()
