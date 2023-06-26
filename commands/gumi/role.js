@@ -51,6 +51,7 @@ module.exports = {
                     { name: 'Mario Kart 8 DX', value: "1118332990645346325"},
                     { name: 'Mario Kart Wii', value: "1118333092034269226"},
                     { name: "Mega Mix+ Updates", value: "1121513926404886638"},
+                    { name: "Diva Weeklies", value: "1123020093207617647"}
 
 
                 ),
