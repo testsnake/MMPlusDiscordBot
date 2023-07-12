@@ -1,0 +1,339 @@
+{
+  "en-US": {
+    "1": {
+      "title": "Respect everyone",
+      "description": "Treat everyone with respect. This includes no harassment, witch hunting, sexism, racism, transphobia, or hate speech. Any form of discrimination towards an individual or group will not be tolerated. Furthermore, do not harass any members of this server through direct messages, other social media services, or other servers. Criticism is fine, however outright blasting is not."
+    },
+    "2": {
+      "title": "No NSFW or R-18 content",
+      "description": "Do not discuss NSFW or R-18 content here. This includes pornography, gore, and any general not-safe-for-life content. This also applies to NSFW mods."
+    },
+    "3": {
+      "title": "Keep discussions on topic",
+      "description": "Keep discussions in their respective channels and be mindful of other members. For example, avoid posting memes over others helping each other in one channel when shitposts exists."
+    },
+    "4": {
+      "title": "Avoid drama",
+      "description": "This server is not a place for drama. Any disruptive behavior or actions that create unnecessary drama or chaos will not be tolerated. Keep discussions respectful and constructive."
+    },
+    "5": {
+      "title": "Respect all skill levels",
+      "description": "Be respectful of the skill levels of all members. Everyone has different levels of knowledge and experience. Therefore, avoid belittling or mocking those who are less knowledgeable and instead offer constructive criticism or assistance. Conversely, if someone is helping you, pay attention to what they're saying and put in the effort to learn. If someone made something that is bad, tell them how they can improve rather than berating them."
+    },
+    "6": {
+      "title": "Verify to gain access",
+      "description": "To gain access to the server, post an image in # entry without any text. The image cannot be a gif or video. This is to verify that you can read and follow basic instructions."
+    },
+    "7": {
+      "title": "Spam belongs in #shitposts",
+      "description": "Spam/Shitposts belongs in the shitposts channel. Avoid spamming in other channels or private messages as it can be disruptive and annoying to other members."
+    },
+    "8": {
+      "title": "No piracy talk",
+      "description": "No piracy talk is allowed on this server. Do not discuss or post links related to piracy of any kind. For Mega Mix+, You may post individual files (with the exception of DivaMegaMix.exe) if it relates to discussion, however mass dumping content is not allowed."
+    },
+    "9": {
+      "title": "If you try to \"beat the rules\" on a technicality, go outside.",
+      "description": "If you try to 'beat the rules' on a technicality, you will be warned or banned at the discretion of the moderators. Use common sense and be respectful towards others at all times."
+    },
+    "10": {
+      "title": "Check specific channel rules",
+      "description": "We can't possibly list the rules for every channel here, as the rules would become too long. Therefore, please check the descriptions and pinned messages for channels to see if there are any specific rules for certain channels that you need to be aware of."
+    }
+  },
+  "es-ES": {
+    "1": {
+      "title": "Respeta a todos",
+      "description": "Trata a todos con respeto. Esto incluye no acosar, no realizar cacerías de brujas, no sexismo, no racismo, no transfobia, ni discursos de odio. No se tolerará ninguna forma de discriminación hacia un individuo o grupo. Además, no acoses a los miembros de este servidor a través de mensajes directos (DM), otras plataformas de redes sociales o otros servidores. La crítica está bien, pero los ataques infundados no."
+    },
+    "2": {
+      "title": "No discutas contenido NSFW o R-18",
+      "description": "No discutas contenido NSFW o R-18 aquí. Esto incluye pornografía, gore y cualquier contenido NSFL (No seguro para la vida) en general. Esto también aplica a mods NSFW."
+    },
+    "3": {
+      "title": "Mantén las discusiones en sus respectivos canales",
+      "description": "Mantén las discusiones en sus respectivos canales y sé respetuoso con los demás miembros. Por ejemplo, evita publicar memes en un canal donde otros se están ayudando entre sí, cuando existe un canal para shitposts."
+    },
+    "4": {
+      "title": "Evita los dramas",
+      "description": "Este servidor no es lugar para dramas. No se tolerará ninguna conducta disruptiva o acciones que generen drama o caos innecesario. Mantén las discusiones respetuosas y constructivas."
+    },
+    "5": {
+      "title": "Respeta todos los niveles de habilidad",
+      "description": "Respeta los niveles de habilidad de todos los miembros. Todos tienen diferentes niveles de conocimiento y experiencia. Por tanto, evita menospreciar o ridiculizar a aquellos que saben menos, en lugar de ello, ofrece críticas constructivas o asistencia. Por el contrario, si alguien te está ayudando, presta atención a lo que están diciendo y esfuérzate por aprender. Si alguien ha hecho algo que no está bien, diles cómo pueden mejorar en lugar de regañarlos."
+    },
+    "6": {
+      "title": "Verifica para obtener acceso",
+      "description": "Para obtener acceso al servidor, publica una imagen en # entry sin ningún texto. La imagen no puede ser un gif o un video. Esto es para verificar que puedes leer y seguir instrucciones básicas."
+    },
+    "7": {
+      "title": "Los mensajes spam pertenecen a #shitposts",
+      "description": "Los mensajes spam/shitposts pertenecen al canal de shitposts. Evita hacer spam en otros canales o en mensajes directos ya que puede ser molesto y disruptivo para otros miembros."
+    },
+    "8": {
+      "title": "No se permite hablar de piratería",
+      "description": "No se permite hablar de piratería en este servidor. No discutas ni publiques enlaces relacionados con la piratería de ningún tipo. Para Mega Mix+, puedes publicar archivos individuales (con la excepción de DivaMegaMix.exe) si se relaciona con la discusión, sin embargo, no está permitido volcar contenido de forma masiva."
+    },
+    "9": {
+      "title": "No intentes burlar las reglas",
+      "description": "Si intentas 'burlar las reglas' en una tecnicidad, serás advertido o baneado a discreción de los moderadores. Usa el sentido común y sé respetuoso con los demás en todo momento."
+    },
+    "10": {
+      "title": "Revisa las reglas específicas de cada canal",
+      "description": "No podemos enumerar las reglas de cada canal aquí, ya que las reglas serían demasiado extensas. Por lo tanto, por favor revisa las descripciones y los mensajes fijados en los canales para ver si hay reglas específicas para ciertos canales de las que debes estar al tanto."
+    }
+  },
+  "pt-BR": {
+    "1": {
+      "title": "Trate todos com respeito",
+      "description": "Isso inclui não assediar, perseguir, ser sexista, racista, transfóbico ou usar discurso de ódio. Qualquer forma de discriminação contra um indivíduo ou grupo não será tolerada. Além disso, não assedie nenhum membro deste servidor por meio de mensagens diretas, outras redes sociais ou outros servidores. Críticas são bem-vindas, mas ataques diretos não."
+    },
+    "2": {
+      "title": "Não discuta conteúdo NSFW ou R-18 aqui",
+      "description": "Isso inclui pornografia, gore e qualquer conteúdo geral NSFL (não seguro para a vida). Isso também se aplica a mods NSFW."
+    },
+    "3": {
+      "title": "Mantenha as discussões em seus respectivos canais e respeite os outros membros",
+      "description": "Por exemplo, evite postar memes quando outros estão se ajudando em um canal onde shitposts existem."
+    },
+    "4": {
+      "title": "Este servidor não é um lugar para drama",
+      "description": "Qualquer comportamento disruptivo ou ações que criem drama ou caos desnecessários não serão tolerados. Mantenha as discussões respeitosas e construtivas."
+    },
+    "5": {
+      "title": "Respeite o nível de habilidade de todos os membros",
+      "description": "Todos têm diferentes níveis de conhecimento e experiência. Portanto, evite menosprezar ou zombar daqueles que são menos experientes e, em vez disso, ofereça críticas construtivas ou assistência. Por outro lado, se alguém está te ajudando, preste atenção no que eles estão dizendo e faça um esforço para aprender. Se alguém fez algo que não é bom, diga a eles como podem melhorar em vez de repreendê-los."
+    },
+    "6": {
+      "title": "Para ter acesso ao servidor, poste uma imagem em # entry sem nenhum texto",
+      "description": "A imagem não pode ser um gif ou vídeo. Isso é para verificar se você pode ler e seguir instruções básicas."
+    },
+    "7": {
+      "title": "Spam/Shitposts devem ser postados no canal shitposts",
+      "description": "Evite fazer spam em outros canais ou mensagens privadas, pois pode ser disruptivo e irritante para outros membros."
+    },
+    "8": {
+      "title": "Não é permitido falar sobre pirataria neste servidor",
+      "description": "Não discuta ou poste links relacionados à pirataria de qualquer tipo. Para o Mega Mix+, você pode postar arquivos individuais (com exceção do DivaMegaMix.exe) se isso se relacionar com a discussão, no entanto, despejar conteúdo em massa não é permitido."
+    },
+    "9": {
+      "title": "Se você tentar 'burlar as regras' com base em uma tecnicidade, você será advertido ou banido a critério dos moderadores",
+      "description": "Use o bom senso e seja respeitoso com os outros em todos os momentos."
+    },
+    "10": {
+      "title": "Não podemos listar as regras para cada canal aqui, pois as regras se tornariam muito longas",
+      "description": "Portanto, verifique as descrições e mensagens fixadas nos canais para ver se existem regras específicas para determinados canais que você precisa estar ciente."
+    }
+  },
+  "fr": {
+    "1": {
+      "title": "Traitez tout le monde avec respect",
+      "description": "Traitez tout le monde avec respect. Cela comprend l'interdiction de harcèlement, witch-hunting, de sexisme, de racisme, de transphobie, ou de discours haineux. Toute forme de discrimination envers une personne ou un groupe ne sera pas tolérée. De plus, ne harcelez aucun membre de ce serveur via des messages directs, d'autres services de médias sociaux, ou d'autres serveurs. La critique est acceptable, mais pas les attaques directes."
+    },
+    "2": {
+      "title": "Ne discutez pas de contenu NSFW ou R-18 ici",
+      "description": " Il est interdit de discuter de contenu NSFW ou R-18 ici. Cela inclut la pornographie, la violence excessive, et tout contenu général NSFL (Not safe for life). Cela s'applique également aux mods NSFW."
+    },
+    "3": {
+      "title": "Gardez les discussions dans leurs canaux respectifs et respectez les autres membres",
+      "description": "Gardez les discussions dans leurs canaux respectifs et soyez attentifs aux autres membres. Par exemple, évitez de poster des mèmes sur d'autres qui s'entraident dans un canal quand un canal de shitposts existe."
+    },
+    "4": {
+      "title": "Ce serveur n'est pas un endroit pour le drame",
+      "description": "Ce serveur n'est pas un lieu pour le drama. Tout comportement perturbateur ou actions qui créent un drama ou un chaos inutile ne sera pas toléré. Gardez les discussions respectueuses et constructives."
+    },
+    "5": {
+      "title": "Respectez le niveau de compétence de tous les membres",
+      "description": "Soyez respectueux du niveau de compétence de tous les membres. Chacun a des niveaux de connaissance et d'expérience différents. Par conséquent, évitez de rabaisser ou de ridiculiser ceux qui sont moins compétents et offrez plutôt des critiques constructives ou de l'aide. Inversement, si quelqu'un vous aide, faites attention à ce qu'il dit et faites l'effort d'apprendre. Si quelqu'un a créé quelque chose de mauvais, dites-lui comment il peut s'améliorer plutôt que de le rabrouer."
+    },
+    "6": {
+      "title": "Pour avoir accès au serveur, postez une image dans # entry sans aucun texte",
+        "description": "Pour avoir accès au serveur, postez une image dans # entry sans aucun texte. L'image ne peut pas être un gif ou une vidéo. C'est pour vérifier que vous pouvez lire et suivre des instructions basiques."
+    },
+    "7": {
+      "title": "Les spam/shitposts doivent être postés dans le canal shitposts",
+      "description": "Les spam/shitposts appartiennent au canal shitposts. Évitez de spammer dans d'autres canaux ou messages privés car cela peut être perturbateur et ennuyeux pour les autres membres."
+    },
+    "8": {
+      "title": "Il est interdit de parler de piratage sur ce serveur",
+"description": "Aucune discussion sur la piraterie n'est autorisée sur ce serveur. Ne discutez pas ou ne postez pas de liens liés à la piraterie de quelque sorte que ce soit. Pour Mega Mix+, vous pouvez publier des fichiers individuels (à l'exception de DivaMegaMix.exe) s'ils sont liés à la discussion, mais le déversement massif de contenu n'est pas autorisé."
+    },
+    "9": {
+      "title": "Si vous essayez de 'contourner les règles' en fonction d'une technicité, Sors dehors!",
+      "description": "Si vous essayez de \"contourner les règles\" en vous basant sur une technicité, vous serez averti ou banni à la discrétion des modérateurs. Utilisez le bon sens et soyez respectueux envers les autres en tout temps."
+    },
+    "10": {
+      "title": "Nous ne pouvons pas énumérer les règles pour chaque canal ici, car les règles deviendraient trop longues",
+      "description": "Il nous est impossible de lister les règles pour chaque salon ici, car les règles deviendraient trop longues. Par conséquent, veuillez vérifier les descriptions et les messages épinglés pour les canaux pour voir s'il y a des règles spécifiques pour certains canaux dont vous devez être conscient."
+    }
+  },
+  "ja": {
+    "1": {
+      "title": "他のメンバーに対して常に敬意を払ってください",
+      "description": "皆さんに対して尊重の念を忘れずに行動してください。これには、ハラスメント、ウィッチハント、セクシズム、人種差別、トランスフォビア、ヘイトスピーチが含まれます。個人やグループに対するいかなる形式の差別も許されません。さらに、このサーバーのメンバーをDM、他のSNS、または他のサーバーで嫌がらせないでください。批判は受け入れられますが、過度の非難は許されません。"
+    },
+    "2": {
+      "title": "NSFWまたはR-18コンテンツについては話さないでください",
+      "description": "NSFWやR-18のコンテンツについてはここでは議論しないでください。これには、エロ、ゴア、そして一般的にNSFL（生涯にわたって安全でない）コンテンツが含まれます。これはR-18モッズにも適用されます。"
+    },
+    "3": {
+      "title": "チャンネルに関連する話題を話し、他のメンバーを尊重してください",
+      "description": "ディスカッションはそれぞれのチャンネルで行い、他のメンバーに配慮してください。たとえば、他の人が助け合っているチャンネルでミームをポストするのは避けてください。"
+    },
+    "4": {
+        "title": "このサーバーはドラマの場所ではありません",
+        "description": "このサーバーはドラマの場所ではありません。不穏な行動や必要以上のドラマや混乱を引き起こす行為は許されません。ディスカッションは尊重的かつ建設的に行ってください。"
+    },
+    "5": {
+      "title": "すべてのメンバーのスキルレベルを尊重してください",
+      "description": "全てのメンバーのスキルレベルを尊重してください。皆さんはそれぞれ異なるレベルの知識と経験を持っています。だからこそ、知識が少ない人を見下すのではなく、建設的な批判やアドバイスを提供しましょう。また、誰かがあなたを助けている場合は、彼らが何を言っているのか注意を払い、努力を重ねて学んでください。"
+    },
+    "6": {
+      "title": "サーバーにアクセスするには、#entryにテキストなしの画像を投稿してください",
+        "description": "サーバーへのアクセスを得るためには、# entryにテキストなしの画像をポストしてください。GIFや動画は不可です。これは基本的な指示を読み、それに従えるかどうかを確認するためのものです。"
+    },
+    "7": {
+      "title": "スパム/シットポストはシットポストチャンネルに投稿する必要があります",
+      "description": "スパム/シットポストはシットポストチャンネルで行ってください。他のチャンネルやDMでスパムを送るのは他のメンバーにとって迷惑であり、邪魔になります。"
+    },
+    "8": {
+      "title": "このサーバーでハッキングについて話すことは禁止されています",
+      "description": "このサーバーでは海賊版についての話題は禁止です。海賊版に関連する議論やリンクの投稿はしないでください。Mega 39's+については、議論に関連する個別のファイル（DivaMegaMix.exeを除く）をポストすることが可能ですが、大量のコンテンツのダンプは許可されません。"
+    },
+    "9": {
+      "title": "技術的な技術性に基づいて「ルールを回避」しようとする場合は、外に出てください！",
+      "description": "ルールの隙間を突いて「ルールを破らない」ような行動を取る場合、モデレーターの裁量で警告またはBANされます。常識を使い、常に他の人に対して尊重を持って行動してください。"
+    },
+    "10": {
+      "title": "チャンネルごとにルールを列挙することはできません。ルールが長くなりすぎるためです",
+      "description": "ここでは全てのチャンネルのルールを一覧にすることはできません。ルールが長すぎてしまいます。そのため、特定のチャンネルで注意すべき特別なルールがあるかどうかを確認するために、各チャンネルの説明とピン留めされたメッセージを確認してください。"
+    }
+  },
+  "ko": {
+    "1": {
+      "title": "이 서버는 프로젝트 디바를 위한 공식 서버가 아닙니다",
+      "description": "모든 사람을 존중하십시오. 이는 괴롭힘, 마녀 사냥, 성차별, 인종차별, 트랜스포비아, 또는 혐오 발언을 포함하지 않습니다. 개인이나 그룹에 대한 어떤 형태의 차별도 용납되지 않습니다. 또한, 이 서버의 어떤 회원도 DM, 다른 소셜 미디어 서비스, 또는 다른 서버를 통해 괴롭히지 마십시오. 비판은 괜찮지만 공격은 아닙니다."
+    },
+    "2": {
+      "title": "성인용 콘텐츠 금지",
+      "description": "여기서 NSFW 또는 R-18 콘텐츠에 대해 논의하지 마십시오. 이는 포르노, 고어, 일반적인 NSFL 콘텐츠를 포함합니다. 이는 NSFW 모드에도 적용됩니다."
+    },
+    "3": {
+      "title": "채널에 맞는 채팅을 하십시오",
+      "description": "토론은 각자의 채널에서 유지하고 다른 멤버들을 고려하십시오. 예를 들어, 한 채널에서 서로를 돕는 사람들 위에 농담 게시물을 올리지 마세요."
+    },
+    "4": {
+      "title": "드라마는 여기서 금지되어 있습니다",
+      "description": "이 서버는 드라마를 위한 곳이 아닙니다. 불필요한 드라마나 혼란을 일으키는 행동 또는 행동은 용납되지 않습니다. 토론을 존중적이고 건설적으로 유지하세요."
+    },
+    "5": {
+      "title": "모든 멤버를 존중하세요",
+      "description": "모든 멤버의 스킬 레벨에 존중을 보여주십시오. 모두가 다른 지식과 경험 수준을 가지고 있습니다. 따라서 덜 지식 있는 사람들을 비하하거나 조롱하는 대신 건설적인 비평이나 도움을 제공하세요. 반대로, 누군가가 당신에게 도움을 주고 있다면 그들이 말하는 것에 주의를 기울이고 배우려고 노력하세요."
+    },
+    "6": {
+      "title": "서버에 접근하려면 #entry에 텍스트 없이 이미지를 게시하세요",
+      "description": "서버에 접근하려면, #entry에 텍스트 없이 이미지를 게시하세요. 이미지는 GIF나 동영상일 수 없습니다. 이는 기본 지침을 읽고 따를 수 있는지 확인하기 위한 것입니다."
+    },
+    "7": {
+      "title": "스팸 게시물은 금지되어 있습니다",
+      "description": "스팸/농담 게시물은 shitposts 채널에 속합니다. 다른 채널이나 DM에서 스팸을 보내지 마세요. 이는 다른 멤버들에게 방해가 되고 짜증을 유발할 수 있습니다."
+    },
+    "8": {
+      "title": "해킹에 대해 이야기하는 것은 금지되어 있습니다",
+      "description": "이 서버에서는 해적판 토론이 허용되지 않습니다. 어떤 종류의 해적판에 관련된 링크나 토론을 하지 마세요. Mega 39's+의 경우, 토론에 관련된 개별 파일을 게시할 수 있지만 (단, DivaMegaMix.exe는 제외), 대량의 콘텐츠 덤프는 허용되지 않습니다."
+    },
+    "9": {
+      "title": "기술적인 기술성에 기반하여 \"규칙을 회피\"하려는 경우, 나가십시오!",
+      "description": "규칙의 틈을 이용하려는 시도를 하면, 경고 또는 차단을 받게 될 것입니다. 상식을 사용하고 항상 다른 사람들에게 존중하세요."
+    },
+    "10": {
+      "title": "채널 규칙",
+      "description": "모든 채널의 규칙을 여기에 나열할 수 없습니다, 그러면 규칙이 너무 길어질 것입니다. 따라서 특정 채널에 대한 특별한 규칙이 있는지 알아야 하는 경우, 채널의 설명과 핀 메시지를 확인해 주세요."
+    }
+  },
+  "zh-CN": {
+    "1": {
+      "title": "尊重所有人",
+      "description": "请以尊重的态度对待每一个人。这包括禁止骚扰、网络围攻、性别歧视、种族歧视、对跨性别者的歧视或者仇恨言论。任何形式的对个人或团体的歧视都将不被容忍。此外，禁止通过私信、其他社交媒体服务，或其他服务器骚扰本服务器的任何成员。批评可以接受，但人身攻击是不允许的。"
+    },
+    "2": {
+      "title": "禁止成人或R-18内容",
+      "description": "禁止讨论或发布任何不适合在工作场所浏览（NSFW）或R-18的内容。包括色情、暴力，以及任何不适合在公共场合出现的内容。这也包括对成人内容的修改。"
+    },
+    "3": {
+      "title": "请保持话题的相关性",
+      "description": "请在各自的频道中保持话题的相关性，并关注其他成员的感受。例如，避免在一个频道中过度发布与主题无关的内容或图片，尤其是在其他成员正在互相帮助的时候。"
+    },
+    "4": {
+      "title": "避免制造冲突",
+      "description": "本服务器不是一个允许制造冲突和争论的地方。任何可能引发不必要的混乱或戏剧化的行为都将不被允许。请保持讨论的尊重和建设性。"
+    },
+    "5": {
+      "title": "尊重所有人的技能水平",
+      "description": "请尊重所有成员的技能水平。每个人的知识和经验都是不同的。因此，请不要贬低或嘲笑知识或技能较少的成员，而应给予他们建设性的批评或帮助。相反，如果有人在帮助你，应认真倾听他们的建议，并尽力学习。如果有人做的事情并不出色，应该提出他们可以如何改进的建议，而不是责骂他们。"
+    },
+    "6": {
+      "title": "通过验证来获得访问权",
+      "description": "为了获取服务器的访问权，在#entry频道发布一张没有任何文字的图片。图片不能是GIF或视频。这是为了验证你能阅读和遵守基本的指示。"
+    },
+    "7": {
+      "title": "灌水内容请发布在 #shitposts",
+      "description": "灌水内容或无意义的信息应该发布在 #shitposts 频道。请避免在其他频道或私信中发布此类信息，因为这可能对其他成员产生干扰，使他们感到不适。"
+    },
+    "8": {
+      "title": "禁止谈论侵权行为",
+      "description": "服务器内禁止所有关于侵权行为的讨论。禁止讨论或发布任何与侵权有关的链接。对于Mega Mix+，你可以发布单个文件（除了DivaMegaMix.exe），如果它与讨论有关，但是不允许大量分享文件。"
+    },
+    "9": {
+      "title": "尝试规避规则将受到处理",
+      "description": "如果你尝试利用某些技术性漏洞来\"规避规则\"，你将会受到警告或者禁止进入，这取决于版主的决定。请时刻保持理性判断，并对他人表示尊重。"
+    },
+    "10": {
+      "title": "请查阅特定频道的规则",
+      "description": "我们无法在这里列出所有频道的规则，因为这会使规则显得过于冗长。因此，请查看各频道的描述和置顶消息，查看是否有你需要注意的特定频道的特定规则。"
+    }
+  },
+  "zh-TW": {
+    "1": {
+      "title": "尊重每個人",
+      "description": "尊重每個人。這包括禁止騷擾、獵巫、性別歧視、種族歧視、恐跨性別症或仇恨言論。任何形式的對個人或團體的歧視都不會被接受。另外，不要通過私訊、其他社交媒體服務，或其他伺服器騷擾本伺服器的任何成員。批評是可以的，但直接攻擊就不行了。"
+    },
+    "2": {
+      "title": "禁止成人內容",
+      "description": "不要在這裡討論NSFW或R-18內容。這包括色情、血腥，和所有不適合生活的內容。這也包括NSFW的MOD。"
+    },
+    "3": {
+      "title": "在正確的頻道聊天",
+      "description": "請在各自的頻道進行討論，並注意其他成員。例如，在大家在一個頻道互相幫助的時候，就避免發表和討論無關的搞笑內容。"
+    },
+    "4": {
+      "title": "禁止製造戲劇",
+      "description": "這個伺服器不是用來製造戲劇的。任何破壞性的行為或者無理取鬧，引發不必要的戲劇和混亂，都將不被容忍。請保持討論的尊重性和建設性。"
+    },
+    "5": {
+      "title": "尊重每個成員的技能水平",
+      "description": "尊重所有成員的技能水平。每個人的知識和經驗水平都是不同的。因此，避免貶低或嘲笑那些知識少一些的人，相反應該提供建設性的批評或幫助。反過來，如果有人在幫助你，要認真聽他們說的，付出努力去學習。如果有人做的東西做得不好，告訴他們怎麼改進，而不是責罵他們。"
+    },
+    "6": {
+      "title": "要進入伺服器，請在#entry頻道發送沒有文字的圖片",
+      "description": "要獲得進入伺服器的權限，在#entry發布一張沒有任何文字的圖片。圖片不能是GIF或視頻。這是為了驗證你能閱讀和遵守基本的指示。"
+    },
+    "7": {
+      "title": "禁止垃圾訊息",
+      "description": "垃圾訊息/搞笑帖應該在shitposts頻道發布。避免在其他頻道或私訊中發送垃圾訊息，因為這可能對其他成員造成干擾和困擾。"
+    },
+    "8": {
+      "title": "禁止討論盜版",
+      "description": "伺服器禁止任何關於盜版的談論。不要討論或發布任何形式的盜版鏈接。對於Mega Mix+，你可以發布單個文件（除了DivaMegaMix.exe），如果它與討論有關，但是大規模倾銷內容是不允許的。"
+    },
+    "9": {
+      "title": "禁止討論駭客",
+      "description": "如果你試圖通過技術性的漏洞'規避規則'，你會被警告或禁止，這取決於管理員的決定。始終使用常識，並始終對其他人保持尊重。"
+    },
+    "10": {
+      "title": "頻道規則",
+      "description": "我們不可能在這裡列出每個頻道的規則，因為規則會變得過於冗長。因此，請檢查頻道的描述和置頂訊息，看是否有你需要了解的某個特定頻道的特定規則。"
+    }
+  }
+}
+
